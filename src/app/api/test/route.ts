@@ -3,6 +3,8 @@ import dbConnect from '@/lib/dbConnect';
 
 import Counter from '@/app/models/Counter';
 
+export const revalidate = 0; // revalidate data immediately.
+
 export async function GET(req: NextRequest) {
 	try {
 		await dbConnect();
@@ -11,6 +13,6 @@ export async function GET(req: NextRequest) {
 
 		return NextResponse.json({ data: testCounter });
 	} catch (e: any) {
-		return NextResponse.json({ error: e.message })
+		return NextResponse.json({ error: e.message });
 	}
 }
