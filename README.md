@@ -24,7 +24,7 @@
 <details>
     <summary><strong>Sắp xếp & dự kiến công việc thực hiện.</strong></summary>
     
-    ☐ Setup project envinroment.
+    ☑ Setup project environment.
 </details>
 
 <hr>
@@ -35,7 +35,7 @@
         <li>
             <details>
                 <summary><strong>Vũ Quốc Bảo</strong></summary>
-                ☐ | Setup project environment.
+                ☑ | Setup project environment.
             </details>
         </li>
         <li>
