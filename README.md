@@ -22,33 +22,8 @@
 <hr>
 
 <details>
-    <summary><strong>Sắp xếp & dự kiến công việc thực hiện.</strong></summary>
-    
-    ☑ Setup project environment.
-</details>
-
-<hr>
-
-<details>
-    <summary><strong>Tiến trình của thành viên trong nhóm.</strong></summary>
-    <ul>
-        <li>
-            <details>
-                <summary><strong>Vũ Quốc Bảo</strong></summary>
-                ☑ | Setup project environment.
-            </details>
-        </li>
-        <li>
-            <details>
-                <summary><strong>Nguyễn Thanh Hải</strong></summary>
-            </details>
-        </li>
-        <li>
-            <details>
-                <summary><strong>Đặng Đức Minh Quang</strong></summary>
-            </details>
-        </li>
-    </ul>
+    <summary><strong>Kế hoạch, tiến độ thực hiện công việc.</strong></summary>
+    <a href="https://docs.google.com/spreadsheets/d/1Lc0GZ_oB4SCroZOmKva4DpZ_s_NmWDD9">https://docs.google.com/spreadsheets/d/1Lc0GZ_oB4SCroZOmKva4DpZ_s_NmWDD9</a>
 </details>
 
 <hr>
@@ -66,6 +41,7 @@
 <hr>
 
 # NextJS
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -92,8 +68,8 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+-   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
