@@ -1,0 +1,34 @@
+.header-search {
+	padding: 15px 0px;
+}
+
+.header-search form {
+	position: relative;
+	display: flex;
+}
+
+.header-search form .input-select {
+	border-radius: 40px 0px 0px 40px;
+}
+
+.header-search form .input {
+	width: calc(100% - 260px);
+	margin-right: -4px;
+}
+
+.header-search form .search-btn {
+	height: 40px;
+	width: 100px;
+	background: #D10024;
+	color: #FFF;
+	font-weight: 700;
+	border: none;
+	border-radius: 0px 40px 40px 0px;
+}
+
+.input-select {
+	padding: 0px 15px;
+	background: #FFF;
+	border: 1px solid #E4E7ED;
+	height: 40px;
+}
