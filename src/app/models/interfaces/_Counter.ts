@@ -1,6 +1,6 @@
-import { Document, Model, HydratedDocument } from 'mongoose';
-import { DocumentResult } from './ExternalDocument';
+import { Document, HydratedDocument, Model } from 'mongoose';
 import { IModels } from './';
+import { DocumentResult } from './ExternalDocument';
 
 export interface CounterData {
 	name: string;
@@ -19,4 +19,3 @@ export type CounterHydratedDocument = HydratedDocument<
 	ICounter,
 	ICounterMethods
 >;
-
