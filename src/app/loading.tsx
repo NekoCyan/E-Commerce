@@ -1,5 +1,13 @@
-import { Spinner } from '@/components/boostrap';
+import Image from 'next/image';
 
 export default function Loading() {
-	return <Spinner animation='border' className='d-block m-auto'></Spinner>;
+	return (
+		<Image
+			src='/img/loader.gif'
+			alt='loader'
+			width={400}
+			height={480}
+			className='d-block m-auto p-5'
+		/>
+	);
 }

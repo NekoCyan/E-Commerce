@@ -1,0 +1,24 @@
+.bottom-footer {
+    background: #1E1F29;
+}
+
+.copyright {
+    margin-top: 30px;
+    display: block;
+    font-size: 12px;
+}
+
+.footer-payments li {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.footer-payments li a {
+    color: #15161D;
+    font-size: 36px;
+    display: block;
+}
+
+.link {
+    color: var(--link);
+}
