@@ -1,8 +1,8 @@
 'use client';
 
-import MultiStyles from '@/utils/ComponentUtils';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import navigationStyles from '../../../navigation/Navigation.module.css';
 import styles from '../HeaderMisc.module.css';
 
 export default function HeaderMenu() {
@@ -11,15 +11,20 @@ export default function HeaderMenu() {
 	const dropdown = useRef(null);
 
 	useEffect(() => {
-		if (!open) return;
+		if (!open) {
+			$('#responsive-nav').removeClass(navigationStyles.active);
+			return;
+		} else {
+			$('#responsive-nav').addClass(navigationStyles.active);
+		}
 		function handleClick(e: MouseEvent) {
-			console.log(dropdown.current);
-			console.log(e.target);
+			const responsiveNav = $('#responsive-nav')[0];
 			if (
+				responsiveNav &&
+				!responsiveNav.contains(e.target as Node) && // when click outside the responsive nav.
 				dropdown.current &&
-				!(dropdown.current as any).contains(e.target)
+				!(dropdown.current as any).contains(e.target) // when click to Menu button.
 			) {
-				console.log('closing');
 				setOpen(false);
 			}
 		}
@@ -30,8 +35,9 @@ export default function HeaderMenu() {
 
 	return (
 		<div
-			className={MultiStyles(styles['menu-toggle'], open ? 'active' : '')}
+			className={styles['menu-toggle']}
 			onClick={() => setOpen(!open)}
+			ref={dropdown}
 		>
 			<Link href='#'>
 				<i className='fa fa-bars'></i>

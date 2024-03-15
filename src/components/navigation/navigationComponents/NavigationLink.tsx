@@ -1,20 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import styles from './NavLink.module.css';
 import { usePathname } from 'next/navigation';
+import styles from '../Navigation.module.css';
 
-type LinkPath = {
-	title: string;
-	path: string;
-};
-
-export default function NavLink({ item }: Readonly<{ item: LinkPath }>) {
+export default function NavigationLink({
+	title,
+	path,
+}: Readonly<{ title: string; path: string }>) {
 	const pathName = usePathname();
 
 	return (
-		<li className={(pathName === item.path && styles.active) || ''}>
-			<Link href={item.path}>{item.title}</Link>
+		<li className={(pathName === path && styles.active) || ''}>
+			<Link href={path}>{title}</Link>
 		</li>
 	);
 }

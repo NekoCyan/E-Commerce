@@ -34,6 +34,9 @@ dependencies:
     version: 1.8.1(jquery@3.7.1)
 
 devDependencies:
+  '@types/jquery':
+    specifier: ^3.5.29
+    version: 3.5.29
   '@types/node':
     specifier: ^20
     version: 20.11.5
@@ -195,6 +198,12 @@ packages:
       tslib: 2.6.2
     dev: false
 
+  /@types/jquery@3.5.29:
+    resolution: {integrity: sha512-oXQQC9X9MOPRrMhPHHOsXqeQDnWeCDT3PelUIg/Oy8FAbzSZtFHRjc7IpbfFVmpLtJ+UOoywpRsuO5Jxjybyeg==}
+    dependencies:
+      '@types/sizzle': 2.3.8
+    dev: true
+
   /@types/node@20.11.5:
     resolution: {integrity: sha512-g557vgQjUUfN76MZAN/dt1z3dzcUsimuysco0KeluHgrPdJXkP/XdAURgyO2W9fZWHRtRBiVKzKn8vyOAwlG+w==}
     dependencies:
@@ -225,6 +234,10 @@ packages:
 
   /@types/scheduler@0.16.8:
     resolution: {integrity: sha512-WZLiwShhwLRmeV6zH+GkbOFT6Z6VklCItrDioxUnv+u4Ll+8vKeFySoFyK/0ctcRpOmwAicELfmys1sDc/Rw+A==}
+
+  /@types/sizzle@2.3.8:
+    resolution: {integrity: sha512-0vWLNK2D5MT9dg0iOo8GlKguPAU02QjmZitPEsXRuJXU/OGIOt9vT9Fc26wtYuavLxtO45v9PGleoL9Z0k1LHg==}
+    dev: true
 
   /@types/warning@3.0.3:
     resolution: {integrity: sha512-D1XC7WK8K+zZEveUPY+cf4+kgauk8N4eHr/XIHXGlGYkHLud6hK9lYfZk1ry1TNh798cZUCgb6MqGEG8DkJt6Q==}
