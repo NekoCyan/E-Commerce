@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 
-import { Montserrat } from 'next/font/google';
+import Header from '@/components/header/Header';
+import TopHeader from '@/components/header/TopHeader';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import 'nouislider/dist/nouislider.min.css';
 import 'font-awesome/css/font-awesome.min.css';
+import { Montserrat } from 'next/font/google';
+import 'nouislider/dist/nouislider.min.css';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 import './globals.css';
 
 const montserrat = Montserrat({
@@ -33,7 +35,11 @@ export default function RootLayout({
 				<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
 			</head>
 
-			<body className={montserrat.className}>{children}</body>
+			<body className={montserrat.className}>
+				<TopHeader />
+				<Header />
+				{children}
+			</body>
 		</html>
 	);
 }

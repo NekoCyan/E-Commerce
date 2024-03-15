@@ -1,0 +1,19 @@
+.container {
+	height: calc(100vh - 200px);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 2px;
+}
+
+.link {
+	color: var(--link);
+	text-decoration: underline;
+}
+
+@media screen and (max-width: 991px){
+	.container {
+		height: calc(100vh - 400px)
+	}
+}
