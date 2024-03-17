@@ -1,4 +1,4 @@
-import MultiStyles from '@/utils/ComponentUtils';
+import {MultiStyles} from '@/utils/ComponentUtils';
 import styles from './HeaderSearch.module.css';
 
 export default function HeaderSearch() {

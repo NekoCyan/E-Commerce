@@ -4,23 +4,19 @@
 	border-top: 3px solid #D10024;
 }
 
-.nav {
-	padding: 15px 0px;
-}
-
 .main-nav>li+li {
-	margin-left: 30px
+	margin-left: 10px
 }
 
 .main-nav>li>a {
-	padding: 20px 0px;
+	color: #15161D;
 }
 
 .main-nav>li>a:hover,
 .main-nav>li>a:focus,
 .main-nav>li.active>a {
 	color: #D10024;
-	background-color: transparent;
+	background-color: transparent !important;
 }
 
 .main-nav>li>a:after {
@@ -45,6 +41,7 @@
 		left: 0;
 		top: 0;
 		background: #15161D;
+		background-color: #15161D;
 		height: 100vh;
 		max-width: 250px;
 		width: 0%;
@@ -68,8 +65,12 @@
 	}
 
 	.main-nav {
-		margin: 0px;
 		float: none;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		margin: 0px !important;
+		gap: 10px;
 	}
 
 	.main-nav>li {
@@ -82,7 +83,6 @@
 	}
 
 	.main-nav>li>a {
-		padding: 15px;
 		color: #FFF;
 	}
 }

@@ -14,10 +14,12 @@ export default function HeaderMisc() {
 	const [isDocumentLoaded, setIsDocumentLoaded] = useState(false);
 	const [isNavigationLoaded, setIsNavigationLoaded] = useState(false);
 	useEffect(() => {
+		if (isDocumentLoaded) return;
+		
 		const handleDocumentReadyState = () => {
 			if (document.readyState === 'complete') {
 				setIsDocumentLoaded(true);
-				console.log(`Document is loaded!`);
+				console.log(`Document is loaded.`);
 			}
 		};
 
@@ -33,13 +35,10 @@ export default function HeaderMisc() {
 
 		const navigation = document.querySelector(`.${navigationClassName}`);
 		if (navigation) {
-			return () => {
-				setIsNavigationLoaded(true);
-			};
+			setIsNavigationLoaded(true);
+			console.log(`Navigation is loaded.`);
 		} else {
-			return () => {
-				setIsNavigationLoaded(false);
-			};
+			setIsNavigationLoaded(false);
 		}
 	}, [isDocumentLoaded]);
 

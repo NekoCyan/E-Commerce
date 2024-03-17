@@ -1,6 +1,6 @@
 'use client';
 
-import MultiStyles from '@/utils/ComponentUtils';
+import { MultiStyles } from '@/utils/ComponentUtils';
 import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import styles from './Navigation.module.css';
@@ -9,7 +9,7 @@ import NavigationLink from './navigationComponents/NavigationLink';
 const allLinks = [
 	{
 		title: 'Home',
-		path: '/',
+		path: '',
 	},
 	{
 		title: 'Hot Deals',
@@ -68,8 +68,7 @@ export default function Navigation() {
 					<ul
 						className={MultiStyles(
 							styles['main-nav'],
-							isMobile && 'navbar-nav',
-							!isMobile && styles.nav,
+							!isMobile && 'navbar-nav',
 							'nav',
 						)}
 					>

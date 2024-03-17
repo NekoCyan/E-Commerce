@@ -1,4 +1,4 @@
-import MultiStyles from '@/utils/ComponentUtils';
+import {MultiStyles} from '@/utils/ComponentUtils';
 import Link from 'next/link';
 import { Container, Row } from 'react-bootstrap';
 import styles from './FooterBottom.module.css';

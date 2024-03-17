@@ -9,10 +9,11 @@ export default function NavigationLink({
 	path,
 }: Readonly<{ title: string; path: string }>) {
 	const pathName = usePathname();
+	const fullPath = '/client' + path;
 
 	return (
-		<li className={(pathName === path && styles.active) || ''}>
-			<Link href={path}>{title}</Link>
+		<li className={(pathName === fullPath && styles.active) || ''}>
+			<Link href={fullPath}>{title}</Link>
 		</li>
 	);
 }

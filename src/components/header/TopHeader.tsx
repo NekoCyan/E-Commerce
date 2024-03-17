@@ -1,4 +1,4 @@
-import MultiStyles from '@/utils/ComponentUtils';
+import { MultiStyles } from '@/utils/ComponentUtils';
 import Link from 'next/link';
 import { Container } from 'react-bootstrap';
 import styles from './TopHeader.module.css';
