@@ -1,7 +1,7 @@
-import styles from './TopHeader.module.css';
-import { Container } from 'react-bootstrap';
-import Link from 'next/link';
 import MultiStyles from '@/utils/ComponentUtils';
+import Link from 'next/link';
+import { Container } from 'react-bootstrap';
+import styles from './TopHeader.module.css';
 
 export default function TopHeader() {
 	return (
@@ -43,7 +43,7 @@ export default function TopHeader() {
 					</li>
 					<li>
 						<Link href='#'>
-							<i className='fa fa-user-o'></i>My Account
+							<i className='fa fa-user-o'></i>Login
 						</Link>
 					</li>
 				</ul>

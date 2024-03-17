@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 
+import MultiStyles from '@/utils/ComponentUtils';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import { Montserrat } from 'next/font/google';
@@ -8,12 +9,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import './globals.css';
 import styles from './layout.module.css';
-
-import Footer from '@/components/footer/Footer';
-import Header from '@/components/header/Header';
-import TopHeader from '@/components/header/TopHeader';
-import Navigation from '@/components/navigation/Navigation';
-import MultiStyles from '@/utils/ComponentUtils';
 
 const montserrat = Montserrat({
 	subsets: ['latin'],
@@ -41,15 +36,17 @@ export default function RootLayout({
 			</head>
 
 			<body className={montserrat.className}>
-				<h5 className={MultiStyles(styles.rainbow, 'pt-3', 'text-center')}>
+				<h5
+					className={MultiStyles(
+						styles.rainbow,
+						'pt-3',
+						'text-center',
+					)}
+				>
 					Frequently reminder: This website is just using for{' '}
 					<u>EDUCATIONAL PURPOSE</u>, not for Commercial.
 				</h5>
-				<TopHeader />
-				<Header />
-				<Navigation />
 				{children}
-				<Footer />
 			</body>
 		</html>
 	);

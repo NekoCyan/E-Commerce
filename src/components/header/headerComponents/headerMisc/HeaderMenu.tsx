@@ -8,7 +8,7 @@ import styles from '../HeaderMisc.module.css';
 export default function HeaderMenu() {
 	const [open, setOpen] = useState(false);
 	// create a React ref for the dropdown element
-	const dropdown = useRef(null);
+	const dropdown = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if (!open) {

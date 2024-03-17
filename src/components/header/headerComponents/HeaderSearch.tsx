@@ -6,11 +6,11 @@ export default function HeaderSearch() {
 		<div className='col-md-6'>
 			<div className={styles['header-search']}>
 				<form>
-					<select className={MultiStyles(styles['input-select'], 'input-select')}>
+					{/* <select className={MultiStyles(styles['input-select'], 'input-select')}>
 						<option value='0'>All Categories</option>
 						<option value='1'>Category 01</option>
 						<option value='1'>Category 02</option>
-					</select>
+					</select> */}
 					<input
 						className={MultiStyles(styles.input, 'input')}
 						placeholder='Search here'
