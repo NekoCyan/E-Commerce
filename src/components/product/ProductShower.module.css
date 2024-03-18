@@ -1,0 +1,100 @@
+.section-title {
+    position: relative;
+    margin-bottom: 30px;
+    margin-top: 15px;
+}
+
+.section-title .title {
+    display: inline-block;
+    text-transform: uppercase;
+    margin: 0px;
+    font-weight: bold;
+}
+
+.section-title .section-nav {
+    float: right;
+}
+
+.section-title .section-nav .section-tab-nav {
+    display: inline-block;
+}
+
+.section-tab-nav li {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.section-tab-nav li:last-child {
+    margin-right: 0px;
+}
+
+.section-tab-nav li a {
+    font-weight: 700;
+    color: #8D99AE;
+}
+
+.section-tab-nav li a:after {
+    content: "";
+    display: block;
+    width: 0%;
+    height: 2px;
+    background-color: #D10024;
+    -webkit-transition: 0.2s all;
+    transition: 0.2s all;
+}
+
+.section-tab-nav li.active a {
+    color: #D10024;
+}
+
+.section-tab-nav li a:hover:after,
+.section-tab-nav li a:focus:after,
+.section-tab-nav li.active a:after {
+    width: 100%;
+}
+
+.section-tab-nav li a {
+    text-decoration: none;
+}
+
+.section-title .section-nav .products-slick-nav {
+    top: 0px;
+    right: 0px;
+}
+
+.products-slick .slick-list {
+    padding-bottom: 60px;
+    margin-bottom: -60px;
+    z-index: 2;
+}
+
+.products-slick .product.slick-slide {
+    margin: 15px;
+}
+
+.products-tabs>.tab-pane {
+    display: block;
+    height: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow-y: hidden;
+    padding-bottom: 60px;
+    margin-bottom: -60px;
+}
+
+.products-tabs>.tab-pane.active {
+    opacity: 1;
+    visibility: visible;
+    height: auto;
+}
+
+@media only screen and (max-width: 768px) {
+    .section-title .section-nav {
+        float: none;
+        margin-top: 10px;
+    }
+
+    .section-tab-nav li {
+        margin-top: 10px;
+    }
+}
