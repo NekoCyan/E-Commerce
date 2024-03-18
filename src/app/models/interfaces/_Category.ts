@@ -2,9 +2,10 @@ import { Document, HydratedDocument, Model } from 'mongoose';
 import { DocumentResult } from './ExternalDocument';
 
 export interface CategoryData {
-	content: string;
-	author: string;
-	createdAt?: Date;
+    name: string;
+    description: string;
+    imageUrl: string;
+    createdAt: Date;
 }
 export interface ICategory
 	extends CategoryData,

@@ -26,6 +26,7 @@ const UserSchema = new mongoose.Schema<IUser, IUserModel, IUserMethods>({
 
 // statics.
 
+
 const User =
 	(mongoose.models.User as IUserModel) ||
 	mongoose.model<IUser, IUserModel>('User', UserSchema);
