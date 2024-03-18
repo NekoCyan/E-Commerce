@@ -14,38 +14,6 @@
 
 	/////////////////////////////////////////
 
-	// Products Slick
-	$('.products-slick').each(function () {
-		var $this = $(this),
-			$nav = $this.attr('data-nav');
-
-		$this.slick({
-			slidesToShow: 4,
-			slidesToScroll: 1,
-			autoplay: true,
-			infinite: true,
-			speed: 300,
-			dots: false,
-			arrows: true,
-			appendArrows: $nav ? $nav : false,
-			responsive: [{
-				breakpoint: 991,
-				settings: {
-					slidesToShow: 2,
-					slidesToScroll: 1,
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1,
-				}
-			},
-			]
-		});
-	});
-
 	// Products Widget Slick
 	$('.products-widget-slick').each(function () {
 		var $this = $(this),
@@ -128,11 +96,11 @@
 	var priceInputMax = document.getElementById('price-max'),
 		priceInputMin = document.getElementById('price-min');
 
-	priceInputMax.addEventListener('change', function () {
+	priceInputMax?.addEventListener('change', function () {
 		updatePriceSlider($(this).parent(), this.value)
 	});
 
-	priceInputMin.addEventListener('change', function () {
+	priceInputMin?.addEventListener('change', function () {
 		updatePriceSlider($(this).parent(), this.value)
 	});
 

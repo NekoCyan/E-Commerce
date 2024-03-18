@@ -1,5 +1,10 @@
 import Collection from '@/components/collection/Collection';
-import { Container, Row } from 'react-bootstrap';
+import ProductShower from '@/components/product/ProductShower';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'Ocean Electro Shop',
+};
 
 const collections: {
 	name: string;
@@ -26,15 +31,13 @@ const collections: {
 export default function Home() {
 	return (
 		<div>
-			<div className='section'>
-				<Container>
-					<Row>
-						{collections.map((collection, index) => (
-							<Collection key={index} {...collection} />
-						))}
-					</Row>
-				</Container>
-			</div>
+			<Collection collectionData={collections} />
+
+			{/* Product Shower */}
+			<ProductShower
+				title='New Products'
+				categories={['Laptops', 'Smartphones']}
+			/>
 		</div>
 	);
 }

@@ -8,6 +8,11 @@ export default function Loading() {
 			width={400}
 			height={480}
 			className='d-block m-auto p-5'
+			style={{
+				display: 'block',
+				margin: 'auto',
+				padding: '5rem',
+			}}
 		/>
 	);
 }

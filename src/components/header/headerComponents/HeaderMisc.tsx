@@ -19,7 +19,6 @@ export default function HeaderMisc() {
 		const handleDocumentReadyState = () => {
 			if (document.readyState === 'complete') {
 				setIsDocumentLoaded(true);
-				console.log(`Document is loaded.`);
 			}
 		};
 

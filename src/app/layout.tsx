@@ -7,6 +7,7 @@ import { Montserrat } from 'next/font/google';
 import 'nouislider/dist/nouislider.min.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
+import LinkClickPreventer from './LinkClickPreventer';
 import './globals.css';
 import styles from './layout.module.css';
 
@@ -66,6 +67,7 @@ export default function RootLayout({
 					<u>EDUCATIONAL PURPOSE</u>, not for Commercial.
 				</h5>
 				{children}
+				<LinkClickPreventer />
 			</body>
 		</html>
 	);

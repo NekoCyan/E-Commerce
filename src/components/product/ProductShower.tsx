@@ -1,12 +1,9 @@
 'use client';
 
-import { MultiStyles } from '@/utils/ComponentUtils';
-import { nanoid } from 'nanoid';
-import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
-import styles from './ProductShower.module.css';
-import ProductShowerData from './productComponents/ProductShowerData';
+import ProductShowerList from './productComponents/ProductShowerList';
+import ProductShowerTabs from './productComponents/ProductShowerTabs';
 
 // type ProductShowerTabsProps = {
 // 	categoryName: string;
@@ -23,7 +20,7 @@ const allProducts = [
 	},
 	{
 		productName: 'Aprle 12 Pro Max',
-		categoryName: 'Category',
+		categoryName: 'Smartphones',
 		imageURL: './img/product02.png',
 		price: 998,
 		rating: 4,
@@ -41,7 +38,7 @@ const allProducts = [
 	},
 	{
 		productName: 'Aprle 12 Pro Max',
-		categoryName: 'Category',
+		categoryName: 'Smartphones',
 		imageURL: './img/product02.png',
 		price: 998,
 		rating: 4,
@@ -59,7 +56,7 @@ const allProducts = [
 	},
 	{
 		productName: 'Aprle 12 Pro Max',
-		categoryName: 'Category',
+		categoryName: 'Smartphones',
 		imageURL: './img/product02.png',
 		price: 998,
 		rating: 4,
@@ -86,154 +83,30 @@ export default function ProductShower({
 }) {
 	// remove duplicate and empty string.
 	categories = [...new Set(categories)].filter((x) => x);
+	const [currentCategory, setCurrentCategory] = useState('');
 
-	const [activeTab, setActiveTab] = useState(
-		categories[0]?.toLowerCase() || '',
-	);
-	const ProductShowerRef = useRef<HTMLDivElement>(null);
-
-	// Check if the document is loaded (and there's slick in page).
-	const [isDocumentLoaded, setIsDocumentLoaded] = useState(false);
-	// this is for check is document is loaded.
+	let filterProducts = allProducts;
 	useEffect(() => {
-		if (isDocumentLoaded) return;
-
-		const handleDocumentReadyState = () => {
-			if (document.readyState === 'complete') {
-				setIsDocumentLoaded(true);
-			}
-		};
-
-		window.addEventListener('load', handleDocumentReadyState);
-		handleDocumentReadyState(); // Check initial readyState
-
-		return () => {
-			window.removeEventListener('load', handleDocumentReadyState);
-		};
-	}, []);
-	useEffect(() => {
-		console.log(ProductShowerRef.current);
-		if (!isDocumentLoaded) return;
-
-		$('.products-slick').each(function () {
-			var $this = $(this),
-				$nav = $this.attr('data-nav');
-
-			($this as any).slick({
-				slidesToShow: 4,
-				slidesToScroll: 1,
-				autoplay: true,
-				infinite: true,
-				speed: 300,
-				dots: false,
-				arrows: true,
-				appendArrows: $nav ? $nav : false,
-				responsive: [
-					{
-						breakpoint: 991,
-						settings: {
-							slidesToShow: 2,
-							slidesToScroll: 1,
-						},
-					},
-					{
-						breakpoint: 480,
-						settings: {
-							slidesToShow: 1,
-							slidesToScroll: 1,
-						},
-					},
-				],
-			});
-		});
-	}, [isDocumentLoaded]);
+		filterProducts = allProducts.filter(
+			(x) => x.categoryName.toLowerCase() === currentCategory,
+		);
+		console.log(filterProducts);
+	}, [currentCategory]);
 
 	return (
 		<div className='section'>
 			<Container>
 				<Row>
 					{/* Categories Filter */}
-					<div className='col-md-12'>
-						<div className={styles['section-title']}>
-							<h3 className={styles.title}>{title}</h3>
-							{categories.length > 0 && (
-								<div className={styles['section-nav']}>
-									<ul
-										className={MultiStyles(
-											styles['section-tab-nav'],
-											'tab-nav',
-										)}
-									>
-										{categories.map((tab, index) => {
-											const theTab = tab.toLowerCase();
-
-											return (
-												<li
-													key={index}
-													className={''}
-													onClick={(e) => {
-														e.preventDefault();
-														if (
-															activeTab === theTab
-														)
-															return;
-														setActiveTab(theTab);
-													}}
-												>
-													<Link
-														date-toggle='tab'
-														href='#'
-													>
-														{tab}
-													</Link>
-												</li>
-											);
-										})}
-									</ul>
-								</div>
-							)}
-						</div>
-					</div>
+					<ProductShowerTabs
+						title={title}
+						categories={categories}
+						setCurrentCategory={setCurrentCategory}
+					/>
 
 					{/* Product Shower */}
-					<div className='col-md-12' ref={ProductShowerRef}>
-						<Row>
-							<div className={styles['products-tabs']}>
-								<div
-									id='tab1'
-									className={MultiStyles(
-										styles['tab-pane'],
-										styles.active,
-									)}
-								>
-									<div
-										className={MultiStyles(
-											styles['products-slick'],
-											'products-slick',
-										)}
-										data-nav='#slick-nav-1'
-									>
-										{/* Product here */}
-										{allProducts.map(
-											(productData, index) => (
-												<ProductShowerData
-													key={nanoid()}
-													productData={productData}
-												/>
-											),
-										)}
-									</div>
-									<div
-										id='slick-nav-1'
-										className={MultiStyles(
-											styles['products-slick-nav'],
-											'products-slick-nav',
-										)}
-									></div>
-								</div>
-							</div>
-						</Row>
-					</div>
+					<ProductShowerList productList={filterProducts} />
+					{/* Continue to fix the product shower list. */}
 				</Row>
 			</Container>
 		</div>

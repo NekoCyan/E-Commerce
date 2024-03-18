@@ -62,32 +62,6 @@
     right: 0px;
 }
 
-.products-slick .slick-list {
-    padding-bottom: 60px;
-    margin-bottom: -60px;
-    z-index: 2;
-}
-
-.products-slick .product.slick-slide {
-    margin: 15px;
-}
-
-.products-tabs>.tab-pane {
-    display: block;
-    height: 0;
-    opacity: 0;
-    visibility: hidden;
-    overflow-y: hidden;
-    padding-bottom: 60px;
-    margin-bottom: -60px;
-}
-
-.products-tabs>.tab-pane.active {
-    opacity: 1;
-    visibility: visible;
-    height: auto;
-}
-
 @media only screen and (max-width: 768px) {
     .section-title .section-nav {
         float: none;

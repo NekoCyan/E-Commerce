@@ -67,6 +67,10 @@
     text-transform: uppercase;
 }
 
+.shop .shop-body .cta-btn:hover {
+    text-decoration: underline;
+}
+
 @media screen and (max-width: 768px) {
     .shop .shop-body {
         padding: calc(100vw - 99vw);
