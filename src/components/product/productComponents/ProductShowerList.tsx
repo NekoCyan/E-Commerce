@@ -182,15 +182,27 @@ export default function ProductShowerList({
 															add to wishlist{' '}
 														</span>
 													</button>
-													<button className='quick-view'>
-														<i className='fa fa-eye'></i>
+													<button
+														className='quick-view'
+														onClick={() => {
+															window.location.href =
+																'/product/' +
+																productData.productName
+																	.toLowerCase()
+																	.replace(
+																		/ /g,
+																		'-',
+																	);
+														}}
+													>
+														<i className='fa fa-th-list'></i>
 														<span
 															className={
 																'tooltipp'
 															}
 														>
 															{' '}
-															quick view{' '}
+															more details{' '}
 														</span>
 													</button>
 												</div>

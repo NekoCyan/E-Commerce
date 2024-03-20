@@ -533,7 +533,8 @@ textarea.input {
   background-color: #E4E7ED;
 }
 
-.product .product-body .product-btns>button {
+.product .product-body .product-btns>button,
+.product .product-body .product-btns>a {
   position: relative;
   width: 40px;
   height: 40px;
@@ -542,15 +543,18 @@ textarea.input {
   border: none;
   -webkit-transition: 0.2s all;
   transition: 0.2s all;
+  color: black;
 }
 
-.product .product-body .product-btns>button:hover {
+.product .product-body .product-btns>button:hover,
+.product .product-body .product-btns>a:hover {
   background-color: #E4E7ED;
   color: #D10024;
   border-radius: 50%;
 }
 
-.product .product-body .product-btns>button .tooltipp {
+.product .product-body .product-btns>button .tooltipp,
+.product .product-body .product-btns>a .tooltipp {
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -571,7 +575,8 @@ textarea.input {
   transition: 0.2s all;
 }
 
-.product .product-body .product-btns>button:hover .tooltipp {
+.product .product-body .product-btns>button:hover .tooltipp,
+.product .product-body .product-btns>a:hover .tooltipp {
   opacity: 1;
   visibility: visible;
   -webkit-transform: translate(-50%, -5px);
