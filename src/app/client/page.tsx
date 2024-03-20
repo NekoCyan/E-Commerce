@@ -41,6 +41,11 @@ export default function Home() {
 				customNavId='new-products'
 			/>
 			<HotDeal />
+			<ProductShower
+				title='Top Selling'
+				categories={['All']}
+				customNavId='top-selling'
+			/>
 		</div>
 	);
 }

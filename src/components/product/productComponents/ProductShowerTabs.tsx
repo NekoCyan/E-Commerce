@@ -9,11 +9,13 @@ type ProductShowerTabsProps = {
 	title: string;
 	categories: string[];
 	setCurrentCategory: Dispatch<SetStateAction<string>>;
+	isDisabled?: boolean;
 };
 export default function ProductShowerTabs({
 	title,
 	categories,
 	setCurrentCategory,
+	isDisabled,
 }: ProductShowerTabsProps) {
 	const [activeTab, setActiveTab] = useState(
 		categories[0]?.toLowerCase() || '',
@@ -29,6 +31,7 @@ export default function ProductShowerTabs({
 							className={MultiStyles(
 								styles['section-tab-nav'],
 								'tab-nav',
+								isDisabled ? styles.disabled : '',
 							)}
 						>
 							{categories.map((tab, index) => {
@@ -44,7 +47,11 @@ export default function ProductShowerTabs({
 										}
 										onClick={(e) => {
 											e.preventDefault();
-											if (activeTab === theTab) return;
+											if (
+												activeTab === theTab ||
+												isDisabled
+											)
+												return;
 											setActiveTab(theTab);
 											setCurrentCategory(theTab);
 										}}

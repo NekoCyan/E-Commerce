@@ -262,7 +262,7 @@ textarea.input {
   border-radius: 50%;
 }
 
-.input-radio input[type="radio"]+label span:after {
+.input-radio input[type="radio"]+label span::after {
   content: "";
   position: absolute;
   left: 50%;
@@ -279,7 +279,7 @@ textarea.input {
   transition: all 0.2s;
 }
 
-.input-checkbox input[type="checkbox"]+label span:after {
+.input-checkbox input[type="checkbox"]+label span::after {
   content: '✔';
   position: absolute;
   top: -2px;
@@ -300,14 +300,14 @@ textarea.input {
   border-color: #D10024;
 }
 
-.input-radio input[type="radio"]:checked+label span:after {
+.input-radio input[type="radio"]:checked+label span::after {
   opacity: 1;
   -webkit-transform: translate(-50%, -50%) scale(1);
   -ms-transform: translate(-50%, -50%) scale(1);
   transform: translate(-50%, -50%) scale(1);
 }
 
-.input-checkbox input[type="checkbox"]:checked+label span:after {
+.input-checkbox input[type="checkbox"]:checked+label span::after {
   opacity: 1;
   -webkit-transform: scale(1);
   -ms-transform: scale(1);
@@ -356,24 +356,24 @@ textarea.input {
   border-color: #D10024;
 }
 
-.slick-prev:before,
-.slick-next:before {
+.slick-prev::before,
+.slick-next::before {
   font-family: FontAwesome;
   color: #2B2D42;
 }
 
-.slick-prev:before {
+.slick-prev::before {
   content: "\f104";
 }
 
-.slick-next:before {
+.slick-next::before {
   content: "\f105";
 }
 
-.slick-prev:hover:before,
-.slick-prev:focus:before,
-.slick-next:hover:before,
-.slick-next:focus:before {
+.slick-prev:hover::before,
+.slick-prev:focus::before,
+.slick-next:hover::before,
+.slick-next:focus::before {
   color: #FFF;
 }
 
@@ -391,19 +391,19 @@ textarea.input {
 
 .slick-dots li,
 .slick-dots li button,
-.slick-dots li button:before {
+.slick-dots li button::before {
   width: 10px;
   height: 10px;
 }
 
-.slick-dots li button:before {
+.slick-dots li button::before {
   content: "";
   opacity: 1;
   background: #E4E7ED;
   border-radius: 50%;
 }
 
-.slick-dots li.slick-active button:before {
+.slick-dots li.slick-active button::before {
   background-color: #D10024;
 }
 
@@ -520,7 +520,7 @@ textarea.input {
   color: #ef233c;
 }
 
-.product .product-body .product-rating:after {
+.product .product-body .product-rating::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -649,7 +649,7 @@ textarea.input {
 
 .products-slick .slick-list {
   padding-bottom: 60px;
-  margin-bottom: -60px;
+  /* margin-bottom: -60px; */
   z-index: 2;
 }
 
@@ -676,7 +676,7 @@ textarea.input {
 .products-slick-nav {
   text-align: center;
   z-index: 10;
-  padding-top: 60px;
+  /* padding-top: 60px; */
 }
 
 .products-slick-nav .slick-prev,
@@ -691,8 +691,8 @@ textarea.input {
   margin: 0px 2px;
 }
 
-.products-slick-nav .slick-prev:before,
-.products-slick-nav .slick-next:before {
+.products-slick-nav .slick-prev::before,
+.products-slick-nav .slick-next::before {
   font-size: 14px;
 }
 

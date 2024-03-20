@@ -1,6 +1,7 @@
 'use client';
 
-import { MultiStyles } from '@/utils/ComponentUtils';
+import Loading from '@/app/loading';
+import { MultiStyles, Sleep } from '@/utils/ComponentUtils';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import styles from './ProductShower.module.css';
@@ -10,7 +11,7 @@ import ProductShowerTabs from './productComponents/ProductShowerTabs';
 // type ProductShowerTabsProps = {
 // 	categoryName: string;
 // }[];
-const allProducts = [
+const testProducts = [
 	{
 		productName: 'Laptop GTX',
 		categoryName: 'Laptops',
@@ -85,6 +86,8 @@ export default function ProductShower({
 	categories: string[];
 	customNavId: string;
 }) {
+	const allProducts = title !== 'Top Selling' ? testProducts : [];
+
 	// remove duplicate and empty string.
 	categories = [...new Set(categories)].filter((x) => x);
 	if (categories.length === 0) {
@@ -92,6 +95,7 @@ export default function ProductShower({
 	}
 	const [currentCategory, setCurrentCategory] = useState(categories[0]);
 	const [currentProductList, setCurrentProductList] = useState(allProducts);
+	const [isFetching, setIsFetching] = useState(true);
 
 	const ProductShowerRef = useRef<{ component: React.ReactNode | null }>({
 		component: (
@@ -102,36 +106,53 @@ export default function ProductShower({
 		),
 	});
 
-	// When currentCategory changed.
+	// When currentCategory changed, do change fetch state to true.
 	useEffect(() => {
+		setIsFetching(true);
+	}, [currentCategory]);
+
+	// When in fetching, do fetch products.
+	useEffect(() => {
+		if (!isFetching) return;
+
 		if (currentCategory.toLowerCase() === 'all') {
-			setCurrentProductList(allProducts);
+			Sleep(2000).then(() => {
+				setCurrentProductList(allProducts);
+				setIsFetching(false);
+			});
 		} else {
 			const filterProducts = allProducts.filter(
 				(product) =>
 					product.categoryName.toLowerCase() === currentCategory,
 			);
 			setCurrentProductList(filterProducts);
+			setIsFetching(false);
 		}
-	}, [currentCategory]);
+	}, [isFetching]);
 
-	// When currentProductList changed.
+	// When not in fetch, remove old slick and change to loading.
+	// When in fetch, deploy new product.
 	useMemo(() => {
-		// Remove old slick.
-		try {
-			var $this = $(`div[data-nav="#${customNavId}"]`);
-			($this as any)?.slick('unslick');
-		} catch {}
-
-		ProductShowerRef.current = {
-			component: (
-				<ProductShowerList
-					navId={customNavId}
-					productList={currentProductList}
-				/>
-			),
-		};
-	}, [currentProductList]);
+		if (isFetching) {
+			// Remove old slick when in fetch state.
+			try {
+				var $this = $(`div[data-nav="#${customNavId}"]`);
+				($this as any)?.slick('unslick');
+			} catch {}
+			ProductShowerRef.current = {
+				component: <Loading />,
+			};
+		} else {
+			ProductShowerRef.current = {
+				component: (
+					<ProductShowerList
+						navId={customNavId}
+						productList={currentProductList}
+					/>
+				),
+			};
+		}
+	}, [isFetching]);
 
 	return (
 		<div className={MultiStyles('section', styles['product-shower'])}>
@@ -142,11 +163,11 @@ export default function ProductShower({
 						title={title}
 						categories={categories}
 						setCurrentCategory={setCurrentCategory}
+						isDisabled={isFetching}
 					/>
 
 					{/* Product Shower */}
 					{ProductShowerRef.current.component}
-					{/* Continue to fix the product shower list. */}
 				</Row>
 			</Container>
 		</div>

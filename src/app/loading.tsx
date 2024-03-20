@@ -1,12 +1,23 @@
 import Image from 'next/image';
 
-export default function Loading() {
+type LoadingProps = {
+	width?: number;
+	height?: number;
+};
+
+export default function Loading(props: LoadingProps) {
+	props = {
+		width: 400,
+		height: 480,
+		...props,
+	};
+
 	return (
 		<Image
 			src='/img/loader.gif'
 			alt='loader'
-			width={400}
-			height={480}
+			width={props.width}
+			height={props.height}
 			className='d-block m-auto p-5'
 			style={{
 				display: 'block',
