@@ -29,9 +29,7 @@ export default function CollectionData(props: CollectionProps) {
 							<br />
 							Collection
 						</h3>
-						<p
-							className={styles['cta-btn']}
-						>
+						<p className={styles['cta-btn']}>
 							Shop now{' '}
 							<i className='fa fa-arrow-circle-right'></i>
 						</p>

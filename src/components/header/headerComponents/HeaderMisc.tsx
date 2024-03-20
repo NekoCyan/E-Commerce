@@ -46,7 +46,7 @@ export default function HeaderMisc() {
 			<div className={styles['header-ctn']}>
 				<HeaderWishlist />
 				<HeaderCart />
-				{isDocumentLoaded && isNavigationLoaded && <HeaderMenu />}
+				{isNavigationLoaded && <HeaderMenu />}
 			</div>
 		</div>
 	);

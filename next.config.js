@@ -28,6 +28,11 @@ const nextConfig = {
             }),
         )
 
+        config.module.rules.push({
+            test: /\.(jpg|png|svg|gif)$/,
+            type: 'asset/resource',
+        })
+
         // Important: return the modified config
         return config
     }

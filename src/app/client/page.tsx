@@ -1,4 +1,5 @@
 import Collection from '@/components/collection/Collection';
+import HotDeal from '@/components/hotdeal/HotDeal';
 import ProductShower from '@/components/product/ProductShower';
 import { Metadata } from 'next';
 
@@ -36,8 +37,10 @@ export default function Home() {
 			{/* Product Shower */}
 			<ProductShower
 				title='New Products'
-				categories={['Laptops', 'Smartphones']}
+				categories={['All', 'Laptops', 'Smartphones']}
+				customNavId='new-products'
 			/>
+			<HotDeal />
 		</div>
 	);
 }

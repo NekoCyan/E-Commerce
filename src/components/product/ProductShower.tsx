@@ -1,7 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { MultiStyles } from '@/utils/ComponentUtils';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
+import styles from './ProductShower.module.css';
 import ProductShowerList from './productComponents/ProductShowerList';
 import ProductShowerTabs from './productComponents/ProductShowerTabs';
 
@@ -77,24 +79,62 @@ const allProducts = [
 export default function ProductShower({
 	title,
 	categories,
+	customNavId,
 }: {
 	title: string;
 	categories: string[];
+	customNavId: string;
 }) {
 	// remove duplicate and empty string.
 	categories = [...new Set(categories)].filter((x) => x);
-	const [currentCategory, setCurrentCategory] = useState('');
+	if (categories.length === 0) {
+		categories = ['All'];
+	}
+	const [currentCategory, setCurrentCategory] = useState(categories[0]);
+	const [currentProductList, setCurrentProductList] = useState(allProducts);
 
-	let filterProducts = allProducts;
+	const ProductShowerRef = useRef<{ component: React.ReactNode | null }>({
+		component: (
+			<ProductShowerList
+				navId={customNavId}
+				productList={currentProductList}
+			/>
+		),
+	});
+
+	// When currentCategory changed.
 	useEffect(() => {
-		filterProducts = allProducts.filter(
-			(x) => x.categoryName.toLowerCase() === currentCategory,
-		);
-		console.log(filterProducts);
+		if (currentCategory.toLowerCase() === 'all') {
+			setCurrentProductList(allProducts);
+		} else {
+			const filterProducts = allProducts.filter(
+				(product) =>
+					product.categoryName.toLowerCase() === currentCategory,
+			);
+			setCurrentProductList(filterProducts);
+		}
 	}, [currentCategory]);
 
+	// When currentProductList changed.
+	useMemo(() => {
+		// Remove old slick.
+		try {
+			var $this = $(`div[data-nav="#${customNavId}"]`);
+			($this as any)?.slick('unslick');
+		} catch {}
+
+		ProductShowerRef.current = {
+			component: (
+				<ProductShowerList
+					navId={customNavId}
+					productList={currentProductList}
+				/>
+			),
+		};
+	}, [currentProductList]);
+
 	return (
-		<div className='section'>
+		<div className={MultiStyles('section', styles['product-shower'])}>
 			<Container>
 				<Row>
 					{/* Categories Filter */}
@@ -105,7 +145,7 @@ export default function ProductShower({
 					/>
 
 					{/* Product Shower */}
-					<ProductShowerList productList={filterProducts} />
+					{ProductShowerRef.current.component}
 					{/* Continue to fix the product shower list. */}
 				</Row>
 			</Container>

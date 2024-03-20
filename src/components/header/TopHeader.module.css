@@ -37,7 +37,7 @@
     margin-right: 5px;
 }
 
-@media only screen and (max-width: 991px) {
+@media only screen and (max-width: 992px) {
     .top-header .header-links.pull-left {
         float: none !important;
     }

@@ -674,9 +674,9 @@ textarea.input {
 }
 
 .products-slick-nav {
-  position: absolute;
-  right: 15px;
+  text-align: center;
   z-index: 10;
+  padding-top: 60px;
 }
 
 .products-slick-nav .slick-prev,
@@ -685,8 +685,8 @@ textarea.input {
   -webkit-transform: none;
   -ms-transform: none;
   transform: none;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   display: inline-block !important;
   margin: 0px 2px;
 }

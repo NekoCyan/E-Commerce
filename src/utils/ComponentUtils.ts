@@ -9,3 +9,7 @@ export function FormatCurrency(
 ) {
 	return prefix + `${price.toFixed(2)}` + suffix;
 }
+
+export function Sleep(ms: number) {
+	return new Promise<void>((resolve) => setTimeout(resolve, ms));
+}

@@ -49,7 +49,12 @@ export default function ProductShowerTabs({
 											setCurrentCategory(theTab);
 										}}
 									>
-										<Link href='#/'>{tab}</Link>
+										<Link
+											href='#'
+											onClick={(e) => e.preventDefault()}
+										>
+											{tab}
+										</Link>
 									</li>
 								);
 							})}

@@ -1,4 +1,7 @@
+'use client';
+
 import { FormatCurrency, MultiStyles } from '@/utils/ComponentUtils';
+import { useEffect } from 'react';
 import { Row } from 'react-bootstrap';
 
 type ProductDataProps = {
@@ -12,9 +15,45 @@ type ProductDataProps = {
 };
 export default function ProductShowerList({
 	productList,
+	navId,
 }: {
 	productList: ProductDataProps[];
+	navId: string;
 }) {
+	useEffect(() => {
+		try {
+			var $this = $(`div[data-nav="#${navId}"]`),
+				$nav = $this.attr('data-nav');
+
+			($this as any)?.slick({
+				slidesToShow: 4,
+				slidesToScroll: 1,
+				autoplay: true,
+				infinite: true,
+				speed: 300,
+				dots: false,
+				arrows: true,
+				appendArrows: $nav ? $nav : false,
+				responsive: [
+					{
+						breakpoint: 992,
+						settings: {
+							slidesToShow: 2,
+							slidesToScroll: 1,
+						},
+					},
+					{
+						breakpoint: 480,
+						settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1,
+						},
+					},
+				],
+			});
+		} catch {}
+	});
+
 	return (
 		<div className='col-md-12'>
 			<Row>
@@ -24,7 +63,8 @@ export default function ProductShowerList({
 						className={MultiStyles('tab-pane', 'active')}
 					>
 						<div
-							data-nav='#slick-nav-1'
+							suppressHydrationWarning={true}
+							data-nav={'#' + navId}
 							className={MultiStyles('products-slick')}
 						>
 							{/* Product here */}
@@ -35,9 +75,10 @@ export default function ProductShowerList({
 											(productData.salePercentage ?? 0) /
 												100),
 								);
-								const isSale =
+								const isSale = !!(
 									productData.salePercentage &&
-									productData.salePercentage > 0;
+									productData.salePercentage > 0
+								);
 								let rating = 0;
 								if (productData.rating > 5) rating = 5;
 								else if (productData.rating < 0) rating = 0;
@@ -51,7 +92,7 @@ export default function ProductShowerList({
 												alt={productData.productName.toLowerCase()}
 											/>
 											<div className={'product-label'}>
-												{!!isSale && (
+												{isSale && (
 													<span className={'sale'}>
 														-
 														{
@@ -147,7 +188,8 @@ export default function ProductShowerList({
 							})}
 						</div>
 						<div
-							id='slick-nav-1'
+							suppressHydrationWarning={true}
+							id={navId}
 							className={MultiStyles('products-slick-nav')}
 						></div>
 					</div>
