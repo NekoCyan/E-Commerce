@@ -1,6 +1,7 @@
 .footer {
     background: #15161D;
     color: #B9BABC;
+    border-top: 3px solid #D10024;
 }
 
 @media screen and (max-width: 991px) {}

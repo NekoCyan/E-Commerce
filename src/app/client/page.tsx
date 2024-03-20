@@ -1,5 +1,6 @@
 import Collection from '@/components/collection/Collection';
 import HotDeal from '@/components/hotdeal/HotDeal';
+import NewsLetter from '@/components/newsletter/NewsLetter';
 import ProductShower from '@/components/product/ProductShower';
 import { Metadata } from 'next';
 
@@ -46,6 +47,7 @@ export default function Home() {
 				categories={['All']}
 				customNavId='top-selling'
 			/>
+			<NewsLetter />
 		</div>
 	);
 }
