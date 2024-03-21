@@ -5,8 +5,8 @@ import { MultiStyles, Sleep } from '@/utils/ComponentUtils';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import styles from './ProductShower.module.css';
-import ProductShowerList from './productComponents/ProductShowerList';
-import ProductShowerTabs from './productComponents/ProductShowerTabs';
+import ProductShowerList from './productShowerComponents/ProductShowerList';
+import ProductShowerTabs from './productShowerComponents/ProductShowerTabs';
 
 // type ProductShowerTabsProps = {
 // 	categoryName: string;
@@ -17,7 +17,9 @@ const testProducts = [
 		categoryName: 'Laptops',
 		imageURL: './img/product01.png',
 		price: 1000,
+		stock: 10,
 		rating: 5,
+		review: 1,
 		isNew: true,
 		salePercentage: 30,
 	},
@@ -26,7 +28,9 @@ const testProducts = [
 		categoryName: 'Smartphones',
 		imageURL: './img/product02.png',
 		price: 998,
+		stock: 10,
 		rating: 4,
+		review: 1,
 		isNew: true,
 		salePercentage: 0,
 	},
@@ -35,7 +39,9 @@ const testProducts = [
 		categoryName: 'Laptops',
 		imageURL: './img/product01.png',
 		price: 1000,
+		stock: 10,
 		rating: 5,
+		review: 1,
 		isNew: true,
 		salePercentage: 30,
 	},
@@ -44,7 +50,9 @@ const testProducts = [
 		categoryName: 'Smartphones',
 		imageURL: './img/product02.png',
 		price: 998,
+		stock: 10,
 		rating: 4,
+		review: 1,
 		isNew: true,
 		salePercentage: 0,
 	},
@@ -53,7 +61,9 @@ const testProducts = [
 		categoryName: 'Laptops',
 		imageURL: './img/product01.png',
 		price: 1000,
+		stock: 10,
 		rating: 5,
+		review: 1,
 		isNew: true,
 		salePercentage: 30,
 	},
@@ -62,7 +72,9 @@ const testProducts = [
 		categoryName: 'Smartphones',
 		imageURL: './img/product02.png',
 		price: 998,
+		stock: 10,
 		rating: 4,
+		review: 1,
 		isNew: true,
 		salePercentage: 0,
 	},
@@ -71,6 +83,7 @@ const testProducts = [
 	// 	categoryName: '',
 	// 	imageURL: '',
 	// 	price: 0,
+	//  stock: 0,
 	// 	rating: 0,
 	// 	isNew: false,
 	// 	salePercentage: 0,

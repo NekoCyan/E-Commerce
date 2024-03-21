@@ -10,7 +10,9 @@ type ProductDataProps = {
 	categoryName: string;
 	imageURL: string;
 	price: number;
+	stock: number;
 	rating: number;
+	review: number;
 	isNew?: boolean;
 	salePercentage?: number;
 };
@@ -186,7 +188,7 @@ export default function ProductShowerList({
 														className='quick-view'
 														onClick={() => {
 															window.location.href =
-																'/product/' +
+																'/product-details/' +
 																productData.productName
 																	.toLowerCase()
 																	.replace(

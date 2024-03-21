@@ -1,7 +1,7 @@
 import Collection from '@/components/collection/Collection';
 import HotDeal from '@/components/hotdeal/HotDeal';
 import NewsLetter from '@/components/newsletter/NewsLetter';
-import ProductShower from '@/components/product/ProductShower';
+import ProductShower from '@/components/product/productShower/ProductShower';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
