@@ -10,30 +10,37 @@ const allLinks = [
 	{
 		title: 'Home',
 		path: '',
+		alt: [],
 	},
 	{
 		title: 'Hot Deals',
 		path: '/hot-deals',
+		alt: [],
 	},
 	{
 		title: 'Categories',
 		path: '/categories',
+		alt: [],
 	},
 	{
 		title: 'Laptops',
 		path: '/laptops',
+		alt: [],
 	},
 	{
 		title: 'Smartphones',
 		path: '/smartphones',
+		alt: [],
 	},
 	{
 		title: 'Cameras',
 		path: '/cameras',
+		alt: [],
 	},
 	{
 		title: 'Accessories',
 		path: '/accessories',
+		alt: [],
 	},
 ];
 
@@ -77,6 +84,7 @@ export default function Navigation() {
 								key={index}
 								title={item.title}
 								path={item.path}
+								alt={item.alt}
 							/>
 						))}
 					</ul>
