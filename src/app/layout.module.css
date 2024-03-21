@@ -8,6 +8,10 @@
   padding-bottom: 10px;
 }
 
+.rainbow>u>a {
+  font-weight: bold;
+}
+
 @keyframes rotate {
   to {
     --angle: 360deg;

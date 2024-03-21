@@ -4,6 +4,7 @@ import { MultiStyles } from '@/utils/ComponentUtils';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import { Montserrat } from 'next/font/google';
+import Link from 'next/link';
 import 'nouislider/dist/nouislider.min.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
@@ -64,7 +65,10 @@ export default function RootLayout({
 					style={{ paddingTop: '10px', fontWeight: 'bold' }}
 				>
 					Frequently reminder: This website is just using for{' '}
-					<u>EDUCATIONAL PURPOSE</u>, not for Commercial.
+					<u>
+						<Link href='/educational'>EDUCATIONAL PURPOSE</Link>
+					</u>
+					, not for Commercial.
 				</h5>
 				{children}
 				<LinkClickPreventer />

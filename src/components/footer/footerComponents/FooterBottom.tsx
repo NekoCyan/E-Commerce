@@ -1,4 +1,4 @@
-import {MultiStyles} from '@/utils/ComponentUtils';
+import { MultiStyles } from '@/utils/ComponentUtils';
 import Link from 'next/link';
 import { Container, Row } from 'react-bootstrap';
 import styles from './FooterBottom.module.css';
@@ -57,7 +57,12 @@ export default function FooterBottom() {
 						<br />
 						<span>
 							Frequently reminder: This website is just using for{' '}
-							<u>EDUCATIONAL PURPOSE</u>, not for Commercial.
+							<u>
+								<Link href='/educational'>
+									EDUCATIONAL PURPOSE
+								</Link>
+							</u>
+							, not for Commercial.
 						</span>
 					</div>
 				</Row>
