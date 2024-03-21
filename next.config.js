@@ -2,6 +2,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const path = require('path');
 const nodeModulesPath = path.join(process.cwd(), 'node_modules');
 const publicPath = path.join(process.cwd(), 'public');
+const externalConfig = require('./externalConfig.json');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -10,6 +11,11 @@ const nextConfig = {
             {
                 source: '/',
                 destination: '/client',
+                permanent: true,
+            },
+            {
+                source: `/:path((?!client|admin|${externalConfig.mainMatcher}).*)`, // Match any path that doesn't start with 'client' or 'admin'
+                destination: '/client/:path*', // Append '/client' to the matched path
                 permanent: true,
             },
         ]
