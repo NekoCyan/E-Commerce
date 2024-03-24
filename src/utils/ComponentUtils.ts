@@ -1,6 +1,6 @@
 import { Session } from 'next-auth';
 import { NextRequest } from 'next/server';
-import getUrl, { BASE_URL } from './getURL';
+import getUrl, { BASE_URL } from './getUrl';
 
 export function MultiStyles(...styles: any[]) {
 	return styles.filter((x) => x).join(' ');
