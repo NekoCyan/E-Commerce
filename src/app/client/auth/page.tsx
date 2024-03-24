@@ -2,7 +2,7 @@
 
 import Loading from '@/app/loading';
 import { APIResponse } from '@/types';
-import { MultiStyles, PATTERN } from '@/utils';
+import { MultiStyles, PATTERN, ROUTES } from '@/utils';
 import { POST } from '@/utils/Request';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -18,18 +18,18 @@ import styles from './auth.module.css';
 // }
 
 export default function Page() {
+	const errorMSG = 'Something went wrong... try again later.';
+
 	const router = useRouter();
 	const { data, status } = useSession();
 
+	if (status === 'authenticated') router.replace(ROUTES.Home);
+
 	useEffect(() => {
 		if (status === 'authenticated') {
-			router.replace('/profile');
+			router.replace(ROUTES.Home);
 		}
 	}, [status, router]);
-
-	if (status === 'loading') return <Loading />;
-
-	const errorMSG = 'Something went wrong... try again later.';
 
 	// Initialize.
 	const [isSecondForm, setIsSecondForm] = useState(false);
@@ -170,6 +170,9 @@ export default function Page() {
 		setIsRequesting(true);
 		setRoute(defineRoute);
 	};
+
+	// Authenticated on loading to avoid appear auth form.
+	if (status === 'loading' || status === 'authenticated') return <Loading />;
 
 	return (
 		<Container

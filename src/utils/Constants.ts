@@ -2,6 +2,7 @@ import { CommaAnd, CreateEnum } from './Utilities';
 
 export const ROUTES = {
 	// Home.
+	Home: '/',
 	Auth: '/auth',
 	Educational: '/educational',
 	// Profile.

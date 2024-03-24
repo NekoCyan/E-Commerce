@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 
 import { ROUTES } from '@/utils';
 import { MultiStyles } from '@/utils/ComponentUtils';
-import { BASE_URL } from '@/utils/getUrl';
 import NextAuthProvider from '@/utils/nextAuth/NextAuthProvider';
 import 'bootstrap/dist/css/bootstrap-theme.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -35,8 +34,6 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	const session = await getServerSession();
-
-	console.log('BASE_URL:', BASE_URL);
 
 	return (
 		<html lang='en'>
