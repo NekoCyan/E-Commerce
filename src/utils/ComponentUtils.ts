@@ -31,9 +31,11 @@ export async function MiddlewareSession(
 	req: NextRequest,
 ): Promise<Session | null> {
 	try {
-		const sessionCookie = process.env.NEXTAUTH_URL?.startsWith('https://')
-			? '__Secure-next-auth.session-token'
-			: 'next-auth.session-token';
+		const sessionCookie =
+			process.env.NEXT_PUBLIC_URL?.startsWith('https://') ||
+			process.env.NEXTAUTH_URL?.startsWith('https://')
+				? '__Secure-next-auth.session-token'
+				: 'next-auth.session-token';
 		const authorizeCookie = req.cookies.get(sessionCookie)?.value ?? '';
 		const headers = {
 			'Content-Type': 'application/json',
@@ -41,7 +43,8 @@ export async function MiddlewareSession(
 			// Cookie: req.cookies.toString()
 		};
 		const res = await fetch(
-			process.env.NEXTAUTH_URL + '/api/auth/session',
+			(process.env?.NEXT_PUBLIC_URL ?? process.env?.NEXTAUTH_URL) +
+				'/api/auth/session',
 			{
 				headers,
 				cache: 'no-store',
