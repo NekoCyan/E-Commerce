@@ -1,9 +1,13 @@
 import Link from 'next/link';
 import { Container } from 'react-bootstrap';
+import styles from './educational.module.css';
 
 export default function Page() {
 	return (
-		<Container style={{ fontSize: 17, paddingBottom: '15px' }}>
+		<Container
+			style={{ fontSize: 17, paddingBottom: '15px' }}
+			className={styles.container}
+		>
 			<h1>Electronic Commercial</h1>
 			<i>
 				End-of-course assignment of ecommerce in DNTU (
@@ -33,13 +37,24 @@ export default function Page() {
 			</Link>
 			<hr />
 			<h3>Template Credits</h3>
-			<Link
-				href='https://themewagon.com/themes/free-bootstrap-ecommerce-template-electro/'
-				target='_blank'
-			>
-				Electro – Multi-page Ready Free Bootstrap eCommerce Template
-			</Link>{' '}
-			(template for this project).
+			<div>
+				<Link
+					href='https://themewagon.com/themes/free-bootstrap-ecommerce-template-electro/'
+					target='_blank'
+				>
+					Electro – Multi-page Ready Free Bootstrap eCommerce Template
+				</Link>{' '}
+				(template for this project).
+			</div>
+			<div>
+				<Link
+					href='https://github.com/anhsirk0/slider-login-signup'
+					target='_blank'
+				>
+					Login Signup form with slider animation
+				</Link>{' '}
+				(login / register form).
+			</div>
 		</Container>
 	);
 }

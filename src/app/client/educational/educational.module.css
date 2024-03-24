@@ -1,0 +1,7 @@
+.container a {
+    color: var(--link);
+}
+
+.container a:hover {
+    text-decoration: underline;
+}

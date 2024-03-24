@@ -2,15 +2,31 @@ import { Document, HydratedDocument, Model } from 'mongoose';
 import { DocumentResult } from './ExternalDocument';
 
 export interface UserData {
-	username: string;
+	userId: number;
 	email: string;
 	password: string;
-	firstName?: string;
-	lastName?: string;
-	age?: number;
+	fullName: string;
+	phone: string;
+	address: string;
+	dob: Date;
+	avatar: string;
+	/**
+	 * This is the key for authorize the user session.
+	 */
+	keySession: string;
 }
 export interface IUser extends UserData, DocumentResult<UserData>, Document {}
-export interface IUserMethods {}
-export interface IUserModel extends Model<IUser, {}, IUserMethods> {}
+export interface IUserMethods {
+	generateKeySession: () => string;
+	comparePassword: (password: string) => Promise<boolean>;
+}
+export interface IUserModel extends Model<IUser, {}, IUserMethods> {
+	findUserByCredentials: (
+		email: string,
+		password: string,
+	) => Promise<UserDataOmitPassword>;
+	createUser: (data: Partial<UserData>) => Promise<UserHydratedDocument>;
+	isValidKeySession: (userId: number, keySession: string) => Promise<boolean>;
+}
+export type UserDataOmitPassword = Omit<UserData, 'password'>;
 export type UserHydratedDocument = HydratedDocument<IUser, IUserMethods>;
-

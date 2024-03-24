@@ -14,7 +14,8 @@ const nextConfig = {
                 permanent: true,
             },
             {
-                source: `/:path((?!client|admin|${externalConfig.mainMatcher}).*)`, // Match any path that doesn't start with 'client' or 'admin'
+                // Match any path that doesn't start with 'client' or 'admin' and the other
+                source: `/:path((?!client|admin|${externalConfig.mainMatcher}|${externalConfig.antiRedirectMatcher}).*)`,
                 destination: '/client/:path*', // Append '/client' to the matched path
                 permanent: true,
             },

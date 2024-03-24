@@ -1,5 +1,6 @@
 'use client';
 
+import { MultiStyles } from '@/utils';
 import Link from 'next/link';
 import { Container, Row } from 'react-bootstrap';
 import styles from './BreadCrumb.module.css';
@@ -18,7 +19,10 @@ export default function BreadCrumb({ navigation }: BreadCrumbProps) {
 	}
 
 	return (
-		<div id={styles.breadcrumb} className='section'>
+		<div
+			id='breadcrumb'
+			className={MultiStyles('section', styles.breadcrumb)}
+		>
 			<Container>
 				<Row>
 					<div className='col-md-12'>

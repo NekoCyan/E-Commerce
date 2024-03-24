@@ -1,6 +1,7 @@
 .header-ctn {
-	float: right;
 	padding: 15px 0px;
+	display: flex;
+	justify-content: space-evenly;
 }
 
 .header-ctn li.nav-toggle {
@@ -125,6 +126,9 @@
 }
 
 @media only screen and (max-width: 992px) {
+	.header-ctn {
+		justify-content: right;
+	}
 	.header-ctn .menu-toggle {
 		display: inline-block;
 	}

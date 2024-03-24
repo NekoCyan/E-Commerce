@@ -194,7 +194,8 @@ export default function ProductShowerList({
 																	.replace(
 																		/ /g,
 																		'-',
-																	);
+																	) +
+																'#breadcrumb';
 														}}
 													>
 														<i className='fa fa-th-list'></i>

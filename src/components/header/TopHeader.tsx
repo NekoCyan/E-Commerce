@@ -1,9 +1,17 @@
+'use client';
+
 import { MultiStyles } from '@/utils/ComponentUtils';
+import { ROUTES } from '@/utils/Constants';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Container } from 'react-bootstrap';
 import styles from './TopHeader.module.css';
 
+export const revalidate = 0;
+
 export default function TopHeader() {
+	const { data, status } = useSession();
+
 	return (
 		<div className={styles['top-header']}>
 			<Container className={styles.container}>
@@ -42,9 +50,16 @@ export default function TopHeader() {
 						</Link>
 					</li>
 					<li>
-						<Link href='#'>
-							<i className='fa fa-user-o'></i>Login
-						</Link>
+						{status === 'authenticated' ? (
+							<Link href={ROUTES.Profile}>
+								<i className='fa fa-user-o'></i>
+								{data.user?.fullName}
+							</Link>
+						) : (
+							<Link href={ROUTES.Auth}>
+								<i className='fa fa-user-o'></i>Login
+							</Link>
+						)}
 					</li>
 				</ul>
 			</Container>

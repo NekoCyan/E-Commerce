@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import navigationStyles from '../../navigation/Navigation.module.css';
 import styles from './HeaderMisc.module.css';
@@ -9,13 +10,14 @@ import HeaderWishlist from './headerMisc/HeaderWishlist';
 
 export default function HeaderMisc() {
 	const navigationClassName = navigationStyles['navigation'];
+	const { data, status } = useSession();
 
 	// Check if the document is loaded (and there's navigation in page).
 	const [isDocumentLoaded, setIsDocumentLoaded] = useState(false);
 	const [isNavigationLoaded, setIsNavigationLoaded] = useState(false);
 	useEffect(() => {
 		if (isDocumentLoaded) return;
-		
+
 		const handleDocumentReadyState = () => {
 			if (document.readyState === 'complete') {
 				setIsDocumentLoaded(true);
@@ -44,7 +46,7 @@ export default function HeaderMisc() {
 	return (
 		<div className='col-md-3 clearfix'>
 			<div className={styles['header-ctn']}>
-				<HeaderWishlist />
+				{status === 'authenticated' && <HeaderWishlist />}
 				<HeaderCart />
 				{isNavigationLoaded && <HeaderMenu />}
 			</div>

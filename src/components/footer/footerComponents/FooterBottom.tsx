@@ -1,3 +1,4 @@
+import { ROUTES } from '@/utils';
 import { MultiStyles } from '@/utils/ComponentUtils';
 import Link from 'next/link';
 import { Container, Row } from 'react-bootstrap';
@@ -58,7 +59,10 @@ export default function FooterBottom() {
 						<span>
 							Frequently reminder: This website is just using for{' '}
 							<u>
-								<Link href='/educational'>
+								<Link
+									href={ROUTES.Educational}
+									className={styles.link}
+								>
 									EDUCATIONAL PURPOSE
 								</Link>
 							</u>

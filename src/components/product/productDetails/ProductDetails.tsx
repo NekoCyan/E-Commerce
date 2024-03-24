@@ -28,7 +28,7 @@ const productData = {
 
 export default function ProductDetails({ productId }: ProductDetailsProps) {
 	return (
-		<div className='section'>
+		<div id='product-details' className='section'>
 			<Container>
 				<Row>
 					<ProductDetailsPreview images={productImages} />
