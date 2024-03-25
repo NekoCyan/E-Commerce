@@ -1,6 +1,5 @@
 import { PageProps } from '@/types';
 import { ROUTES } from '@/utils';
-import { BASE_URL } from '@/utils/getUrl';
 import { Metadata } from 'next';
 import Component from './component';
 
@@ -16,7 +15,7 @@ export default function Page({
 		searchParams?.refresh === 'true' && searchParams?.callbackUrl
 			? true
 			: false;
-	let callbackUrl: string | URL = BASE_URL + ROUTES.Home;
+	let callbackUrl: string | URL = ROUTES.Home;
 
 	// When refresh, user will force to refresh app.
 	if (searchParams?.callbackUrl) {
