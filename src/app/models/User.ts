@@ -8,7 +8,7 @@ const UserSchema = new mongoose.Schema<IUser, IUserModel, IUserMethods>(
 	{
 		userId: {
 			type: Number,
-			default: 0,
+			unique: true,
 		},
 		email: {
 			type: String,
@@ -39,6 +39,10 @@ const UserSchema = new mongoose.Schema<IUser, IUserModel, IUserMethods>(
 		avatar: {
 			type: String,
 			default: '',
+		},
+		role: {
+			type: String,
+			default: 'USER',
 		},
 		keySession: {
 			type: String,
@@ -82,6 +86,7 @@ UserSchema.static(
 			address: user.address,
 			dob: user.dob,
 			avatar: user.avatar,
+			role: user.role,
 			keySession: user.keySession,
 		};
 
@@ -111,6 +116,11 @@ UserSchema.static(
 		return !!(await this.exists({ userId, keySession }));
 	},
 );
+UserSchema.static('isAdmin', async function (userId: number): Promise<
+	ReturnType<IUserModel['isAdmin']>
+> {
+	return !!(await this.exists({ userId, role: 'ADMIN' }));
+});
 
 // middleware.
 UserSchema.pre('save', async function (next): Promise<void> {

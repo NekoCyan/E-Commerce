@@ -21,11 +21,11 @@ export default function RootLayout({
 			<TopHeader />
 			<Header excluded={['search', 'misc']} logoHref='/admin' />
 			<p className={MultiStyles(styles.text, 'text-center')}>
-				You are viewing in Admin Page,{' '}
+				You are viewing in Admin Page.
+				<br />
 				<Link className={styles.link} href='/'>
 					CLICK HERE TO BACK TO HOME
 				</Link>
-				.
 			</p>
 			{children}
 			<Footer />

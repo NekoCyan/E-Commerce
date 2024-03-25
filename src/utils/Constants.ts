@@ -8,6 +8,9 @@ export const ROUTES = {
 	// Profile.
 	Profile: '/profile',
 	Wishlist: '/profile/wishlist',
+	// Admin.
+	Admin: '/admin',
+	AdminUsers: '/admin/users',
 };
 
 export const HTTPStatusCode = {

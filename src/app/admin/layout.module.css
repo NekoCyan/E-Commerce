@@ -1,4 +1,5 @@
 .text {
+    border-top: 3px solid #D10024;
     padding: 10px;
     font-weight: bold;
 }

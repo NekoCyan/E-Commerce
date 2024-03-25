@@ -61,6 +61,14 @@ export default function TopHeader() {
 							</Link>
 						)}
 					</li>
+					<li>
+						{data?.user?.role === 'ADMIN' && (
+							<Link href={ROUTES.Admin}>
+								<i className='fa fa-user-o'></i>
+								Admin Panel
+							</Link>
+						)}
+					</li>
 				</ul>
 			</Container>
 		</div>

@@ -3,6 +3,8 @@ import { BadRequestResponse, MiddlewareSession, ROUTES } from './utils';
 
 const routePrefix = '/client';
 const loginToAccess = ['/profile'];
+const adminRoutePrefix = '/admin';
+const adminAccess = ['/users'];
 
 export async function middleware(req: NextRequest) {
 	try {
@@ -23,10 +25,21 @@ export async function middleware(req: NextRequest) {
 	// const session = await getSession();
 	const session = await MiddlewareSession(req);
 	if (
+		// In case no session.
 		!session &&
-		loginToAccess.some((x) => pathName.startsWith(routePrefix + x))
+		// Group all routes that require login.
+		(loginToAccess.some((x) => pathName.startsWith(routePrefix + x)) ||
+			adminAccess.some((x) => pathName.startsWith(adminRoutePrefix + x)))
 	) {
 		return NextResponse.redirect(new URL(ROUTES.Auth, req.nextUrl.origin));
+	}
+
+	if (
+		// In case trying to access admin routes without admin role.
+		session?.user?.role != 'ADMIN' &&
+		adminAccess.some((x) => pathName.startsWith(adminRoutePrefix + x))
+	) {
+		return NextResponse.redirect(new URL('', req.nextUrl.origin));
 	}
 
 	return NextResponse.next();

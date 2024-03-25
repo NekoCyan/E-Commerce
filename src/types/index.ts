@@ -5,6 +5,7 @@ declare module 'next-auth' {
 		id: string;
 		fullName: string;
 		keySession: string;
+		role: ROLES;
 		[key: string]: string;
 	}
 
@@ -18,6 +19,7 @@ declare module 'next-auth/jwt' {
 		id: string;
 		fullName: string;
 		keySession: string;
+		role: ROLES;
 		[key: string]: string;
 	}
 }
@@ -45,3 +47,5 @@ export type NekoResponse<T> = {
 	success: boolean;
 	data: T;
 };
+
+export type ROLES = 'ADMIN' | 'USER';

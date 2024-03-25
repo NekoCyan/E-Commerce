@@ -33,6 +33,7 @@ const AuthConfig: NextAuthOptions = {
 						id: UserData.userId.toString(),
 						fullName: UserData.fullName,
 						keySession: UserData.keySession,
+						role: UserData.role,
 					} as any;
 				} catch (err) {
 					throw new Error(err as any);
@@ -56,6 +57,7 @@ const AuthConfig: NextAuthOptions = {
 				token.id = user.id;
 				token.fullName = user.fullName;
 				token.keySession = user.keySession;
+				token.role = user.role;
 			}
 			return token;
 		},

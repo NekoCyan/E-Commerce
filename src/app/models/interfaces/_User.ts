@@ -1,3 +1,4 @@
+import { ROLES } from '@/types';
 import { Document, HydratedDocument, Model } from 'mongoose';
 import { DocumentResult } from './ExternalDocument';
 
@@ -10,6 +11,7 @@ export interface UserData {
 	address: string;
 	dob: Date;
 	avatar: string;
+	role: ROLES;
 	/**
 	 * This is the key for authorize the user session.
 	 */
@@ -27,6 +29,7 @@ export interface IUserModel extends Model<IUser, {}, IUserMethods> {
 	) => Promise<UserDataOmitPassword>;
 	createUser: (data: Partial<UserData>) => Promise<UserHydratedDocument>;
 	isValidKeySession: (userId: number, keySession: string) => Promise<boolean>;
+	isAdmin: (userId: number) => Promise<boolean>;
 }
 export type UserDataOmitPassword = Omit<UserData, 'password'>;
 export type UserHydratedDocument = HydratedDocument<IUser, IUserMethods>;
