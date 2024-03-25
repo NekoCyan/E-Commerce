@@ -35,7 +35,7 @@ export async function MiddlewareSession(
 		const sessionCookie = BASE_URL.startsWith('https://')
 			? '__Secure-next-auth.session-token'
 			: 'next-auth.session-token';
-		const authorizeCookie = req.cookies.get(sessionCookie)?.value ?? '';
+		const authorizeCookie = req?.cookies?.get(sessionCookie)?.value ?? '';
 		const headers = {
 			'Content-Type': 'application/json',
 			Cookie: `${sessionCookie}=${authorizeCookie}`,
@@ -45,7 +45,7 @@ export async function MiddlewareSession(
 			headers,
 			cache: 'no-store',
 		});
-		const session = await res.json();
+		const session = await res.json() as Session;
 		if (
 			typeof session === 'object' &&
 			Object.keys(session?.user ?? {}).length > 0

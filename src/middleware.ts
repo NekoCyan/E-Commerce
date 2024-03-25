@@ -31,7 +31,15 @@ export async function middleware(req: NextRequest) {
 		(loginToAccess.some((x) => pathName.startsWith(routePrefix + x)) ||
 			adminAccess.some((x) => pathName.startsWith(adminRoutePrefix + x)))
 	) {
-		return NextResponse.redirect(new URL(ROUTES.Auth, req.nextUrl.origin));
+		const callbacks = new URL(ROUTES.Auth, req.nextUrl.origin);
+		callbacks.searchParams.set('callbackUrl', req.nextUrl.href);
+		// callbacks.searchParams.set('refresh', 'true');
+		return NextResponse.redirect(callbacks, {
+			// Better than redirect in auth page.
+			headers: {
+				location: callbacks.toString(),
+			}
+		});
 	}
 
 	if (

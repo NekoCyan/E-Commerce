@@ -2,7 +2,7 @@
 
 import Loading from '@/app/loading';
 import { APIResponse } from '@/types';
-import { MultiStyles, PATTERN, ROUTES } from '@/utils';
+import { MultiStyles, PATTERN } from '@/utils';
 import { POST } from '@/utils/Request';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -11,17 +11,28 @@ import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import styles from './auth.module.css';
 
-export default function Component() {
+type Props = {
+	callbackUrl: string;
+	isRefresh: boolean;
+};
+
+export default function Component({ callbackUrl, isRefresh }: Props) {
 	const errorMSG = 'Something went wrong... try again later.';
 
 	const router = useRouter();
 	const { data, status } = useSession();
 
-	if (status === 'authenticated') router.replace(ROUTES.Home);
+	// Why router.refresh() didn't work :dead: took 3 hours
+	// to find out by using window.location.href T_T.
+	useEffect(() => {
+		if (!isRefresh) return;
+		window.location.href = callbackUrl;
+	}, [isRefresh]);
 
+	// When done loading, if authenticated, redirect to callbackUrl.
 	useEffect(() => {
 		if (status === 'authenticated') {
-			router.replace(ROUTES.Home);
+			router.replace(callbackUrl);
 		}
 	}, [status, router]);
 
@@ -64,7 +75,7 @@ export default function Component() {
 				password: inputFields.password,
 			})
 				.then((x) => {
-					if (x?.ok) router.replace('/profile');
+					if (x?.ok) router.replace(callbackUrl);
 					else setCBError('Email or Password is invalid.');
 				})
 				.catch((err) => {
@@ -166,7 +177,9 @@ export default function Component() {
 	};
 
 	// Authenticated on loading to avoid appear auth form.
-	if (status === 'loading' || status === 'authenticated') return <Loading />;
+	if (status === 'loading' || status === 'authenticated' || isRefresh) {
+		return <Loading />;
+	}
 
 	return (
 		<Container

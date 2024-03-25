@@ -50,7 +50,12 @@ const AuthConfig: NextAuthOptions = {
 
 			return false;
 		},
-
+		async redirect({ url, baseUrl }) {
+			const callbackUrl = new URL(url, baseUrl).searchParams.get(
+				'callbackUrl',
+			);
+			return callbackUrl || baseUrl;
+		},
 		// https://reacthustle.com/blog/extend-user-session-nextauth-typescript
 		async jwt({ token, user }) {
 			if (user) {

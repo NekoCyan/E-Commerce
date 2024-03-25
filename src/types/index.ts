@@ -26,7 +26,7 @@ declare module 'next-auth/jwt' {
 
 export type PageProps<
 	T extends { [key: string]: string } = {},
-	U extends URLSearchParams = URLSearchParams,
+	U extends { [key: string]: string } = {},
 > = {
 	params: T;
 	searchParams: U;
