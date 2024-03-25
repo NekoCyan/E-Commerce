@@ -135,7 +135,7 @@ export default function Component() {
 		if (!CBError) return;
 		if (!isRequesting) return;
 		setIsRequesting(false);
-	}, [CBError]);
+	}, [CBError, isRequesting]);
 
 	// Form.
 	const handleButtonForm = (
@@ -230,17 +230,16 @@ export default function Component() {
 					</button>
 
 					<p>{CBError}</p>
+					<p className={styles['responsive']}>
+						Already a Member?{' '}
+						<Link
+							href='#'
+							onClick={(e) => handleClickLinkForm(e, false)}
+						>
+							Sign In here!
+						</Link>
+					</p>
 				</form>
-
-				<p>
-					Already a Member?{' '}
-					<Link
-						href='#'
-						onClick={(e) => handleClickLinkForm(e, false)}
-					>
-						Sign In here!
-					</Link>
-				</p>
 			</div>
 			<div
 				className={MultiStyles(
@@ -286,17 +285,16 @@ export default function Component() {
 					</button>
 
 					<p>{CBError}</p>
+					<p className={styles['responsive']}>
+						New member?{' '}
+						<Link
+							href='#'
+							onClick={(e) => handleClickLinkForm(e, true)}
+						>
+							Sign Up now!
+						</Link>
+					</p>
 				</form>
-
-				<p>
-					New member?{' '}
-					<Link
-						href='#'
-						onClick={(e) => handleClickLinkForm(e, true)}
-					>
-						Sign Up now!
-					</Link>
-				</p>
 			</div>
 			<div className={styles['overlay-container']}>
 				<div className={styles['overlay']}>
