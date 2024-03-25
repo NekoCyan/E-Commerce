@@ -6,7 +6,7 @@ import TopHeader from '@/components/header/TopHeader';
 import Navigation from '@/components/navigation/Navigation';
 
 export const metadata: Metadata = {
-	title: 'Ocean Electro Shop',
+	title: 'Ocean Electro',
 };
 
 export default function RootLayout({

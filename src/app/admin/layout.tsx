@@ -8,7 +8,7 @@ import Link from 'next/link';
 import styles from './layout.module.css';
 
 export const metadata: Metadata = {
-	title: 'Ocean Electro Shop | Admin',
+	title: 'Ocean Electro | Admin',
 };
 
 export default function RootLayout({

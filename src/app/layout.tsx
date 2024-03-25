@@ -22,10 +22,10 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-	title: 'Ocean Electro Shop',
+	title: 'Ocean Electro',
 	description: 'An eCommerce website (template) use for educational purposes',
 	keywords:
-		'ecommerce, electronic commercial, template, shop, educational, educational purpose, dntu, ocean, assignment',
+		'ecommerce, electronic commercial, template, shop, educational, educational purpose, dntu, ocean, assignment, electro, colorlib, electronic',
 };
 
 export default async function RootLayout({
