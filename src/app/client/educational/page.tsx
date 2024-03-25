@@ -5,7 +5,7 @@ import styles from './educational.module.css';
 export default function Page() {
 	return (
 		<Container
-			style={{ fontSize: 17, paddingBottom: '15px' }}
+			style={{ fontSize: 17 }}
 			className={styles.container}
 		>
 			<h1>Electronic Commercial</h1>

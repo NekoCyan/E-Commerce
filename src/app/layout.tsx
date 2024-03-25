@@ -23,7 +23,8 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
 	title: 'Ocean Electro',
-	description: 'An eCommerce website (template) use for educational purposes',
+	description:
+		'An eCommerce website (template) is used for educational purposes',
 	keywords:
 		'ecommerce, electronic commercial, template, shop, educational, educational purpose, dntu, ocean, assignment, electro, colorlib, electronic',
 };

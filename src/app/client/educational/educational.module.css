@@ -1,3 +1,7 @@
+.container {
+    padding: 20px 5px;
+}
+
 .container a {
     color: var(--link);
 }
