@@ -20,7 +20,7 @@ export async function middleware(req: NextRequest) {
 		return BadRequestResponse();
 	}
 
-	const pathName = req.nextUrl.pathname;
+	const pathName = req.nextUrl.pathname.toLowerCase();
 	// Idk why this is not working
 	// const session = await getSession();
 	const session = await MiddlewareSession(req);
@@ -45,7 +45,11 @@ export async function middleware(req: NextRequest) {
 	if (
 		// In case trying to access admin routes without admin role.
 		session?.user?.role != 'ADMIN' &&
-		adminAccess.some((x) => pathName.startsWith(adminRoutePrefix + x))
+		(
+			// Group all admin routes.
+			pathName === adminRoutePrefix ||
+			adminAccess.some((x) => pathName.startsWith(adminRoutePrefix + x))
+		)
 	) {
 		return NextResponse.redirect(new URL('', req.nextUrl.origin));
 	}
