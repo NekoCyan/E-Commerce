@@ -33,12 +33,11 @@ export async function middleware(req: NextRequest) {
 	) {
 		const callbacks = new URL(ROUTES.Auth, req.nextUrl.origin);
 		callbacks.searchParams.set('callbackUrl', req.nextUrl.href);
-		// callbacks.searchParams.set('refresh', 'true');
+		callbacks.searchParams.set('refresh', 'true');
 		return NextResponse.redirect(callbacks, {
-			// Better than redirect in auth page.
-			headers: {
-				location: callbacks.toString(),
-			}
+			// headers: {
+			// 	location: callbacks.toString(),
+			// }
 		});
 	}
 
