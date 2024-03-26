@@ -29,26 +29,23 @@ export async function middleware(req: NextRequest) {
 		!session &&
 		// Group all routes that require login.
 		(loginToAccess.some((x) => pathName.startsWith(routePrefix + x)) ||
+			// Group all admin routes.
+			pathName === adminRoutePrefix ||
 			adminAccess.some((x) => pathName.startsWith(adminRoutePrefix + x)))
 	) {
 		const callbacks = new URL(ROUTES.Auth, req.nextUrl.origin);
 		callbacks.searchParams.set('callbackUrl', req.nextUrl.href);
 		callbacks.searchParams.set('refresh', 'true');
-		return NextResponse.redirect(callbacks, {
-			// headers: {
-			// 	location: callbacks.toString(),
-			// }
-		});
+		
+		return NextResponse.redirect(callbacks);
 	}
 
 	if (
 		// In case trying to access admin routes without admin role.
 		session?.user?.role != 'ADMIN' &&
-		(
-			// Group all admin routes.
-			pathName === adminRoutePrefix ||
-			adminAccess.some((x) => pathName.startsWith(adminRoutePrefix + x))
-		)
+		// Group all admin routes.
+		(pathName === adminRoutePrefix ||
+			adminAccess.some((x) => pathName.startsWith(adminRoutePrefix + x)))
 	) {
 		return NextResponse.redirect(new URL('', req.nextUrl.origin));
 	}

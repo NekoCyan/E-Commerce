@@ -19,15 +19,19 @@ export default function Page({
 
 	// When refresh, user will force to refresh app.
 	if (searchParams?.callbackUrl) {
-		callbackUrl = new URL(searchParams.callbackUrl);
-		if (isRefresh) {
-			callbackUrl.pathname = ROUTES.Auth;
-			callbackUrl.searchParams.set(
-				'callbackUrl',
-				searchParams.callbackUrl,
-			);
-		} else {
-			callbackUrl = searchParams.callbackUrl;
+		// This try catch is to prevent invalid url.
+		try {
+			callbackUrl = new URL(searchParams.callbackUrl);
+			if (isRefresh) {
+				// Split refresh and callback url, return callback url.
+				callbackUrl.pathname = ROUTES.Auth;
+				callbackUrl.searchParams.set(
+					'callbackUrl',
+					searchParams.callbackUrl,
+				);
+			}
+		} catch {
+			callbackUrl = ROUTES.Home;
 		}
 	}
 
