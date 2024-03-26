@@ -8,7 +8,15 @@ import HeaderCart from './headerMisc/HeaderCart';
 import HeaderMenu from './headerMisc/HeaderMenu';
 import HeaderWishlist from './headerMisc/HeaderWishlist';
 
-export default function HeaderMisc() {
+type HeaderMiscProps = {
+	isDisabled?: boolean;
+	miscExcluded?: Array<'wishlist' | 'cart' | 'menu'>;
+};
+
+export default function HeaderMisc({
+	isDisabled,
+	miscExcluded,
+}: HeaderMiscProps) {
 	const navigationClassName = navigationStyles['navigation'];
 	const { data, status } = useSession();
 
@@ -45,11 +53,16 @@ export default function HeaderMisc() {
 
 	return (
 		<div className='col-md-3 clearfix'>
-			<div className={styles['header-ctn']}>
-				{status === 'authenticated' && <HeaderWishlist />}
-				<HeaderCart />
-				{isNavigationLoaded && <HeaderMenu />}
-			</div>
+			{!isDisabled && (
+				<div className={styles['header-ctn']}>
+					{!miscExcluded?.includes('wishlist') &&
+						status === 'authenticated' && <HeaderWishlist />}
+					{!miscExcluded?.includes('cart') && <HeaderCart />}
+					{!miscExcluded?.includes('menu') && isNavigationLoaded && (
+						<HeaderMenu />
+					)}
+				</div>
+			)}
 		</div>
 	);
 }

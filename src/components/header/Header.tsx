@@ -6,21 +6,28 @@ import HeaderSearch from './headerComponents/HeaderSearch';
 
 type HeaderProps = {
 	excluded?: Array<'logo' | 'search' | 'misc'>;
-	logoHref?: string;
+	miscExcluded?: Array<'wishlist' | 'cart' | 'menu'>;
+	logoNavHref?: string;
 };
 
 export default function Header(
-	{ excluded, logoHref }: Readonly<HeaderProps> = { excluded: [] },
+	{ excluded, logoNavHref, miscExcluded }: Readonly<HeaderProps> = {
+		excluded: [],
+	},
 ) {
 	return (
 		<div className={styles.header}>
 			<Container>
 				<Row className={styles.row}>
-					{!excluded?.includes('logo') && (
-						<HeaderLogo logoHref={logoHref} />
-					)}
-					{!excluded?.includes('search') && <HeaderSearch />}
-					{!excluded?.includes('misc') && <HeaderMisc />}
+					<HeaderLogo
+						isDisabled={excluded?.includes('logo')}
+						logoNavHref={logoNavHref}
+					/>
+					<HeaderSearch isDisabled={excluded?.includes('search')} />
+					<HeaderMisc
+						isDisabled={excluded?.includes('misc')}
+						miscExcluded={miscExcluded}
+					/>
 				</Row>
 			</Container>
 		</div>

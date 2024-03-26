@@ -3,26 +3,29 @@ import Link from 'next/link';
 import styles from './HeaderLogo.module.css';
 
 type HeaderLogoProps = {
-	logoHref?: string;
+	isDisabled?: boolean;
+	logoNavHref?: string;
 };
 
 export default function HeaderLogo(
-	{ logoHref }: Readonly<HeaderLogoProps> = { logoHref: '/' },
+	{ isDisabled, logoNavHref }: Readonly<HeaderLogoProps> = { logoNavHref: '/' },
 ) {
-	logoHref = logoHref ?? '/';
+	logoNavHref = logoNavHref ?? '/';
 
 	return (
 		<div className='col-md-3'>
-			<div className={styles['header-logo']}>
-				<Link href={logoHref} className={styles['logo']}>
-					<Image
-						src='/img/logo.png'
-						alt='logo'
-						width={169}
-						height={70}
-					/>
-				</Link>
-			</div>
+			{!isDisabled && (
+				<div className={styles['header-logo']}>
+					<Link href={logoNavHref} className={styles['logo']}>
+						<Image
+							src='/img/logo.png'
+							alt='logo'
+							width={169}
+							height={70}
+						/>
+					</Link>
+				</div>
+			)}
 		</div>
 	);
 }
