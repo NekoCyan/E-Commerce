@@ -19,18 +19,23 @@ export default function HeaderMenu() {
 		}
 		function handleClick(e: MouseEvent) {
 			const responsiveNav = $('#responsive-nav')[0];
+			const target = e.target as HTMLElement;
 			if (
-				responsiveNav &&
-				!responsiveNav.contains(e.target as Node) && // when click outside the responsive nav.
-				dropdown.current &&
-				!(dropdown.current as any).contains(e.target) // when click to Menu button.
+				(responsiveNav &&
+					!responsiveNav.contains(e.target as Node) && // when click outside the responsive nav.
+					dropdown.current &&
+					!(dropdown.current as any).contains(e.target)) || // when click to Menu button.
+				(target instanceof HTMLAnchorElement && // when click to active link.
+					!target?.parentElement?.classList.contains(
+						navigationStyles.active,
+					)) // When <li> has active class.
 			) {
 				setOpen(false);
 			}
 		}
-		window.addEventListener('mousedown', handleClick);
+		window.addEventListener('mouseup', handleClick);
 		// clean up
-		return () => window.removeEventListener('mousedown', handleClick);
+		return () => window.removeEventListener('mouseup', handleClick);
 	}, [open]);
 
 	return (
@@ -39,7 +44,7 @@ export default function HeaderMenu() {
 			onClick={() => setOpen(!open)}
 			ref={dropdown}
 		>
-			<Link href='#'>
+			<Link href='#' onClick={(e) => e.preventDefault()}>
 				<i className='fa fa-bars'></i>
 				<span>Menu</span>
 			</Link>
