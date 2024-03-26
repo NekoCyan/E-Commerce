@@ -1,50 +1,56 @@
 'use client';
 
 import { MultiStyles } from '@/utils/ComponentUtils';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import styles from './Navigation.module.css';
 import NavigationLink from './navigationComponents/NavigationLink';
 
-const allLinks = [
-	{
-		title: 'Home',
-		path: '',
-		alt: [],
-	},
-	{
-		title: 'Hot Deals',
-		path: '/hot-deals',
-		alt: [],
-	},
-	{
-		title: 'Categories',
-		path: '/categories',
-		alt: [],
-	},
-	{
-		title: 'Laptops',
-		path: '/laptops',
-		alt: [],
-	},
-	{
-		title: 'Smartphones',
-		path: '/smartphones',
-		alt: [],
-	},
-	{
-		title: 'Cameras',
-		path: '/cameras',
-		alt: [],
-	},
-	{
-		title: 'Accessories',
-		path: '/accessories',
-		alt: [],
-	},
-];
+function getNavLink(navFor: 'client' | 'admin') {
+	let allLinks = [];
+	if (navFor === 'client') {
+		allLinks.push(
+			{
+				title: 'Home',
+				path: '',
+				alt: [],
+			},
+			{
+				title: 'Products',
+				path: '/products',
+				alt: ['/product-details'],
+			},
+		);
+	} else {
+		allLinks.push(
+			{
+				title: 'Overview',
+				path: '',
+				alt: [],
+			},
+			{
+				title: 'Users',
+				path: '/users',
+				alt: [],
+			},
+			{
+				title: 'Products',
+				path: '/products',
+				alt: [],
+			},
+		);
+	}
+
+	return allLinks;
+}
 
 export default function Navigation() {
+	const pathForName = usePathname();
+	const allLinks = getNavLink(
+		pathForName.startsWith('/client') ? 'client' : 'admin',
+	);
+
 	const [isMobile, setIsMobile] = useState(false);
 
 	useEffect(() => {

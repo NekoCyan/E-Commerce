@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
 import TopHeader from '@/components/header/TopHeader';
+import Navigation from '@/components/navigation/Navigation';
 import { MultiStyles } from '@/utils/ComponentUtils';
 import Link from 'next/link';
 import styles from './layout.module.css';
@@ -19,7 +20,8 @@ export default function RootLayout({
 	return (
 		<div>
 			<TopHeader />
-			<Header excluded={['search', 'misc']} logoHref='/admin' />
+			<Header logoNavHref='/admin' excluded={['search']} miscExcluded={['wishlist', 'cart']} />
+			<Navigation />
 			<p className={MultiStyles(styles.text, 'text-center')}>
 				You are viewing in Admin Page.
 				<br />

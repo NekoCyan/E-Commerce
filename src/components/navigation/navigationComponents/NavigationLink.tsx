@@ -1,6 +1,9 @@
 'use client';
 
-import { TransformClientPath } from '@/utils/ComponentUtils';
+import {
+	TransformAdminPath,
+	TransformClientPath,
+} from '@/utils/ComponentUtils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from '../Navigation.module.css';
@@ -11,14 +14,29 @@ export default function NavigationLink({
 	alt,
 }: Readonly<{ title: string; path: string; alt?: string[] }>) {
 	const pathName = usePathname();
-	const fullPath = TransformClientPath(path);
-	alt = alt?.map((x) => TransformClientPath(x)) ?? [];
+
+	const fullPath = pathName.startsWith('/client')
+		? TransformClientPath(path)
+		: TransformAdminPath(path);
+
+	const isDefaultPath = ['/client', '/admin'].some((x) => x === fullPath);
+	const IsInDefaultPath = isDefaultPath && fullPath === pathName;
+
+	const matchPath = [path, ...(alt ?? [])].map((x) => {
+		if (pathName.startsWith('/client')) {
+			return TransformClientPath(x);
+		} else {
+			return TransformAdminPath(x);
+		}
+	});
 
 	return (
 		<li
 			className={
-				((pathName === fullPath || alt?.includes(pathName)) &&
+				(!isDefaultPath &&
+					matchPath.some((x) => pathName.startsWith(x)) &&
 					styles.active) ||
+				(IsInDefaultPath && styles.active) ||
 				''
 			}
 		>

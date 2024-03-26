@@ -19,10 +19,20 @@ export function Sleep(ms: number) {
 }
 
 export function TransformClientPath(path: string, lastSlash: boolean = false) {
-	if (path === '') return '/client';
+	if (['', '/', '/client'].some((x) => x === path)) return '/client';
 	if (path.startsWith('#')) return '#';
 	if (!path.startsWith('client') || !path.startsWith('/client')) {
 		path = `/client${path.startsWith('/') ? path : `/${path}`}`;
+	}
+
+	return path + (lastSlash ? '/' : '');
+}
+
+export function TransformAdminPath(path: string, lastSlash: boolean = false) {
+	if (['', '/', '/admin'].some((x) => x === path)) return '/admin';
+	if (path.startsWith('#')) return '#';
+	if (!path.startsWith('admin') || !path.startsWith('/admin')) {
+		path = `/admin${path.startsWith('/') ? path : `/${path}`}`;
 	}
 
 	return path + (lastSlash ? '/' : '');
@@ -45,7 +55,7 @@ export async function MiddlewareSession(
 			headers,
 			cache: 'no-store',
 		});
-		const session = await res.json() as Session;
+		const session = (await res.json()) as Session;
 		if (
 			typeof session === 'object' &&
 			Object.keys(session?.user ?? {}).length > 0
