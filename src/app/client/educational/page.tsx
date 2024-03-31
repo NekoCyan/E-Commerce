@@ -27,9 +27,9 @@ export default function Page() {
 				<code>Ocean</code>'s members:
 			</strong>
 			<ul>
-				<li>• 1721030861 | Vũ Quốc Bảo (Front-End)</li>
-				<li>• 1721030593 | Nguyễn Thanh Hải (Database)</li>
-				<li>• 1721030650 | Đặng Đức Minh Quang (Back-End)</li>
+				<li>• 1721030861 | Vũ Quốc Bảo (Front-End, Back-End, Database)</li>
+				<li>• 1721030593 | Nguyễn Thanh Hải (Database less)</li>
+				<li>• 1721030650 | Đặng Đức Minh Quang (Back-End less)</li>
 			</ul>
 			<hr />
 			<Link href='https://github.com/NekoCyan/E-Commerce' target='_blank'>

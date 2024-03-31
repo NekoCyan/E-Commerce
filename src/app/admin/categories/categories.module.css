@@ -1,0 +1,23 @@
+.row {
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.row div h3 {
+    margin: 0px;
+}
+
+.row div a {
+    float: right;
+}
+
+.table {
+    width: 100%;
+}
+
+.table tbody tr td:last-child {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}

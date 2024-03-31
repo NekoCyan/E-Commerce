@@ -1,6 +1,7 @@
 'use client';
 
 import { MultiStyles } from '@/utils/ComponentUtils';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
@@ -35,6 +36,11 @@ function getNavLink(navFor: 'client' | 'admin') {
 				alt: [],
 			},
 			{
+				title: 'Categories',
+				path: '/categories',
+				alt: [],
+			},
+			{
 				title: 'Products',
 				path: '/products',
 				alt: [],
@@ -47,6 +53,8 @@ function getNavLink(navFor: 'client' | 'admin') {
 
 export default function Navigation() {
 	const pathForName = usePathname();
+
+	const isClient = pathForName.startsWith('/client');
 	const allLinks = getNavLink(
 		pathForName.startsWith('/client') ? 'client' : 'admin',
 	);
@@ -93,6 +101,12 @@ export default function Navigation() {
 								alt={item.alt}
 							/>
 						))}
+
+						{!isClient && (
+							<li>
+								<Link href='/'>BACK TO HOME</Link>
+							</li>
+						)}
 					</ul>
 				</div>
 			</Container>

@@ -1,3 +1,9 @@
+import { Container } from "react-bootstrap";
+
 export default function Page() {
-	return <div>User here!</div>;
+	return (
+		<Container>
+			<h3>Users Management</h3>
+		</Container>
+	);
 }
