@@ -10,14 +10,6 @@ const CategorySchema = new mongoose.Schema<ICategory, ICategoryModel, ICategoryM
 		type: String,
 		required: [true, `description is required`],
 	},
-    imageUrl: {
-		type: String,
-		required: [true, `Link`],
-	},
-	createdAt: {
-		type: Date,
-		Default: Date.now,
-	},
 });
 // statics.
 
