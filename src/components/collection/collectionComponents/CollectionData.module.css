@@ -54,7 +54,7 @@
     position: absolute;
     top: 0;
     width: 75%;
-    padding: 30px;
+    padding: 20px;
     z-index: 10;
 }
 
@@ -73,14 +73,28 @@
 
 @media screen and (max-width: 768px) {
     .shop .shop-body {
-        padding: calc(100vw - 99vw);
+        padding: calc(100vw - 98vw);
     }
 
     .shop .shop-body h3 {
-        font-size: calc(100vw - 96vw);
+        font-size: calc(100vw - 95.5vw);
     }
 
     .shop .shop-body .cta-btn {
         font-size: calc(100vw - 98vw);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .shop .shop-body {
+        padding: calc(100vw - 97vw);
+    }
+
+    .shop .shop-body h3 {
+        font-size: calc(100vw - 91vw);
+    }
+
+    .shop .shop-body .cta-btn {
+        font-size: calc(100vw - 95vw);
     }
 }

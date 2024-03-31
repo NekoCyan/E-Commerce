@@ -12,6 +12,7 @@
 }
 
 .container h1 {
+    font-size: 3rem;
     font-weight: bold;
     margin: 0;
 }
@@ -21,8 +22,8 @@
 }
 
 .container p {
-    font-size: 14px;
-    font-weight: 100;
+    font-size: 2rem;
+    font-weight: 700;
     line-height: 20px;
     letter-spacing: 0.5px;
     margin: 20px 0 30px;

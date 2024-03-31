@@ -4,10 +4,7 @@ import styles from './educational.module.css';
 
 export default function Page() {
 	return (
-		<Container
-			style={{ fontSize: 17 }}
-			className={styles.container}
-		>
+		<Container style={{ fontSize: 17 }} className={styles.container}>
 			<h1>Electronic Commercial</h1>
 			<i>
 				End-of-course assignment of ecommerce in DNTU (
@@ -27,16 +24,23 @@ export default function Page() {
 				<code>Ocean</code>'s members:
 			</strong>
 			<ul>
-				<li>• 1721030861 | Vũ Quốc Bảo (Front-End, Back-End, Database)</li>
-				<li>• 1721030593 | Nguyễn Thanh Hải (Database less)</li>
-				<li>• 1721030650 | Đặng Đức Minh Quang (Back-End less)</li>
+				<li>
+					• 1721030861 | Vũ Quốc Bảo (Front-End, Back-End, Database).
+				</li>
+				<li>• 1721030593 | Nguyễn Thanh Hải (Database less).</li>
+				<li>• 1721030650 | Đặng Đức Minh Quang (Back-End less).</li>
 			</ul>
 			<hr />
-			<Link href='https://github.com/NekoCyan/E-Commerce' target='_blank'>
-				CLICK HERE TO OPEN NEW TAB TO WEBSITE'S GITHUB PAGE.
-			</Link>
+			<div className='py-5'>
+				<Link
+					href='https://github.com/NekoCyan/E-Commerce'
+					target='_blank'
+				>
+					CLICK HERE TO OPEN NEW TAB TO WEBSITE'S GITHUB PAGE.
+				</Link>
+			</div>
 			<hr />
-			<h3>Template Credits</h3>
+			<h3 className='pt-2'>Template Credits</h3>
 			<div>
 				<Link
 					href='https://themewagon.com/themes/free-bootstrap-ecommerce-template-electro/'
