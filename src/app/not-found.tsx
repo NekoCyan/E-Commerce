@@ -10,7 +10,7 @@ export default function NotFound() {
 	return (
 		<div>
 			<TopHeader />
-			<Header logoHref='/' />
+			<Header logoNavHref='/' />
 			<Navigation />
 			<div className={styles.container}>
 				<h1>Not Found!</h1>
