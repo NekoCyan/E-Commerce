@@ -1,5 +1,6 @@
+import { MultiStyles } from '@/utils';
+
 type ModalProps = {
-	isVisible: boolean;
 	title?: string;
 	onClose: () => void;
 	actionButton?: {
@@ -12,32 +13,14 @@ type ModalProps = {
 	children?: React.ReactNode;
 };
 
-export function Modals({ isVisible, title, children }: ModalProps) {
-	return (
-		<div>
-			<div
-				className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-0 flex justify-center items-center z-50'
-				style={{ display: isVisible === true ? '' : 'none' }}
-			>
-				<div className='w-[600px] flex flex-col bg-white rounded-lg p-5'>
-					<h2 className='pb-1 break-all'>{title ?? 'Modal'}</h2>
-					<hr className='pb-5' />
-					{children}
-				</div>
-			</div>
-		</div>
-	);
-}
-
 const Modal: React.FC<ModalProps> = ({
-	isVisible,
 	title,
 	onClose,
 	actionButton,
 	errorMsg,
 	children,
 }) => {
-	return isVisible ? (
+	return (
 		<div
 			className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-0 flex justify-center items-center z-50'
 			onClick={onClose}
@@ -72,14 +55,21 @@ const Modal: React.FC<ModalProps> = ({
 				{children}
 				<hr className='mt-5' />
 				{errorMsg && (
-					<p className='text-red-500 text-2xl mt-5'>
+					<p className='text-red-500 text-2xl mt-5 font-medium'>
 						Error: {errorMsg}
 					</p>
 				)}
 				<div className='flex flex-row justify-end gap-4 pt-5'>
 					{actionButton?.text && (
 						<button
-							className='bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-10 rounded disabled:opacity-50 disabled:hover:bg-blue-500'
+							className={MultiStyles(
+								'text-white text-center font-bold py-2 px-10 rounded disabled:opacity-50',
+								actionButton.text
+									.toLowerCase()
+									.includes('delete')
+									? 'bg-red-500 hover:bg-red-700 disabled:hover:bg-red-500'
+									: 'bg-blue-500 hover:bg-blue-700 disabled:hover:bg-blue-500',
+							)}
 							onClick={actionButton.onClick}
 							disabled={
 								actionButton.isDisabled ||
@@ -121,7 +111,7 @@ const Modal: React.FC<ModalProps> = ({
 				</div>
 			</div>
 		</div>
-	) : null;
+	);
 };
 
 export default Modal;
