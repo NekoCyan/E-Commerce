@@ -27,13 +27,17 @@ export async function BEHandler(options: {
 			new URL(ROUTES.Auth, options.req.nextUrl.origin),
 		);
 
-	if (options.adminRequired && session?.user?.role !== 'ADMIN') {
+	if (options.adminRequired && isAdmin(session)) {
 		throw NextResponse.redirect(
 			new URL(ROUTES.Auth, options.req.nextUrl.origin),
 		);
 	}
 
 	return session;
+}
+
+export function isAdmin(session: Session | null): boolean {
+	return session?.user?.role === 'ADMIN';
 }
 
 export async function ValidateForList(

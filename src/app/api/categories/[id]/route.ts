@@ -2,7 +2,13 @@ import Category from '@/app/models/Category';
 import { CategoryData } from '@/app/models/interfaces';
 import dbConnect from '@/lib/dbConnect';
 import { PageProps } from '@/types';
-import { ErrorResponse, InvalidTypeResponse, Response } from '@/utils';
+import {
+	ErrorResponse,
+	InvalidResponse,
+	InvalidTypeResponse,
+	IsNullOrUndefined,
+	Response,
+} from '@/utils';
 import { BEHandler } from '@/utils/BackendUtils';
 import { NextRequest } from 'next/server';
 
@@ -17,9 +23,9 @@ export async function GET(
 		await dbConnect();
 
 		const category = await Category.getCategory(parseInt(id));
-		let { categoryId, name, description } = category;
+		let { name, description } = category;
 
-		return Response({ categoryId, name, description });
+		return Response({ name, description });
 	} catch (e: any) {
 		return ErrorResponse(e);
 	}
@@ -38,13 +44,14 @@ export async function PUT(
 			await req.json();
 		let { name, description } = body;
 
+		if (!IsNullOrUndefined(name) && !name) return InvalidResponse('name');
+
 		const category = await Category.editCategory(parseInt(id), {
 			name,
 			description,
 		});
 
 		return Response({
-			categoryId: id,
 			name: category.name,
 			description: category.description,
 		});
@@ -64,9 +71,9 @@ export async function DELETE(
 		if (isNaN(parseInt(id))) return InvalidTypeResponse('id', 'number');
 
 		const category = await Category.deleteCategory(parseInt(id));
-		let { categoryId, name, description } = category;
+		let { name, description } = category;
 
-		return Response({ categoryId, name, description });
+		return Response({ name, description });
 	} catch (e: any) {
 		return ErrorResponse(e);
 	}

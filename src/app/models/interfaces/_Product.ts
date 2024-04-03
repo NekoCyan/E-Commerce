@@ -11,7 +11,7 @@ export interface ProductData {
 	isNewProduct: boolean;
 	salePercentage: number;
 	imageUrls: string[];
-	categoryIds: [number];
+	categoryIds: number[];
 	status: boolean;
 }
 export interface IProduct
