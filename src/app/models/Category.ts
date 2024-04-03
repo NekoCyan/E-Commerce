@@ -129,13 +129,13 @@ CategorySchema.static(
 			const limitNext = page * limit;
 			const skipFromPage = limitNext - limit;
 
-			const getCheckInList = await this.aggregate()
+			const getCategoryList = await this.aggregate()
 				.limit(limitNext)
 				.skip(skipFromPage)
 				.project({ _id: 0 })
 				.exec();
 
-			listCategories = getCheckInList;
+			listCategories = getCategoryList;
 		}
 
 		return {

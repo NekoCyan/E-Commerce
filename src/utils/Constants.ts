@@ -125,4 +125,7 @@ export const ResponseText = {
 	InsufficientBalance: `Insufficient balance.`,
 	InvalidEmailOrPassword: `Invalid email or password.`,
 	DataIsMissing: `Data is missing.`,
+
+	// Custom
+	CategoriesValidationFailed: `Categories validation failed, please refresh page for new data.`,
 };

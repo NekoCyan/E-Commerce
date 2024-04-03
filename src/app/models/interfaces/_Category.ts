@@ -19,7 +19,7 @@ export interface ICategoryModel extends Model<ICategory, {}, ICategoryMethods> {
 			Partial<CategoryData> & Pick<CategoryData, 'name'>,
 			'categoryId'
 		>,
-	): Promise<ICategory>;
+	): Promise<CategoryHydratedDocument>;
 	editCategory(
 		categoryId: number,
 		data: Omit<Partial<CategoryData>, 'categoryId'>,
