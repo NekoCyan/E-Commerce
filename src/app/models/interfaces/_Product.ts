@@ -7,7 +7,7 @@ export interface ProductData {
 	description: string;
 	price: number;
 	stock: number;
-    sold: number;
+	sold: number;
 	isNewProduct: boolean;
 	salePercentage: number;
 	imageUrls: string[];
@@ -36,9 +36,17 @@ export interface IProductModel extends Model<IProduct, {}, IProductMethods> {
 	getProductList(
 		limit?: number,
 		page?: number,
-		externalData?: {
-			filterByCategories: number[];
-			filterByCategoriesType: 'AND' | 'OR';
+		filter?: {
+			category?: {
+				Ids: number[];
+				Type: 'AND' | 'OR';
+			};
+			/**
+			 * * -1: All.
+			 * * 0: Inactive.
+			 * * 1: Active.
+			 */
+			status?: -1 | 0 | 1;
 		},
 	): Promise<DocumentList<ProductData>>;
 }

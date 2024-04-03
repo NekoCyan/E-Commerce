@@ -27,6 +27,10 @@ export function IsNullOrUndefined(variable: any): boolean {
 	return variable === null || variable === undefined;
 }
 
+export function IsDecimal(value: any): boolean {
+	return !isNaN(value) && value % 1 !== 0;
+}
+
 export function CreateEnum<T extends { [key: string]: number }>(
 	objects: T,
 ): Readonly<

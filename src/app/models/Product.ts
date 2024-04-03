@@ -1,4 +1,4 @@
-import { ResponseText } from '@/utils';
+import { IsDecimal, ResponseText } from '@/utils';
 import { ValidateForList } from '@/utils/BackendUtils';
 import mongoose from 'mongoose';
 import Category from './Category';
@@ -25,14 +25,17 @@ const ProductSchema = new mongoose.Schema<
 	price: {
 		type: Number,
 		default: 0,
+		min: [0, ResponseText.Min('price', 0)],
 	},
 	stock: {
 		type: Number,
 		default: 0,
+		min: [0, ResponseText.Min('stock', 0)],
 	},
 	sold: {
 		type: Number,
 		default: 0,
+		min: [0, ResponseText.Min('sold', 0)],
 	},
 	isNewProduct: {
 		type: Boolean,
@@ -41,6 +44,8 @@ const ProductSchema = new mongoose.Schema<
 	salePercentage: {
 		type: Number,
 		default: 0,
+		min: [0, ResponseText.Min('salePercentage', 0)],
+		max: [100, ResponseText.Max('salePercentage', 100)],
 	},
 	imageUrls: {
 		type: [String],
@@ -122,15 +127,6 @@ ProductSchema.static(
 			JSON.stringify(product.categoryIds) !==
 				JSON.stringify(data.categoryIds)
 		) {
-			// Validate if categories are exists.
-			const categories = await Category.find({
-				categoryId: { $in: data.categoryIds },
-			})
-				.lean()
-				.exec();
-			if (categories.length !== data.categoryIds.length)
-				throw new Error(ResponseText.CategoriesValidationFailed);
-
 			product.categoryIds = data.categoryIds;
 			product.markModified('categoryIds');
 		}
@@ -161,22 +157,22 @@ ProductSchema.static(
 	async function (
 		_limit: number = 20,
 		_page: number = 1,
-		externalData?: {
-			filterByCategories: number[];
-			filterByCategoriesType: 'AND' | 'OR';
+		filter?: {
+			category?: {
+				Ids: number[];
+				Type: 'AND' | 'OR';
+			};
+			status?: -1 | 0 | 1;
 		},
 	): Promise<ReturnType<IProductModel['getProductList']>> {
 		const { limit, page } = await ValidateForList(_limit, _page);
-		externalData = {
-			filterByCategories: [],
-			filterByCategoriesType: 'AND',
-			...externalData,
-		};
 
-		if (externalData.filterByCategories.length > 0) {
-			externalData.filterByCategories = [
-				...new Set(externalData.filterByCategories),
-			]; // remove duplicated.
+		// Filter by categories.
+		if (filter?.category) {
+			if (!Array.isArray(filter.category.Ids)) filter.category.Ids = [];
+			filter.category.Ids = [...new Set(filter.category.Ids)]; // remove duplicated.
+			if (filter.category.Type !== 'AND' && filter.category.Type !== 'OR')
+				filter.category.Type = 'AND';
 		}
 
 		const totalDocument = await this.countDocuments();
@@ -196,22 +192,27 @@ ProductSchema.static(
 				.skip(skipFromPage)
 				.project({ _id: 0 });
 
-			if (externalData.filterByCategories?.length > 0) {
-				if (externalData.filterByCategoriesType === 'AND') {
-					_getProductList.match({
-						categoryIds: {
-							$all: externalData.filterByCategories,
-						},
-					});
+			let match: any = {};
+
+			if (filter?.category && filter.category.Ids.length > 0) {
+				if (filter.category.Type === 'AND') {
+					match.categoryIds = {
+						$all: filter.category.Ids,
+					};
 				} else {
-					_getProductList.match({
-						categoryIds: {
-							$in: externalData.filterByCategories,
-						},
-					});
+					match.categoryIds = {
+						$in: filter.category.Ids,
+					};
 				}
 			}
+			if (
+				filter?.status !== undefined &&
+				[0, 1].includes(filter.status)
+			) {
+				match.status = !!filter.status;
+			}
 
+			if (Object.keys(match).length > 0) _getProductList.match(match);
 			const getProductList = await _getProductList.exec();
 
 			listProducts = getProductList;
@@ -230,6 +231,35 @@ ProductSchema.pre('save', async function (this: IProduct, next) {
 	const product = this as IProduct;
 	if (product.isNew) {
 		this.productId = await Counter.getNextSequence(Product, 'categoryId');
+	}
+
+	if (product.isModified('price')) {
+		if (product.price < 0) throw new Error(ResponseText.Invalid('price'));
+		product.price = Number(product.price.toFixed(2));
+	}
+	if (product.isModified('stock')) {
+		if (product.stock < 0) throw new Error(ResponseText.Invalid('stock'));
+		if (IsDecimal(product.stock))
+			throw new Error(ResponseText.DecimalNotAllowed('stock'));
+	}
+	if (product.isModified('sold')) {
+		if (product.sold < 0) throw new Error(ResponseText.Invalid('sold'));
+		if (IsDecimal(product.sold))
+			throw new Error(ResponseText.DecimalNotAllowed('sold'));
+	}
+	if (product.isModified('salePercentage')) {
+		if (product.salePercentage < 0 || product.salePercentage > 100)
+			throw new Error(ResponseText.OutOfRange('salePercentage', 0, 100));
+		product.salePercentage = Number(product.salePercentage.toFixed(2));
+	}
+	if (product.isModified('categoryIds')) {
+		const categories = await Category.find({
+			categoryId: { $in: product.categoryIds },
+		})
+			.lean()
+			.exec();
+		if (categories.length !== product.categoryIds.length)
+			throw new Error(ResponseText.CategoriesValidationFailed);
 	}
 
 	next();

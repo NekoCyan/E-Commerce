@@ -59,6 +59,10 @@ export function NoPermissionResponse() {
 export function UnauthorizedResponse() {
 	return ErrorResponse(new Error(ResponseText.Unauthorized));
 }
+// Custom Response.
+export function CategoriesValidationFailedResponse() {
+	return ErrorResponse(new Error(ResponseText.CategoriesValidationFailed));
+}
 
 export function Response<T extends { [key: string]: any }>(
 	data: T = {} as T,

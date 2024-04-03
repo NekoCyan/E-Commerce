@@ -98,6 +98,9 @@ export const ResponseText = {
 	MaxLength: (variable: string, maxLength: number) => {
 		return `${variable} cannot be more than ${maxLength} characters.`;
 	},
+	DecimalNotAllowed: (variable: string) => {
+		return `${variable} does not allow decimal.`;
+	},
 	OutOfRange: (variable: string, from: number, to: number) => {
 		return `Invalid range of ${variable} (Only accept from ${from} to ${to}).`;
 	},
