@@ -37,7 +37,7 @@ export default function Component({
 		actionButton = 'Save';
 	} else if (action === 'edit') {
 		title = 'Edit Category';
-		actionButton = 'edit';
+		actionButton = 'Update';
 		if (categoryId) isAbleToOpenModal = true;
 	} else if (action === 'delete') {
 		title = 'Delete Category';
@@ -51,6 +51,7 @@ export default function Component({
 
 		if (nameInput === '' && action !== 'delete') {
 			setErrorMsg('Category Name is required.');
+			setIsRequesting(false);
 		} else if (action === 'new') {
 			allToHandle = POST(
 				'/api/categories',
@@ -73,23 +74,23 @@ export default function Component({
 			allToHandle = DELETE(`/api/categories/${categoryId}`, {});
 		} else {
 			setErrorMsg('Invalid action.');
+			setIsRequesting(false);
 		}
 
 		allToHandle
-			?.then((x: any) => {
+			?.then(async (x: any) => {
 				const data = x.data as APIResponse;
 				if (!data.success) throw new Error(data.message);
 
 				handleCloseModal();
 				router.refresh();
-
-				return;
 			})
 			.catch((err: any) => {
 				setErrorMsg(err.message);
+			})
+			.finally(() => {
+				setIsRequesting(false);
 			});
-
-		setIsRequesting(false);
 	}, [isRequesting]);
 
 	useEffect(() => {

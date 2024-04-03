@@ -27,7 +27,7 @@ export async function BEHandler(options: {
 			new URL(ROUTES.Auth, options.req.nextUrl.origin),
 		);
 
-	if (options.adminRequired && isAdmin(session)) {
+	if (options.adminRequired && !isAdmin(session)) {
 		throw NextResponse.redirect(
 			new URL(ROUTES.Auth, options.req.nextUrl.origin),
 		);

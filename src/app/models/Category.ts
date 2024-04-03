@@ -81,11 +81,15 @@ CategorySchema.static(
 			throw new Error(
 				ResponseText.NotExists(`Category with ID ${categoryId}`),
 			);
-		if (data.name && (await this.isValidCategoryName(data.name)))
+		if (
+			data.name &&
+			category.name.toLowerCase() !== data.name.toLowerCase() &&
+			(await this.isValidCategoryName(data.name))
+		)
 			throw new Error(ResponseText.Invalid('name'));
 
 		if (data.name) category.name = data.name;
-		if (data.description) category.description = data.description;
+		category.description = data.description ?? '';
 
 		await category.save();
 

@@ -101,13 +101,17 @@ ProductSchema.static(
 			throw new Error(
 				ResponseText.NotExists(`Product with ID ${productId}`),
 			);
-		if (data.name && (await this.isValidProductName(data.name)))
+		if (
+			data.name &&
+			product.name.toLowerCase() !== data.name.toLowerCase() &&
+			(await this.isValidProductName(data.name))
+		)
 			throw new Error(ResponseText.Invalid('name'));
 
 		if (data.name) product.name = data.name;
-		if (data.description) product.description = data.description;
-		if (data.price) product.price = data.price;
-		if (data.stock) product.stock = data.stock;
+		product.description = data.description ?? '';
+		if (typeof data?.price === 'number') product.price = data.price;
+		if (typeof data?.stock === 'number') product.stock = data.stock;
 		if (typeof data.isNewProduct === 'boolean' && 'isNewProduct' in data)
 			product.isNewProduct = data.isNewProduct;
 		if (
