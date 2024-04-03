@@ -38,7 +38,7 @@ CategorySchema.static(
 	'isValidCategoryName',
 	async function (this: ICategoryModel, name: string): Promise<boolean> {
 		return !!(await this.exists({
-			name: { $regex: `/${name}/`, $options: 'i' },
+			name: { $regex: `^${name}$`, $options: 'i' },
 		}));
 	},
 );

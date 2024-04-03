@@ -2,11 +2,11 @@ import Category from '@/app/models/Category';
 import { CategoryData } from '@/app/models/interfaces';
 import dbConnect from '@/lib/dbConnect';
 import {
-    ErrorResponse,
-    IsNullOrUndefined,
-    RequiredResponse,
-    Response,
-    SearchParamsToObject,
+	ErrorResponse,
+	IsNullOrUndefined,
+	RequiredResponse,
+	Response,
+	SearchParamsToObject,
 } from '@/utils';
 import { BEHandler } from '@/utils/BackendUtils';
 import { NextRequest } from 'next/server';
@@ -43,8 +43,8 @@ export async function POST(req: NextRequest) {
 		if (IsNullOrUndefined(name)) return RequiredResponse('name');
 
 		const category = await Category.createCategory({
-			name: name as string,
-			description: description ?? '',
+			name: name?.trim() as string,
+			description: description?.trim() ?? '',
 		});
 		let { categoryId } = category;
 
