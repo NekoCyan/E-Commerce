@@ -27,6 +27,7 @@ export async function GET(
 			productId,
 			name,
 			description,
+			details,
 			price,
 			stock,
 			sold,
@@ -43,6 +44,7 @@ export async function GET(
 		return Response({
 			name,
 			description,
+			details,
 			price,
 			stock,
 			sold,
@@ -71,6 +73,7 @@ export async function PUT(
 				ProductData,
 				| 'name'
 				| 'description'
+				| 'details'
 				| 'price'
 				| 'stock'
 				| 'sold'
@@ -84,6 +87,7 @@ export async function PUT(
 		let {
 			name,
 			description,
+			details,
 			price,
 			stock,
 			sold,
@@ -105,6 +109,10 @@ export async function PUT(
 			if (typeof description !== 'string')
 				return InvalidResponse('description');
 			obj.description = description.trim();
+		}
+		if (!IsNullOrUndefined(details)) {
+			if (typeof details !== 'string') return InvalidResponse('details');
+			obj.details = details.trim();
 		}
 		if (!IsNullOrUndefined(price)) {
 			if (typeof price !== 'number') return InvalidResponse('price');
@@ -150,6 +158,7 @@ export async function PUT(
 		return Response({
 			name: product.name,
 			description: product.description,
+			details: product.details,
 			price: product.price,
 			stock: product.stock,
 			sold: product.sold,
@@ -178,6 +187,7 @@ export async function DELETE(
 		const {
 			name,
 			description,
+			details,
 			price,
 			stock,
 			sold,
@@ -191,6 +201,7 @@ export async function DELETE(
 		return Response({
 			name,
 			description,
+			details,
 			price,
 			stock,
 			sold,

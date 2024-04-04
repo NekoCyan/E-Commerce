@@ -22,6 +22,10 @@ const ProductSchema = new mongoose.Schema<
 		type: String,
 		default: '',
 	},
+	details: {
+		type: String,
+		default: '',
+	},
 	price: {
 		type: Number,
 		default: 0,
@@ -110,6 +114,7 @@ ProductSchema.static(
 
 		if (data.name) product.name = data.name;
 		product.description = data.description ?? '';
+		product.details = data.details ?? '';
 		if (typeof data?.price === 'number') product.price = data.price;
 		if (typeof data?.stock === 'number') product.stock = data.stock;
 		if (typeof data.isNewProduct === 'boolean' && 'isNewProduct' in data)

@@ -81,6 +81,7 @@ export async function POST(req: NextRequest) {
 				ProductData,
 				| 'name'
 				| 'description'
+				| 'details'
 				| 'price'
 				| 'stock'
 				| 'sold'
@@ -94,6 +95,7 @@ export async function POST(req: NextRequest) {
 		let {
 			name,
 			description,
+			details,
 			price,
 			stock,
 			sold,
@@ -111,6 +113,10 @@ export async function POST(req: NextRequest) {
 			if (typeof description !== 'string')
 				return InvalidResponse('description');
 			obj.description = description;
+		}
+		if (!IsNullOrUndefined(details)) {
+			if (typeof details !== 'string') return InvalidResponse('details');
+			obj.details = details;
 		}
 		if (!IsNullOrUndefined(price)) {
 			if (typeof price !== 'number') return InvalidResponse('price');
