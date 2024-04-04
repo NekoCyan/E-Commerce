@@ -23,11 +23,11 @@ const Modal: React.FC<ModalProps> = ({
 	return (
 		<div
 			className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-0 flex justify-center items-center z-50'
-			onClick={onClose}
+			onMouseDown={onClose}
 		>
 			<div
 				className='w-[350px] sm:w-[600px] flex flex-col bg-white rounded-lg p-5'
-				onClick={(e) => e.stopPropagation()}
+				onMouseDown={(e) => e.stopPropagation()}
 			>
 				<div className='flex flex-row justify-between items-center gap-3'>
 					<h3 className='pb-1 break-all'>{title ?? `Modal`}</h3>
