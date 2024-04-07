@@ -64,8 +64,8 @@ export default function Component({
 				<tbody>
 					{exportProductFilter.map((data, index) => (
 						<tr key={data.productId}>
-							<td>{index + 1}</td>
-							<td className='text-ellipsis overflow-hidden'>
+							<td width={'1%'}>{index + 1}</td>
+							<td className='w-full'>
 								{data.name}
 							</td>
 							<td className='text-center'>

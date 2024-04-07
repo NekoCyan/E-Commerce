@@ -4,7 +4,7 @@ import { BadRequestResponse, MiddlewareSession, ROUTES } from './utils';
 const routePrefix = '/client';
 const loginToAccess = ['/profile'];
 const adminRoutePrefix = '/admin';
-const adminAccess = ['/users'];
+const adminAccess = [''];
 
 export async function middleware(req: NextRequest) {
 	try {
@@ -36,13 +36,13 @@ export async function middleware(req: NextRequest) {
 		const callbacks = new URL(ROUTES.Auth, req.nextUrl.origin);
 		callbacks.searchParams.set('callbackUrl', req.nextUrl.href);
 		callbacks.searchParams.set('refresh', 'true');
-		
+
 		return NextResponse.redirect(callbacks);
 	}
 
 	if (
 		// In case trying to access admin routes without admin role.
-		session?.user?.role != 'ADMIN' &&
+		session?.user?.role !== 'ADMIN' &&
 		// Group all admin routes.
 		(pathName === adminRoutePrefix ||
 			adminAccess.some((x) => pathName.startsWith(adminRoutePrefix + x)))
