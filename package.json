@@ -13,6 +13,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nextui-org/react": "^2.2.10",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "bootstrap": "^3.3.7",

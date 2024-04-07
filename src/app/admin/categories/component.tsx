@@ -4,6 +4,7 @@ import { CategoryData } from '@/app/models/interfaces';
 import { DocumentList } from '@/app/models/interfaces/ExternalDocument';
 import Modal from '@/components/modal/Modal';
 import { APIResponse, PageProps } from '@/types';
+import { API } from '@/utils';
 import { DELETE, POST, PUT } from '@/utils/Request';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -14,10 +15,10 @@ import styles from './categories.module.css';
 export default function Component({
 	props,
 	categories,
-}: {
+}: Readonly<{
 	props: PageProps<{}, { action?: string; categoryId?: string }>;
 	categories: DocumentList<CategoryData>;
-}) {
+}>) {
 	const router = useRouter();
 
 	const [nameInput, setNameInput] = useState('');
@@ -54,7 +55,7 @@ export default function Component({
 			setIsRequesting(false);
 		} else if (action === 'new') {
 			allToHandle = POST(
-				'/api/categories',
+				API.CategoriesNew,
 				{
 					name: nameInput,
 					description: descriptionInput,
@@ -63,7 +64,7 @@ export default function Component({
 			);
 		} else if (action === 'edit') {
 			allToHandle = PUT(
-				`/api/categories/${categoryId}`,
+				API.CategoriesEdit(categoryId!),
 				{
 					name: nameInput,
 					description: descriptionInput,
@@ -71,7 +72,7 @@ export default function Component({
 				{},
 			);
 		} else if (action === 'delete') {
-			allToHandle = DELETE(`/api/categories/${categoryId}`, {});
+			allToHandle = DELETE(API.CategoriesDelete(categoryId!), {});
 		} else {
 			setErrorMsg('Invalid action.');
 			setIsRequesting(false);

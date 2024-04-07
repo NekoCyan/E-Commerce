@@ -5,10 +5,9 @@ import {
 	ErrorResponse,
 	InvalidResponse,
 	InvalidTypeResponse,
-	IsDecimal,
 	IsNullOrUndefined,
 	Response,
-	ResponseText,
+	ResponseText
 } from '@/utils';
 import { BEHandler, isAdmin } from '@/utils/BackendUtils';
 import { NextRequest } from 'next/server';
@@ -101,41 +100,27 @@ export async function PUT(
 		let obj: any = {};
 
 		if (!IsNullOrUndefined(name)) {
-			if (!name || typeof name !== 'string')
-				return InvalidResponse('name');
-			obj.name = name.trim();
+			obj.name = name?.toString().trim();
 		}
 		if (!IsNullOrUndefined(description)) {
-			if (typeof description !== 'string')
-				return InvalidResponse('description');
-			obj.description = description.trim();
+			obj.description = description?.toString().trim();
 		}
 		if (!IsNullOrUndefined(details)) {
-			if (typeof details !== 'string') return InvalidResponse('details');
-			obj.details = details.trim();
+			obj.details = details?.toString().trim();
 		}
 		if (!IsNullOrUndefined(price)) {
-			if (typeof price !== 'number') return InvalidResponse('price');
 			obj.price = price;
 		}
 		if (!IsNullOrUndefined(stock)) {
-			if (typeof stock !== 'number' && IsDecimal(stock))
-				return InvalidResponse('stock');
 			obj.stock = stock;
 		}
 		if (!IsNullOrUndefined(sold)) {
-			if (typeof sold !== 'number' && IsDecimal(sold))
-				return InvalidResponse('sold');
 			obj.sold = sold;
 		}
 		if (!IsNullOrUndefined(isNewProduct)) {
-			if (typeof isNewProduct !== 'boolean')
-				return InvalidResponse('isNewProduct');
 			obj.isNewProduct = isNewProduct;
 		}
 		if (!IsNullOrUndefined(salePercentage)) {
-			if (typeof salePercentage !== 'number')
-				return InvalidResponse('salePercentage');
 			obj.salePercentage = salePercentage;
 		}
 		if (!IsNullOrUndefined(imageUrls)) {
@@ -148,9 +133,9 @@ export async function PUT(
 			obj.categoryIds = categoryIds;
 		}
 		if (!IsNullOrUndefined(status)) {
-			if (typeof status !== 'boolean') return InvalidResponse('status');
 			obj.status = status;
 		}
+
 		const product = await Product.editProduct(parseInt(id), {
 			...obj,
 		});

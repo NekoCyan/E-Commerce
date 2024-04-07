@@ -11,6 +11,21 @@ export const ROUTES = {
 	// Admin.
 	Admin: '/admin',
 	AdminUsers: '/admin/users',
+	AdminCategories: '/admin/categories',
+	AdminProducts: '/admin/products',
+	AdminProductsNew: '/admin/products/new',
+	AdminProductsEdit: (id: string) => `/admin/products/${id}/edit`,
+	AdminProductsPreview: (id: string) => `/admin/products/${id}/preview`,
+};
+
+export const API = {
+	CategoriesNew: '/api/categories',
+	CategoriesList: '/api/categories',
+	CategoriesEdit: (id: string) => `/api/categories/${id}`,
+	CategoriesDelete: (id: string) => `/api/categories/${id}`,
+	ProductsNew: '/api/products',
+	ProductsEdit: (id: string) => `/api/products/${id}`,
+	ProductsDelete: (id: string) => `/api/products/${id}`,
 };
 
 export const HTTPStatusCode = {
@@ -30,6 +45,12 @@ export const PATTERN = {
 	USERNAME: /[a-zA-Z0-9_.]+/, // DEPRECATED.
 	EMAIL: /^[a-zA-Z0-9_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
 	PASSWORD: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*[^\x00-\x7F]).{8,}$/,
+};
+
+export const SYMBOLS = {
+	EMAIL: '@',
+	EN_DASH: '–',
+	EM_DASH: '—',
 };
 
 export const ROLES = CreateEnum({
@@ -130,5 +151,5 @@ export const ResponseText = {
 	DataIsMissing: `Data is missing.`,
 
 	// Custom
-	CategoriesValidationFailed: `Categories validation failed, please refresh page for new data.`,
+	CategoriesValidationFailed: `Categories validation failed, please refresh categories for new data.`,
 };

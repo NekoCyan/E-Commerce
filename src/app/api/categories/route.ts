@@ -26,7 +26,15 @@ export async function GET(req: NextRequest) {
 		);
 		const { list, currentPage, totalPage } = categoryList;
 
-		return Response({ list, currentPage, totalPage });
+		return Response({
+			list: list.map((x) => ({
+				categoryId: x.categoryId,
+				name: x.name,
+				description: x.description,
+			})),
+			currentPage,
+			totalPage,
+		});
 	} catch (e: any) {
 		return ErrorResponse(e);
 	}

@@ -4,7 +4,6 @@ import {
 	CategoriesValidationFailedResponse,
 	ErrorResponse,
 	InvalidResponse,
-	IsDecimal,
 	IsNullOrUndefined,
 	RequiredResponse,
 	Response,
@@ -66,7 +65,24 @@ export async function GET(req: NextRequest) {
 		);
 		const { list, currentPage, totalPage } = productList;
 
-		return Response({ list, currentPage, totalPage });
+		return Response({
+			list: list.map((x) => ({
+				productId: x.productId,
+				categoryIds: x.categoryIds,
+				name: x.name,
+				description: x.description,
+				details: x.details,
+				price: x.price,
+				stock: x.stock,
+				sold: x.sold,
+				isNewProduct: x.isNewProduct,
+				salePercentage: x.salePercentage,
+				imageUrls: x.imageUrls,
+				status: x.status,
+			})),
+			currentPage,
+			totalPage,
+		});
 	} catch (e: any) {
 		return ErrorResponse(e);
 	}
@@ -110,36 +126,24 @@ export async function POST(req: NextRequest) {
 
 		if (IsNullOrUndefined(name)) return RequiredResponse('name');
 		if (!IsNullOrUndefined(description)) {
-			if (typeof description !== 'string')
-				return InvalidResponse('description');
-			obj.description = description;
+			obj.description = description?.toString().trim();
 		}
 		if (!IsNullOrUndefined(details)) {
-			if (typeof details !== 'string') return InvalidResponse('details');
-			obj.details = details;
+			obj.details = details?.toString().trim();
 		}
 		if (!IsNullOrUndefined(price)) {
-			if (typeof price !== 'number') return InvalidResponse('price');
 			obj.price = price;
 		}
 		if (!IsNullOrUndefined(stock)) {
-			if (typeof stock !== 'number' && IsDecimal(stock))
-				return InvalidResponse('stock');
 			obj.stock = stock;
 		}
 		if (!IsNullOrUndefined(sold)) {
-			if (typeof sold !== 'number' && IsDecimal(sold))
-				return InvalidResponse('sold');
 			obj.sold = sold;
 		}
 		if (!IsNullOrUndefined(isNewProduct)) {
-			if (typeof isNewProduct !== 'boolean')
-				return InvalidResponse('isNewProduct');
 			obj.isNewProduct = isNewProduct;
 		}
 		if (!IsNullOrUndefined(salePercentage)) {
-			if (typeof salePercentage !== 'number')
-				return InvalidResponse('salePercentage');
 			obj.salePercentage = salePercentage;
 		}
 		if (!IsNullOrUndefined(imageUrls)) {
@@ -152,7 +156,6 @@ export async function POST(req: NextRequest) {
 			obj.categoryIds = categoryIds;
 		}
 		if (!IsNullOrUndefined(status)) {
-			if (typeof status !== 'boolean') return InvalidResponse('status');
 			obj.status = status;
 		}
 

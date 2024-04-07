@@ -1,4 +1,4 @@
-import { IsDecimal, ResponseText } from '@/utils';
+import { IsDecimal, IsNullOrUndefined, ResponseText } from '@/utils';
 import { ValidateForList } from '@/utils/BackendUtils';
 import mongoose from 'mongoose';
 import Category from './Category';
@@ -61,7 +61,7 @@ const ProductSchema = new mongoose.Schema<
 	},
 	status: {
 		type: Boolean,
-		default: true,
+		default: false,
 	},
 });
 
@@ -88,7 +88,7 @@ ProductSchema.static(
 	async function (
 		data: Omit<Partial<IProduct> & Pick<IProduct, 'name'>, 'productId'>,
 	): Promise<ReturnType<IProductModel['createProduct']>> {
-		if (await this.isValidProductName(data.name!))
+		if (await this.isValidProductName(data.name))
 			throw new Error(ResponseText.Invalid('name'));
 
 		return this.create(data);
@@ -113,34 +113,19 @@ ProductSchema.static(
 			throw new Error(ResponseText.Invalid('name'));
 
 		if (data.name) product.name = data.name;
-		product.description = data.description ?? '';
-		product.details = data.details ?? '';
-		if (typeof data?.price === 'number') product.price = data.price;
-		if (typeof data?.stock === 'number') product.stock = data.stock;
-		if (typeof data.isNewProduct === 'boolean' && 'isNewProduct' in data)
-			product.isNewProduct = data.isNewProduct;
-		if (
-			typeof data.salePercentage === 'boolean' &&
-			'salePercentage' in data
-		)
-			product.salePercentage = data.salePercentage;
-		if (
-			Array.isArray(data.imageUrls) &&
-			JSON.stringify(product.imageUrls) !== JSON.stringify(data.imageUrls)
-		) {
-			product.imageUrls = data.imageUrls;
-			product.markModified('imageUrls');
-		}
-		if (
-			Array.isArray(data.categoryIds) &&
-			JSON.stringify(product.categoryIds) !==
-				JSON.stringify(data.categoryIds)
-		) {
+		if (!IsNullOrUndefined(data.description))
+			product.description = data.description!;
+		if (!IsNullOrUndefined(data.details)) product.details = data.details!;
+		if (!IsNullOrUndefined(data.price)) product.price = data.price!;
+		if (!IsNullOrUndefined(data.stock)) product.stock = data.stock!;
+		if (!IsNullOrUndefined(data.isNewProduct))
+			product.isNewProduct = data.isNewProduct!;
+		if (!IsNullOrUndefined(data.salePercentage))
+			product.salePercentage = data.salePercentage!;
+		if (Array.isArray(data.imageUrls)) product.imageUrls = data.imageUrls;
+		if (Array.isArray(data.categoryIds))
 			product.categoryIds = data.categoryIds;
-			product.markModified('categoryIds');
-		}
-		if (typeof data.status === 'boolean' && 'status' in data)
-			product.status = data.status;
+		if (!IsNullOrUndefined(data.status)) product.status = data.status!;
 
 		await product.save();
 
@@ -242,33 +227,68 @@ ProductSchema.pre('save', async function (this: IProduct, next) {
 		this.productId = await Counter.getNextSequence(Product, 'categoryId');
 	}
 
+	if (product.isModified('name')) {
+		if (await Product.isValidProductName(product.name))
+			throw new Error(ResponseText.Invalid('name'));
+	}
+	if (product.isModified('description')) {
+		if (typeof product.description !== 'string')
+			throw new Error(ResponseText.Invalid('description'));
+	}
+	if (product.isModified('details')) {
+		if (typeof product.details !== 'string')
+			throw new Error(ResponseText.Invalid('details'));
+	}
 	if (product.isModified('price')) {
-		if (product.price < 0) throw new Error(ResponseText.Invalid('price'));
+		if (isNaN(product.price))
+			throw new Error(ResponseText.Invalid('price'));
 		product.price = Number(product.price.toFixed(2));
+
+		if (product.price < 0) throw new Error(ResponseText.Min('price', 0));
 	}
 	if (product.isModified('stock')) {
-		if (product.stock < 0) throw new Error(ResponseText.Invalid('stock'));
+		if (isNaN(product.stock))
+			throw new Error(ResponseText.Invalid('stock'));
 		if (IsDecimal(product.stock))
 			throw new Error(ResponseText.DecimalNotAllowed('stock'));
+		product.stock = Number(product.stock);
+		if (product.stock < 0) throw new Error(ResponseText.Min('stock', 0));
 	}
 	if (product.isModified('sold')) {
-		if (product.sold < 0) throw new Error(ResponseText.Invalid('sold'));
+		if (isNaN(product.sold)) throw new Error(ResponseText.Invalid('sold'));
 		if (IsDecimal(product.sold))
 			throw new Error(ResponseText.DecimalNotAllowed('sold'));
+		product.sold = Number(product.sold);
+		if (product.sold < 0) throw new Error(ResponseText.Invalid('sold'));
 	}
 	if (product.isModified('salePercentage')) {
+		if (isNaN(product.salePercentage))
+			throw new Error(ResponseText.Invalid('salePercentage'));
+		product.salePercentage = Number(product.salePercentage.toFixed(2));
 		if (product.salePercentage < 0 || product.salePercentage > 100)
 			throw new Error(ResponseText.OutOfRange('salePercentage', 0, 100));
-		product.salePercentage = Number(product.salePercentage.toFixed(2));
+	}
+	if (product.isModified('imageUrls')) {
+		if (!Array.isArray(product.imageUrls))
+			throw new Error(ResponseText.Invalid('imageUrls'));
+		if (product.imageUrls.length === 0)
+			throw new Error(ResponseText.Required('At least one Image URL'));
 	}
 	if (product.isModified('categoryIds')) {
+		if (!Array.isArray(product.categoryIds))
+			throw new Error(ResponseText.Invalid('categoryIds'));
 		const categories = await Category.find({
 			categoryId: { $in: product.categoryIds },
 		})
+			.select('categoryId')
 			.lean()
 			.exec();
 		if (categories.length !== product.categoryIds.length)
 			throw new Error(ResponseText.CategoriesValidationFailed);
+	}
+	if (product.isModified('status')) {
+		if (typeof product.status !== 'boolean')
+			throw new Error(ResponseText.Invalid('status'));
 	}
 
 	next();

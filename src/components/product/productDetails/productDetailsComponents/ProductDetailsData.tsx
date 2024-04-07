@@ -1,42 +1,29 @@
 'use client';
 
-import { FormatCurrency, MultiStyles } from '@/utils/ComponentUtils';
+import { CategoryData, ProductData } from '@/app/models/interfaces';
+import { FormatCurrency, MarkupHTML, MultiStyles } from '@/utils/ComponentUtils';
 import Link from 'next/link';
 import styles from '../ProductDetails.module.css';
 
-type ProductDetailsDataProps = {
-	productData: {
-		productName: string;
-		categoryName: string;
-		imageURL: string;
-		price: number;
-		stock: number;
-		rating: number;
-		review: number;
-		isNew?: boolean;
-		salePercentage?: number;
-	};
-};
-
 export default function ProductDetailsData({
-	productData,
-}: ProductDetailsDataProps) {
+	props,
+	isPreview,
+	categories,
+}: Readonly<{ props: ProductData; isPreview?: boolean, categories: CategoryData[] }>) {
 	const salePrice = FormatCurrency(
-		productData.price * (1 - (productData.salePercentage ?? 0) / 100),
+		props.price * (1 - (props.salePercentage ?? 0) / 100),
 	);
-	const isSale = !!(
-		productData.salePercentage && productData.salePercentage > 0
-	);
+	const isSale = !!(props.salePercentage && props.salePercentage > 0);
+	let rating = 5;
+	let review = 0;
 
 	return (
 		<div className='col-md-5'>
 			<div className={styles['product-details']}>
-				<h2 className={styles['product-name']}>
-					{productData.productName}
-				</h2>
+				<h2 className={styles['product-name']}>{props.name}</h2>
 				<div>
 					<div className={styles['product-rating']}>
-						{[...Array(productData.rating)].map((_, index) => (
+						{[...Array(rating)].map((_, index) => (
 							<i
 								key={index}
 								className={MultiStyles(
@@ -45,7 +32,7 @@ export default function ProductDetailsData({
 								)}
 							></i>
 						))}
-						{[...Array(5 - productData.rating)].map((_, index) => (
+						{[...Array(5 - rating)].map((_, index) => (
 							<i key={index} className='fa fa-star-o'></i>
 						))}
 					</div>
@@ -54,7 +41,7 @@ export default function ProductDetailsData({
 						href='#'
 						onClick={(e) => e.preventDefault()}
 					>
-						{productData.review} Review(s)
+						{review} Review(s)
 					</Link>
 				</div>
 				<div>
@@ -63,11 +50,11 @@ export default function ProductDetailsData({
 						{isSale && (
 							<del className={styles['product-old-price']}>
 								{' '}
-								{FormatCurrency(productData.price)}{' '}
+								{FormatCurrency(props.price)}{' '}
 							</del>
 						)}
 					</h3>
-					{productData.stock > 0 ? (
+					{props.stock > 0 ? (
 						<span className={styles['product-available']}>
 							In Stock
 						</span>
@@ -77,14 +64,9 @@ export default function ProductDetailsData({
 						</span>
 					)}
 				</div>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-					sed do eiusmod tempor incididunt ut labore et dolore magna
-					aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-					ullamco laboris nisi ut aliquip ex ea commodo consequat.
-				</p>
+				<p dangerouslySetInnerHTML={MarkupHTML(props.description)} />
 
-				<div className={styles['product-options']}>
+				{/* <div className={styles['product-options']}>
 					<label>
 						Size{' '}
 						<select
@@ -107,10 +89,11 @@ export default function ProductDetailsData({
 							<option value='0'>Red</option>
 						</select>
 					</label>
-				</div>
+				</div> */}
+				<br />
 
 				<div className={styles['add-to-cart']}>
-					{productData.stock > 0 && (
+					{props.stock > 0 && (
 						<div className={styles['qty-label']}>
 							Quantity{' '}
 							<div
@@ -152,7 +135,7 @@ export default function ProductDetailsData({
 					<button
 						className={MultiStyles(
 							styles['add-to-cart-btn'],
-							productData.stock <= 0 && styles['disabled'],
+							props.stock <= 0 && styles['disabled'],
 						)}
 					>
 						<i className='fa fa-shopping-cart'></i> add to cart
@@ -169,16 +152,14 @@ export default function ProductDetailsData({
 
 				<ul className={styles['product-links']}>
 					<li>Category:</li>
-					<li>
-						<Link href='#' onClick={(e) => e.preventDefault()}>
-							Headphones
-						</Link>
-					</li>
-					<li>
-						<Link href='#' onClick={(e) => e.preventDefault()}>
-							Accessories
-						</Link>
-					</li>
+					{props.categoryIds.map((id) => (
+						<li key={id}>
+							<Link href='#' onClick={(e) => e.preventDefault()}>
+								{categories.find((c) => c.categoryId === id)
+									?.name ?? 'Unknown'}
+							</Link>
+						</li>
+					))}
 				</ul>
 
 				<ul className={styles['product-links']}>

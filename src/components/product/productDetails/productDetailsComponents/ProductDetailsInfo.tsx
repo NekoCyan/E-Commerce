@@ -1,10 +1,14 @@
 'use client';
 
-import { MultiStyles } from '@/utils/ComponentUtils';
+import { ProductData } from '@/app/models/interfaces';
+import { MarkupHTML, MultiStyles } from '@/utils/ComponentUtils';
 import { Row } from 'react-bootstrap';
 import styles from '../ProductDetails.module.css';
 
-export default function ProductDetailsInfo() {
+export default function ProductDetailsInfo({
+	props,
+	isPreview,
+}: Readonly<{ props: ProductData; isPreview?: boolean }>) {
 	return (
 		<div className='col-md-12'>
 			<div id={styles['product-tab']}>
@@ -67,19 +71,11 @@ export default function ProductDetailsInfo() {
 					<div id='tab1' className='tab-pane fade in active'>
 						<Row>
 							<div className='col-md-12'>
-								<p>
-									Lorem ipsum dolor sit amet, consectetur
-									adipisicing elit, sed do eiusmod tempor
-									incididunt ut labore et dolore magna aliqua.
-									Ut enim ad minim veniam, quis nostrud
-									exercitation ullamco laboris nisi ut aliquip
-									ex ea commodo consequat. Duis aute irure
-									dolor in reprehenderit in voluptate velit
-									esse cillum dolore eu fugiat nulla pariatur.
-									Excepteur sint occaecat cupidatat non
-									proident, sunt in culpa qui officia deserunt
-									mollit anim id est laborum.
-								</p>
+								<p
+									dangerouslySetInnerHTML={MarkupHTML(
+										props.description,
+									)}
+								/>
 							</div>
 						</Row>
 					</div>
@@ -87,19 +83,11 @@ export default function ProductDetailsInfo() {
 					<div id='tab2' className='tab-pane fade in'>
 						<Row>
 							<div className='col-md-12'>
-								<p>
-									Lorem ipsum dolor sit amet, consectetur
-									adipisicing elit, sed do eiusmod tempor
-									incididunt ut labore et dolore magna aliqua.
-									Ut enim ad minim veniam, quis nostrud
-									exercitation ullamco laboris nisi ut aliquip
-									ex ea commodo consequat. Duis aute irure
-									dolor in reprehenderit in voluptate velit
-									esse cillum dolore eu fugiat nulla pariatur.
-									Excepteur sint occaecat cupidatat non
-									proident, sunt in culpa qui officia deserunt
-									mollit anim id est laborum.
-								</p>
+								<p
+									dangerouslySetInnerHTML={MarkupHTML(
+										props.details,
+									)}
+								/>
 							</div>
 						</Row>
 					</div>

@@ -68,3 +68,9 @@ export async function MiddlewareSession(
 		return null;
 	}
 }
+
+export function MarkupHTML(markup: string) {
+	markup = markup.replace(/(?:\r\n|\r|\n)/g, '<br />');
+
+	return { __html: markup };
+}

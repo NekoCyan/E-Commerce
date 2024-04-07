@@ -2,6 +2,7 @@ import { MultiStyles } from '@/utils';
 
 type ModalProps = {
 	title?: string;
+	className?: string;
 	onClose: () => void;
 	actionButton?: {
 		onClick: () => void;
@@ -15,6 +16,7 @@ type ModalProps = {
 
 const Modal: React.FC<ModalProps> = ({
 	title,
+	className,
 	onClose,
 	actionButton,
 	errorMsg,
@@ -26,7 +28,10 @@ const Modal: React.FC<ModalProps> = ({
 			onMouseDown={onClose}
 		>
 			<div
-				className='w-[350px] sm:w-[600px] flex flex-col bg-white rounded-lg p-5'
+				className={MultiStyles(
+					'w-[350px] sm:w-[600px] flex flex-col bg-white rounded-lg p-5',
+					className,
+				)}
 				onMouseDown={(e) => e.stopPropagation()}
 			>
 				<div className='flex flex-row justify-between items-center gap-3'>

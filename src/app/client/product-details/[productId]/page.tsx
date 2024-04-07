@@ -1,5 +1,4 @@
 import BreadCrumb from '@/components/breadcrumb/BreadCrumb';
-import ProductDetails from '@/components/product/productDetails/ProductDetails';
 import { PageProps } from '@/types';
 
 const breadcrumbNav = [
@@ -24,7 +23,7 @@ export default function Page({
 	return (
 		<div>
 			<BreadCrumb navigation={breadcrumbNav} />
-			<ProductDetails productId={params.productId} />
+			{/* <ProductDetails productId={params.productId} /> */}
 		</div>
 	);
 }

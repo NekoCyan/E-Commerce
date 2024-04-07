@@ -230,3 +230,8 @@ export function RandomNumber(min: number, max: number) {
 		return RandomNumber(min, max);
 	return min + (byteArray[0] % range);
 }
+
+export function LimitArray<T>(array: T[], limit: number) {
+	if (array.length <= limit) return array;
+	return array.slice(0, limit);
+}

@@ -1,9 +1,13 @@
+'use client';
+
 import { MultiStyles } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import styles from '../not-found.module.css';
 
 export default function NotFound() {
+	const router = useRouter();
 	return (
 		<div>
 			<div className={styles.container}>
@@ -12,10 +16,14 @@ export default function NotFound() {
 				<p>Sorry, the resources does not exist</p>
 				<h3>
 					<Link
-						href='/'
+						href='#'
 						className={MultiStyles(styles.link, 'uppercase')}
+						onClick={(e) => {
+							e.preventDefault();
+							router.back();
+						}}
 					>
-						Back to Home
+						Back to previous page
 					</Link>
 				</h3>
 			</div>
