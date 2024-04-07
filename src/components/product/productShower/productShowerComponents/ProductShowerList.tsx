@@ -1,26 +1,19 @@
 'use client';
 
+import { CategoryData, ProductData } from '@/app/models/interfaces';
+import { Truncate } from '@/utils';
 import { FormatCurrency, MultiStyles } from '@/utils/ComponentUtils';
 import { useEffect } from 'react';
 import { Row } from 'react-bootstrap';
 import styles from '../ProductShower.module.css';
 
-type ProductDataProps = {
-	productName: string;
-	categoryName: string;
-	imageURL: string;
-	price: number;
-	stock: number;
-	rating: number;
-	review: number;
-	isNew?: boolean;
-	salePercentage?: number;
-};
 export default function ProductShowerList({
 	productList,
+	categories,
 	navId,
 }: {
-	productList: ProductDataProps[];
+	productList: ProductData[];
+	categories: CategoryData[];
 	navId: string;
 }) {
 	useEffect(() => {
@@ -84,17 +77,22 @@ export default function ProductShowerList({
 										productData.salePercentage &&
 										productData.salePercentage > 0
 									);
-									let rating = 0;
-									if (productData.rating > 5) rating = 5;
-									else if (productData.rating < 0) rating = 0;
-									else rating = productData.rating;
+									let rating = 5;
+									// if (productData.rating > 5) rating = 5;
+									// else if (productData.rating < 0) rating = 0;
+									// else rating = productData.rating;
 
 									return (
-										<div key={index} className={'product'}>
+										<div
+											key={productData.productId}
+											className={'product'}
+										>
 											<div className={'product-img'}>
 												<img
-													src={productData.imageURL}
-													alt={productData.productName.toLowerCase()}
+													src={
+														productData.imageUrls[0]
+													}
+													alt={productData.name.toLowerCase()}
 												/>
 												<div
 													className={'product-label'}
@@ -110,7 +108,7 @@ export default function ProductShowerList({
 															%
 														</span>
 													)}
-													{productData.isNew ===
+													{productData.isNewProduct ===
 														true && (
 														<span className={'new'}>
 															NEW
@@ -124,13 +122,19 @@ export default function ProductShowerList({
 														'product-category'
 													}
 												>
-													{productData.categoryName}
+													{categories.find(
+														(x) =>
+															x.categoryId ===
+															productData
+																.categoryIds[0],
+													)?.name ?? 'Unknown'}
 												</p>
 												<h3 className={'product-name'}>
 													<a href='#'>
-														{
-															productData.productName
-														}
+														{Truncate(
+															productData.name,
+															32,
+														)}
 													</a>
 												</h3>
 												<h4 className={'product-price'}>
@@ -189,12 +193,7 @@ export default function ProductShowerList({
 														onClick={() => {
 															window.location.href =
 																'/product-details/' +
-																productData.productName
-																	.toLowerCase()
-																	.replace(
-																		/ /g,
-																		'-',
-																	) +
+																productData.productId +
 																'#breadcrumb';
 														}}
 													>

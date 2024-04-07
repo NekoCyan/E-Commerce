@@ -1,5 +1,6 @@
 'use client';
 
+import { CategoryData } from '@/app/models/interfaces';
 import { MultiStyles } from '@/utils/ComponentUtils';
 import Link from 'next/link';
 import { Dispatch, SetStateAction, useState } from 'react';
@@ -7,8 +8,8 @@ import styles from '../ProductShower.module.css';
 
 type ProductShowerTabsProps = {
 	title: string;
-	categories: string[];
-	setCurrentCategory: Dispatch<SetStateAction<string>>;
+	categories: CategoryData[];
+	setCurrentCategory: Dispatch<SetStateAction<CategoryData>>;
 	isDisabled?: boolean;
 };
 export default function ProductShowerTabs({
@@ -16,10 +17,8 @@ export default function ProductShowerTabs({
 	categories,
 	setCurrentCategory,
 	isDisabled,
-}: ProductShowerTabsProps) {
-	const [activeTab, setActiveTab] = useState(
-		categories[0]?.toLowerCase() || '',
-	);
+}: Readonly<ProductShowerTabsProps>) {
+	const [activeTab, setActiveTab] = useState(categories[0].categoryId || 0);
 
 	return (
 		<div className='col-md-12'>
@@ -35,7 +34,7 @@ export default function ProductShowerTabs({
 							)}
 						>
 							{categories.map((tab, index) => {
-								const theTab = tab.toLowerCase();
+								const theTab = tab.categoryId;
 
 								return (
 									<li
@@ -53,14 +52,16 @@ export default function ProductShowerTabs({
 											)
 												return;
 											setActiveTab(theTab);
-											setCurrentCategory(theTab);
+											setCurrentCategory(
+												categories[index],
+											);
 										}}
 									>
 										<Link
 											href='#'
 											onClick={(e) => e.preventDefault()}
 										>
-											{tab}
+											{tab.name}
 										</Link>
 									</li>
 								);

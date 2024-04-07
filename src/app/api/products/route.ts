@@ -35,6 +35,7 @@ export async function GET(req: NextRequest) {
 		if (filterByCategories) {
 			const validateCategoriesNumber = filterByCategories
 				?.split(',')
+				.map((v) => v.trim())
 				.every(
 					(v) =>
 						!isNaN(parseInt(v)) && // Check if the value is a number.

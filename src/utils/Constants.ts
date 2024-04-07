@@ -8,6 +8,8 @@ export const ROUTES = {
 	// Profile.
 	Profile: '/profile',
 	Wishlist: '/profile/wishlist',
+	// Produts.
+	Products: '/products',
 	// Admin.
 	Admin: '/admin',
 	AdminUsers: '/admin/users',
@@ -19,13 +21,21 @@ export const ROUTES = {
 };
 
 export const API = {
-	CategoriesNew: '/api/categories',
 	CategoriesList: '/api/categories',
+	CategoriesNew: '/api/categories',
 	CategoriesEdit: (id: string) => `/api/categories/${id}`,
 	CategoriesDelete: (id: string) => `/api/categories/${id}`,
+	ProductsList: '/api/products',
 	ProductsNew: '/api/products',
+	ProductsGet: (id: string) => `/api/products/${id}`,
 	ProductsEdit: (id: string) => `/api/products/${id}`,
 	ProductsDelete: (id: string) => `/api/products/${id}`,
+};
+
+export const LIMITER = {
+	HTML: {
+		title: 63, // Less than 64.
+	},
 };
 
 export const HTTPStatusCode = {

@@ -235,3 +235,8 @@ export function LimitArray<T>(array: T[], limit: number) {
 	if (array.length <= limit) return array;
 	return array.slice(0, limit);
 }
+
+export function Truncate(str: string, length: number, suffix: string = '...') {
+	if (str.length <= length) return str;
+	return str.substring(0, length - suffix.length) + suffix;
+}

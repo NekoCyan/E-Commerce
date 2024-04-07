@@ -14,7 +14,7 @@ export default function BreadCrumb({ navigation }: BreadCrumbProps) {
 	if (navigation.some((x) => !x.url || !x.name))
 		throw new Error(`Invalid breadcrumb item.`);
 
-	if (navigation[0].name.toLowerCase() != 'home') {
+	if (navigation[0].name.toLowerCase() !== 'home') {
 		navigation.unshift({ name: 'Home', url: '/' });
 	}
 

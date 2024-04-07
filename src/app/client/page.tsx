@@ -2,6 +2,8 @@ import Collection from '@/components/collection/Collection';
 import HotDeal from '@/components/hotdeal/HotDeal';
 import NewsLetter from '@/components/newsletter/NewsLetter';
 import ProductShower from '@/components/product/productShower/ProductShower';
+import { API } from '@/utils';
+import getUrl from '@/utils/getUrl';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -30,7 +32,15 @@ const collections: {
 	},
 ];
 
-export default function Home() {
+export default async function Home() {
+	const fetchedCategories = await fetch(getUrl(API.CategoriesList), {
+		cache: 'no-cache',
+	});
+	const { data } = await fetchedCategories.json();
+
+	const theList = data.list;
+	theList.unshift({ categoryId: 0, name: 'All', description: '' });
+
 	return (
 		<div>
 			<Collection collectionData={collections} />
@@ -38,15 +48,15 @@ export default function Home() {
 			{/* Product Shower */}
 			<ProductShower
 				title='New Products'
-				categories={['All', 'Laptops', 'Smartphones']}
+				categories={theList}
 				customNavId='new-products'
 			/>
 			<HotDeal />
-			<ProductShower
+			{/* <ProductShower
 				title='Top Selling'
-				categories={['All']}
+				categories={data.list}
 				customNavId='top-selling'
-			/>
+			/> */}
 			<NewsLetter />
 		</div>
 	);

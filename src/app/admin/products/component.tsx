@@ -84,15 +84,9 @@ export default function Component({
 									closeDelay={0}
 								>
 									<Link
-										href='#'
-										onClick={(e) => {
-											e.preventDefault();
-											router.push(
-												ROUTES.AdminProductsEdit(
-													data.productId.toString(),
-												),
-											);
-										}}
+										href={ROUTES.AdminProductsEdit(
+											data.productId.toString(),
+										)}
 									>
 										<i className='fa fa-edit'></i>
 									</Link>
@@ -103,15 +97,11 @@ export default function Component({
 									closeDelay={0}
 								>
 									<Link
-										href='#'
-										onClick={(e) => {
-											e.preventDefault();
-											router.push(
-												ROUTES.AdminProductsPreview(
-													data.productId.toString(),
-												) + '#preview',
-											);
-										}}
+										href={
+											ROUTES.AdminProductsPreview(
+												data.productId.toString(),
+											) + '#preview'
+										}
 									>
 										<i className='fa fa-solid fa-eye'></i>
 									</Link>
