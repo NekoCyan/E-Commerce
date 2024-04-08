@@ -1,7 +1,6 @@
 'use client';
 
 import { CategoryData } from '@/app/models/interfaces';
-import { LimitArray, ShuffleArray } from '@/utils';
 import { MultiStyles } from '@/utils/ComponentUtils';
 import Link from 'next/link';
 import { Dispatch, SetStateAction, useState } from 'react';
@@ -20,11 +19,6 @@ export default function ProductShowerTabs({
 	isDisabled,
 }: Readonly<ProductShowerTabsProps>) {
 	const [activeTab, setActiveTab] = useState(categories[0].categoryId || 0);
-
-	categories =
-		categories.length > 4
-			? LimitArray(ShuffleArray(categories), 4)
-			: categories;
 
 	return (
 		<div className='col-md-12'>

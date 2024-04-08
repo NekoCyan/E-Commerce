@@ -2,7 +2,7 @@ import Collection from '@/components/collection/Collection';
 import HotDeal from '@/components/hotdeal/HotDeal';
 import NewsLetter from '@/components/newsletter/NewsLetter';
 import ProductShower from '@/components/product/productShower/ProductShower';
-import { API } from '@/utils';
+import { API, LimitArray, ShuffleArray } from '@/utils';
 import getUrl from '@/utils/getUrl';
 import { Metadata } from 'next';
 
@@ -39,7 +39,10 @@ export default async function Home() {
 	const { data } = await fetchedCategories.json();
 
 	const theList = data.list;
-	theList.unshift({ categoryId: 0, name: 'All', description: '' });
+
+	const categories =
+		theList.length > 4 ? LimitArray(ShuffleArray(theList), 4) : theList;
+	categories.unshift({ categoryId: 0, name: 'All', description: '' });
 
 	return (
 		<div>
@@ -48,7 +51,7 @@ export default async function Home() {
 			{/* Product Shower */}
 			<ProductShower
 				title='New Products'
-				categories={theList}
+				categories={categories}
 				customNavId='new-products'
 			/>
 			<HotDeal />
