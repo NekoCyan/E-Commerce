@@ -14,7 +14,7 @@ import { NextRequest } from 'next/server';
 
 export async function GET(req: NextRequest) {
 	try {
-		const {
+		let {
 			limit,
 			page,
 			filterByCategories,
@@ -29,7 +29,10 @@ export async function GET(req: NextRequest) {
 		}>(req.nextUrl.searchParams);
 
 		const session = await BEHandler({ req, sessionRequired: false });
-
+		if (!isAdmin(session) && limit === '-1') {
+			limit = undefined;
+		}
+		
 		let filter: any = {};
 
 		if (filterByCategories) {
@@ -59,11 +62,7 @@ export async function GET(req: NextRequest) {
 			filter.status = 1;
 		}
 
-		const productList = await Product.getProductList(
-			limit ? parseInt(limit) : 20,
-			page ? parseInt(page) : 1,
-			filter,
-		);
+		const productList = await Product.getProductList(limit, page, filter);
 		const { list, currentPage, totalPage } = productList;
 
 		return Response({

@@ -155,7 +155,7 @@ export function PadZero(number: number) {
 
 export function SearchParamsToObject<T extends { [key: string]: string }>(
 	searchParams: URLSearchParams,
-): T {
+): Partial<T> {
 	const obj: any = {};
 
 	for (const [key, value] of searchParams.entries()) {

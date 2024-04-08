@@ -1,6 +1,5 @@
 import Category from '@/app/models/Category';
 import { CategoryData } from '@/app/models/interfaces';
-import dbConnect from '@/lib/dbConnect';
 import {
 	ErrorResponse,
 	IsNullOrUndefined,
@@ -8,22 +7,22 @@ import {
 	Response,
 	SearchParamsToObject,
 } from '@/utils';
-import { BEHandler } from '@/utils/BackendUtils';
+import { BEHandler, isAdmin } from '@/utils/BackendUtils';
 import { NextRequest } from 'next/server';
 
 export async function GET(req: NextRequest) {
 	try {
-		const { limit, page } = SearchParamsToObject<{
+		let { limit, page } = SearchParamsToObject<{
 			limit: string;
 			page: string;
 		}>(req.nextUrl.searchParams);
 
-		await dbConnect();
+		const session = await BEHandler({ req, sessionRequired: false });
+		if (!isAdmin(session) && limit === '-1') {
+			limit = '';
+		}
 
-		const categoryList = await Category.getCategoryList(
-			limit ? parseInt(limit) : 20,
-			page ? parseInt(page) : 1,
-		);
+		const categoryList = await Category.getCategoryList(limit, page);
 		const { list, currentPage, totalPage } = categoryList;
 
 		return Response({

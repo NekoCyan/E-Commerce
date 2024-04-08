@@ -149,8 +149,8 @@ ProductSchema.static(
 ProductSchema.static(
 	'getProductList',
 	async function (
-		_limit: number = 20,
-		_page: number = 1,
+		_limit: string | number,
+		_page: string | number,
 		filter?: {
 			category?: {
 				Ids: number[];
@@ -159,7 +159,7 @@ ProductSchema.static(
 			status?: -1 | 0 | 1;
 		},
 	): Promise<ReturnType<IProductModel['getProductList']>> {
-		const { limit, page } = await ValidateForList(_limit, _page);
+		const { limit, page } = ValidateForList(_limit, _page, true);
 
 		// Filter by categories.
 		if (filter?.category) {
@@ -173,21 +173,21 @@ ProductSchema.static(
 		const totalPage = Math.ceil(totalDocument / limit);
 		let listProducts;
 
-		if (page > totalPage) {
+		if (page > totalPage && limit !== -1) {
 			listProducts = [];
 		} else {
-			// Skip and Limit will works like the following:
-			// Get array from {skipFromPage} to {limitNext}.
-			const limitNext = page * limit;
-			const skipFromPage = limitNext - limit;
+			const _getProductList = this.aggregate().project({ _id: 0 });
 
-			const _getProductList = this.aggregate()
-				.limit(limitNext)
-				.skip(skipFromPage)
-				.project({ _id: 0 });
+			// #region Populate Products.
+			if (limit !== -1) {
+				// Skip and Limit will works like the following:
+				// Get array from {skipFromPage} to {limitNext}.
+				const limitNext = page * limit;
+				const skipFromPage = limitNext - limit;
+				_getProductList.limit(limitNext).skip(skipFromPage);
+			}
 
 			let match: any = {};
-
 			if (filter?.category && filter.category.Ids.length > 0) {
 				if (filter.category.Type === 'AND') {
 					match.categoryIds = {
@@ -205,17 +205,17 @@ ProductSchema.static(
 			) {
 				match.status = !!filter.status;
 			}
-
 			if (Object.keys(match).length > 0) _getProductList.match(match);
-			const getProductList = await _getProductList.exec();
+			// #endregion
 
+			const getProductList = await _getProductList.exec();
 			listProducts = getProductList;
 		}
 
 		return {
 			list: listProducts,
 			currentPage: page,
-			totalPage,
+			totalPage: limit === -1 ? limit : totalPage,
 		};
 	},
 );

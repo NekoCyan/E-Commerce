@@ -36,21 +36,35 @@ export async function BEHandler(options: {
 	return session;
 }
 
-export function isAdmin(session: Session | null): boolean {
+export function isAdmin(session?: Session | null): boolean {
 	return session?.user?.role === 'ADMIN';
 }
 
-export async function ValidateForList(
+export function ValidateForList(
 	limit: any = 20,
 	page: any = 1,
-): Promise<{ limit: number; page: number }> {
-	if (typeof limit !== 'number')
-		throw new Error(ResponseText.InvalidType('limit', 'number'));
-	if (limit < 1) throw new Error(ResponseText.InvalidPageNumber(limit));
+	allowUnlimited: boolean = false,
+): { limit: number; page: number } {
+	if (allowUnlimited && [-1, '-1'].some((x) => x === limit)) {
+		return { limit: -1, page: 1 };
+	}
+	if (limit) {
+		if (isNaN(limit))
+			throw new Error(ResponseText.InvalidType('limit', 'number'));
+		limit = Math.floor(Number(limit));
+		if (limit < 1) throw new Error(ResponseText.InvalidPageNumber(limit));
+	} else {
+		limit = 20;
+	}
 
-	if (typeof page !== 'number')
-		throw new Error(ResponseText.InvalidType('page', 'number'));
-	if (page < 1) throw new Error(ResponseText.InvalidPageNumber(page));
+	if (page) {
+		if (isNaN(page))
+			throw new Error(ResponseText.InvalidType('page', 'number'));
+		page = Math.floor(Number(page));
+		if (page < 1) throw new Error(ResponseText.InvalidPageNumber(page));
+	} else {
+		page = 1;
+	}
 
 	limit > 100 && (limit = 100);
 

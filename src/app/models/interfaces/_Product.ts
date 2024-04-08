@@ -35,8 +35,8 @@ export interface IProductModel extends Model<IProduct, {}, IProductMethods> {
 	): Promise<ProductData>;
 	deleteProduct(productId: number): Promise<ProductData>;
 	getProductList(
-		limit?: number,
-		page?: number,
+		limit?: string | number,
+		page?: string | number,
 		filter?: {
 			category?: {
 				Ids: number[];

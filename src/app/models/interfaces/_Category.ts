@@ -26,8 +26,8 @@ export interface ICategoryModel extends Model<ICategory, {}, ICategoryMethods> {
 	): Promise<CategoryData>;
 	deleteCategory(categoryId: number): Promise<CategoryData>;
 	getCategoryList(
-		limit?: number,
-		page?: number,
+		limit?: string | number,
+		page?: string | number,
 	): Promise<DocumentList<CategoryData>>;
 }
 export type CategoryHydratedDocument = HydratedDocument<

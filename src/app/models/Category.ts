@@ -116,36 +116,38 @@ CategorySchema.static(
 CategorySchema.static(
 	'getCategoryList',
 	async function (
-		_limit: number = 20,
-		_page: number = 1,
+		_limit: string | number,
+		_page: string | number,
 	): Promise<ReturnType<ICategoryModel['getCategoryList']>> {
-		const { limit, page } = await ValidateForList(_limit, _page);
+		const { limit, page } = ValidateForList(_limit, _page, true);
 
 		const totalDocument = await this.countDocuments();
 		const totalPage = Math.ceil(totalDocument / limit);
 		let listCategories;
 
-		if (page > totalPage) {
+		if (page > totalPage && limit !== -1) {
 			listCategories = [];
 		} else {
-			// Skip and Limit will works like the following:
-			// Get array from {skipFromPage} to {limitNext}.
-			const limitNext = page * limit;
-			const skipFromPage = limitNext - limit;
+			const _getCategoryList = this.aggregate().project({ _id: 0 });
 
-			const getCategoryList = await this.aggregate()
-				.limit(limitNext)
-				.skip(skipFromPage)
-				.project({ _id: 0 })
-				.exec();
+			// #region Populate Categories.
+			if (limit !== -1) {
+				// Skip and Limit will works like the following:
+				// Get array from {skipFromPage} to {limitNext}.
+				const limitNext = page * limit;
+				const skipFromPage = limitNext - limit;
+				_getCategoryList.limit(limitNext).skip(skipFromPage);
+			}
+			// #endregion
 
+			const getCategoryList = await _getCategoryList.exec();
 			listCategories = getCategoryList;
 		}
 
 		return {
 			list: listCategories,
 			currentPage: page,
-			totalPage,
+			totalPage: limit === -1 ? limit : totalPage,
 		};
 	},
 );
