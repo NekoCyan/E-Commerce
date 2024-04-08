@@ -594,6 +594,7 @@ export default function Component({
 											sale_percentage: e.target.value,
 										})
 									}
+									value={fields.sale_percentage?.toString()}
 									onFocus={handleFocus}
 								/>
 								<p className='justify-self-center self-center border-gray-300 bg-gray-300 border-solid border-2 p-2 w-[30px] text-center rounded-r-md'>
