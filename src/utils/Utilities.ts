@@ -231,9 +231,20 @@ export function RandomNumber(min: number, max: number) {
 	return min + (byteArray[0] % range);
 }
 
+export function RandomDecimal() {
+	let byteArray = new Uint32Array(1);
+	crypto.getRandomValues(byteArray);
+
+	return byteArray[0] / (0xffffffff + 1);
+}
+
 export function LimitArray<T>(array: T[], limit: number) {
 	if (array.length <= limit) return array;
 	return array.slice(0, limit);
+}
+
+export function ShuffleArray<T>(array: T[]) {
+	return array.sort(() => RandomDecimal() - 0.5);
 }
 
 export function Truncate(str: string, length: number, suffix: string = '...') {
