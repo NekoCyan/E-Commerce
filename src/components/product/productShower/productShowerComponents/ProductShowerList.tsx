@@ -3,6 +3,7 @@
 import { CategoryData, ProductData } from '@/app/models/interfaces';
 import { Truncate } from '@/utils';
 import { FormatCurrency, MultiStyles } from '@/utils/ComponentUtils';
+import Link from 'next/link';
 import { useEffect } from 'react';
 import { Row } from 'react-bootstrap';
 import styles from '../ProductShower.module.css';
@@ -11,11 +12,11 @@ export default function ProductShowerList({
 	productList,
 	categories,
 	navId,
-}: {
+}: Readonly<{
 	productList: ProductData[];
 	categories: CategoryData[];
 	navId: string;
-}) {
+}>) {
 	useEffect(() => {
 		try {
 			var $this = $(`div[data-nav="#${navId}"]`),
@@ -27,9 +28,10 @@ export default function ProductShowerList({
 				autoplay: true,
 				infinite: true,
 				speed: 2000,
-				dots: false,
+				dots: true,
 				arrows: true,
 				appendArrows: $nav ? $nav : false,
+				waitForAnimate: false,
 				responsive: [
 					{
 						breakpoint: 992,
@@ -43,6 +45,7 @@ export default function ProductShowerList({
 						settings: {
 							slidesToShow: 1,
 							slidesToScroll: 1,
+							dots: false,
 						},
 					},
 				],
@@ -81,6 +84,10 @@ export default function ProductShowerList({
 									// if (productData.rating > 5) rating = 5;
 									// else if (productData.rating < 0) rating = 0;
 									// else rating = productData.rating;
+									const productDetailsURL =
+										'/product-details/' +
+										productData.productId +
+										'#breadcrumb';
 
 									return (
 										<div
@@ -130,12 +137,14 @@ export default function ProductShowerList({
 													)?.name ?? 'Unknown'}
 												</p>
 												<h3 className={'product-name'}>
-													<a href='#'>
+													<Link
+														href={productDetailsURL}
+													>
 														{Truncate(
 															productData.name,
-															32,
+															64,
 														)}
-													</a>
+													</Link>
 												</h3>
 												<h4 className={'product-price'}>
 													{salePrice}{' '}
@@ -192,9 +201,7 @@ export default function ProductShowerList({
 														className='quick-view'
 														onClick={() => {
 															window.location.href =
-																'/product-details/' +
-																productData.productId +
-																'#breadcrumb';
+																productDetailsURL;
 														}}
 													>
 														<i className='fa fa-th-list'></i>
