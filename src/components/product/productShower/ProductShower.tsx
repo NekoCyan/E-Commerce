@@ -13,88 +13,6 @@ import styles from './ProductShower.module.css';
 import ProductShowerList from './productShowerComponents/ProductShowerList';
 import ProductShowerTabs from './productShowerComponents/ProductShowerTabs';
 
-// type ProductShowerTabsProps = {
-// 	categoryName: string;
-// }[];
-// const testProducts = [
-// 	{
-// 		productName: 'Laptop GTX',
-// 		categoryName: 'Laptops',
-// 		imageURL: './img/product01.png',
-// 		price: 1000,
-// 		stock: 10,
-// 		rating: 5,
-// 		review: 1,
-// 		isNew: true,
-// 		salePercentage: 30,
-// 	},
-// 	{
-// 		productName: 'Aprle 12 Pro Max',
-// 		categoryName: 'Smartphones',
-// 		imageURL: './img/product02.png',
-// 		price: 998,
-// 		stock: 10,
-// 		rating: 4,
-// 		review: 1,
-// 		isNew: true,
-// 		salePercentage: 0,
-// 	},
-// 	{
-// 		productName: 'Laptop GTX',
-// 		categoryName: 'Laptops',
-// 		imageURL: './img/product01.png',
-// 		price: 1000,
-// 		stock: 10,
-// 		rating: 5,
-// 		review: 1,
-// 		isNew: true,
-// 		salePercentage: 30,
-// 	},
-// 	{
-// 		productName: 'Aprle 12 Pro Max',
-// 		categoryName: 'Smartphones',
-// 		imageURL: './img/product02.png',
-// 		price: 998,
-// 		stock: 10,
-// 		rating: 4,
-// 		review: 1,
-// 		isNew: true,
-// 		salePercentage: 0,
-// 	},
-// 	{
-// 		productName: 'Laptop GTX',
-// 		categoryName: 'Laptops',
-// 		imageURL: './img/product01.png',
-// 		price: 1000,
-// 		stock: 10,
-// 		rating: 5,
-// 		review: 1,
-// 		isNew: true,
-// 		salePercentage: 30,
-// 	},
-// 	{
-// 		productName: 'Aprle 12 Pro Max',
-// 		categoryName: 'Smartphones',
-// 		imageURL: './img/product02.png',
-// 		price: 998,
-// 		stock: 10,
-// 		rating: 4,
-// 		review: 1,
-// 		isNew: true,
-// 		salePercentage: 0,
-// 	},
-// 	// {
-// 	// 	productName: '',
-// 	// 	categoryName: '',
-// 	// 	imageURL: '',
-// 	// 	price: 0,
-// 	//  stock: 0,
-// 	// 	rating: 0,
-// 	// 	isNew: false,
-// 	// 	salePercentage: 0,
-// 	// },
-// ];
-
 export default function ProductShower({
 	title,
 	categories,
@@ -102,8 +20,10 @@ export default function ProductShower({
 }: Readonly<{
 	title: string;
 	categories: CategoryData[];
-	customNavId: string;
-}>) {	
+	customNavId?: string;
+}>) {
+	const navId = customNavId ?? title.toLowerCase().replace(/ +/g, '-');
+
 	const [currentCategory, setCurrentCategory] = useState(categories[0]);
 	const [currentProductList, setCurrentProductList] = useState<ProductData[]>(
 		[],
@@ -113,7 +33,7 @@ export default function ProductShower({
 	const ProductShowerRef = useRef<{ component: React.ReactNode | null }>({
 		component: (
 			<ProductShowerList
-				navId={customNavId}
+				navId={navId}
 				productList={currentProductList}
 				categories={categories}
 			/>
@@ -186,7 +106,7 @@ export default function ProductShower({
 		if (isFetching) {
 			// Remove old slick when in fetch state.
 			try {
-				var $this = $(`div[data-nav="#${customNavId}"]`);
+				var $this = $(`div[data-nav="#${navId}"]`);
 				($this as any)?.slick('unslick');
 			} catch {}
 			ProductShowerRef.current = {
@@ -196,7 +116,7 @@ export default function ProductShower({
 			ProductShowerRef.current = {
 				component: (
 					<ProductShowerList
-						navId={customNavId}
+						navId={navId}
 						productList={currentProductList}
 						categories={categories}
 					/>

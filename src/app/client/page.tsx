@@ -49,11 +49,7 @@ export default async function Home() {
 			<Collection collectionData={collections} />
 
 			{/* Product Shower */}
-			<ProductShower
-				title='New Products'
-				categories={categories}
-				customNavId='new-products'
-			/>
+			<ProductShower title='Featured Products' categories={categories} />
 			<HotDeal />
 			{/* <ProductShower
 				title='Top Selling'
