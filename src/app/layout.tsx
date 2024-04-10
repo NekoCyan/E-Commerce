@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { ROUTES } from '@/utils';
+import { ROUTES, WEBSITE } from '@/utils';
 import { MultiStyles } from '@/utils/ComponentUtils';
 import NextAuthProvider from '@/utils/nextAuth/NextAuthProvider';
 import 'bootstrap/dist/css/bootstrap-theme.min.css';
@@ -22,7 +22,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-	title: 'Ocean Electro',
+	title: WEBSITE.titleName,
 	description:
 		'An eCommerce website (template) is used for educational purposes',
 	keywords:

@@ -24,6 +24,7 @@ export async function GET(
 
 		const category = await Category.getCategory(parseInt(id));
 		let { name, description } = category;
+		console.log(`Product API Called with id`, id);
 
 		return Response({ name, description });
 	} catch (e: any) {

@@ -4,11 +4,6 @@ import NewsLetter from '@/components/newsletter/NewsLetter';
 import ProductShower from '@/components/product/productShower/ProductShower';
 import { API, LimitArray, ShuffleArray } from '@/utils';
 import getUrl from '@/utils/getUrl';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-	title: 'Ocean Electro Shop',
-};
 
 const collections: {
 	name: string;

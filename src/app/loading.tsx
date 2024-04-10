@@ -5,7 +5,7 @@ type LoadingProps = {
 	height?: number;
 };
 
-export default function Loading(props: LoadingProps) {
+export default function Loading(props: Readonly<LoadingProps>) {
 	props = {
 		width: 400,
 		height: 480,

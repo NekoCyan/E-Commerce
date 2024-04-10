@@ -1,10 +1,15 @@
 'use client';
 
-import { MultiStyles } from '@/utils';
+import { MultiStyles, WEBSITE } from '@/utils';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from '../not-found.module.css';
+
+export const metadata: Metadata = {
+	title: WEBSITE.title(`Not found`),
+};
 
 export default function NotFound() {
 	const router = useRouter();

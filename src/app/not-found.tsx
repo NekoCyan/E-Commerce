@@ -2,9 +2,15 @@ import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
 import TopHeader from '@/components/header/TopHeader';
 import Navigation from '@/components/navigation/Navigation';
+import { WEBSITE } from '@/utils';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './not-found.module.css';
+
+export const metadata: Metadata = {
+	title: WEBSITE.title(`Not found`),
+};
 
 export default function NotFound() {
 	return (

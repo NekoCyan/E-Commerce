@@ -1,4 +1,5 @@
 {
+    "title": "Ocean Electro",
     "mainMatcher": "api|_next/static|_next/image|favicon.ico",
     "antiRedirectMatcher": "img/.*|assets/.*"
 }

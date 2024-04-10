@@ -1,4 +1,10 @@
-import { CommaAnd, CreateEnum } from './Utilities';
+import { CommaAnd, CreateEnum, Truncate } from './Utilities';
+
+export const WEBSITE = {
+	titleName: `Ocean Electro`,
+	title: (sub_name: string) =>
+		Truncate(`Ocean Electro | ${sub_name}`, LIMITER.HTML.title),
+};
 
 export const ROUTES = {
 	// Home.
@@ -54,7 +60,7 @@ export const HTTPStatusCode = {
 export const PATTERN = {
 	USERNAME: /[a-zA-Z0-9_.]+/, // DEPRECATED.
 	EMAIL: /^[a-zA-Z0-9_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-	PASSWORD: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*[^\x00-\x7F]).{8,}$/,
+	PASSWORD: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*[^a-zA-Z0-9]).{8,}$/,
 };
 
 export const SYMBOLS = {

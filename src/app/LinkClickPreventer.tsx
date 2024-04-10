@@ -7,7 +7,7 @@ export default function LinkClickPreventer() {
 		const handleClick = (e: MouseEvent) => {
 			const target = e.target as HTMLAnchorElement;
 			if (
-				target.tagName === 'A' &&
+				target.tagName.toLowerCase() === 'a' &&
 				target.getAttribute('href')?.startsWith('#')
 			) {
 				e.preventDefault();
