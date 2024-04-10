@@ -161,7 +161,7 @@ ProductSchema.static(
 	): Promise<ReturnType<IProductModel['getProductList']>> {
 		const { limit, page } = ValidateForList(_limit, _page, true);
 
-		// Filter by categories.
+		// Validation.
 		if (filter?.category) {
 			if (!Array.isArray(filter.category.Ids)) filter.category.Ids = [];
 			filter.category.Ids = [...new Set(filter.category.Ids)]; // remove duplicated.
@@ -169,7 +169,24 @@ ProductSchema.static(
 				filter.category.Type = 'AND';
 		}
 
-		const totalDocument = await this.countDocuments();
+		// Matching.
+		const matcher: any = {};
+		if (filter?.category && filter.category.Ids.length > 0) {
+			if (filter.category.Type === 'AND') {
+				matcher['categoryIds'] = {
+					$all: filter.category.Ids,
+				};
+			} else {
+				matcher['categoryIds'] = {
+					$in: filter.category.Ids,
+				};
+			}
+		}
+		if (filter?.status !== undefined && [0, 1].includes(filter.status)) {
+			matcher['status'] = !!filter.status;
+		}
+
+		const totalDocument = await this.countDocuments(matcher);
 		const totalPage = Math.ceil(totalDocument / limit);
 		let listProducts;
 
@@ -187,25 +204,7 @@ ProductSchema.static(
 				_getProductList.limit(limitNext).skip(skipFromPage);
 			}
 
-			let match: any = {};
-			if (filter?.category && filter.category.Ids.length > 0) {
-				if (filter.category.Type === 'AND') {
-					match.categoryIds = {
-						$all: filter.category.Ids,
-					};
-				} else {
-					match.categoryIds = {
-						$in: filter.category.Ids,
-					};
-				}
-			}
-			if (
-				filter?.status !== undefined &&
-				[0, 1].includes(filter.status)
-			) {
-				match.status = !!filter.status;
-			}
-			if (Object.keys(match).length > 0) _getProductList.match(match);
+			if (Object.keys(matcher).length > 0) _getProductList.match(matcher);
 			// #endregion
 
 			const getProductList = await _getProductList.exec();

@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
 		if (!isAdmin(session) && limit === '-1') {
 			limit = undefined;
 		}
-		
+
 		let filter: any = {};
 
 		if (filterByCategories) {
@@ -47,8 +47,12 @@ export async function GET(req: NextRequest) {
 			if (!validateCategoriesNumber)
 				return CategoriesValidationFailedResponse();
 
+			if (!filterByCategoriesType) filterByCategoriesType = 'AND';
+
 			filter.category = {
-				Ids: filterByCategories.split(',').map((v) => parseInt(v)),
+				Ids: filterByCategories
+					.split(',')
+					.map((v) => parseInt(v.trim())),
 				Type: filterByCategoriesType as 'AND' | 'OR',
 			};
 		}
