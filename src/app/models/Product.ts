@@ -201,6 +201,8 @@ ProductSchema.static(
 			const _getProductList = this.aggregate().project({ _id: 0 });
 
 			// #region Populate Products.
+			if (Object.keys(matcher).length > 0) _getProductList.match(matcher);
+
 			if (limit !== -1) {
 				// Skip and Limit will works like the following:
 				// Get array from {skipFromPage} to {limitNext}.
@@ -208,8 +210,6 @@ ProductSchema.static(
 				const skipFromPage = limitNext - limit;
 				_getProductList.limit(limitNext).skip(skipFromPage);
 			}
-
-			if (Object.keys(matcher).length > 0) _getProductList.match(matcher);
 			// #endregion
 
 			const getProductList = await _getProductList.exec();
