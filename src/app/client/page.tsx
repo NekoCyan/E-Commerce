@@ -29,7 +29,9 @@ const collections: {
 
 export default async function Home() {
 	const fetchedCategories = await fetch(getUrl(API.CategoriesList), {
-		cache: 'no-cache',
+		next: {
+			revalidate: 60,
+		},
 	});
 	const { data } = await fetchedCategories.json();
 
