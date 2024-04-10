@@ -26,7 +26,9 @@ export default function ProductShower({
 }>) {
 	const navId = customNavId ?? title.toLowerCase().replace(/ +/g, '-');
 
-	const [currentCategory, setCurrentCategory] = useState(categories[0]);
+	const [currentCategory, setCurrentCategory] = useState(
+		limitCategoriesTabs?.[0] ?? categories[0],
+	);
 	const [currentProductList, setCurrentProductList] = useState<ProductData[]>(
 		[],
 	);
