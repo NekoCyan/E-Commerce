@@ -41,8 +41,8 @@ export function isAdmin(session?: Session | null): boolean {
 }
 
 export function ValidateForList(
-	limit: any = 20,
-	page: any = 1,
+	limit: any,
+	page: any,
 	allowUnlimited: boolean = false,
 ): { limit: number; page: number } {
 	if (allowUnlimited && [-1, '-1'].some((x) => x === limit)) {

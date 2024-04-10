@@ -164,7 +164,13 @@ ProductSchema.static(
 		// Validation.
 		if (filter?.category) {
 			if (!Array.isArray(filter.category.Ids)) filter.category.Ids = [];
-			filter.category.Ids = [...new Set(filter.category.Ids)]; // remove duplicated.
+			if (filter.category.Ids.some((x) => isNaN(x)))
+				throw new Error(ResponseText.CategoriesValidationFailed);
+			filter.category.Ids = [
+				...new Set(
+					filter.category.Ids.map((x) => Math.floor(Number(x))),
+				),
+			]; // remove duplicated.
 			if (filter.category.Type !== 'AND' && filter.category.Type !== 'OR')
 				filter.category.Type = 'AND';
 		}
@@ -187,12 +193,11 @@ ProductSchema.static(
 		}
 
 		const totalDocument = await this.countDocuments(matcher);
-		const totalPage = Math.ceil(totalDocument / limit);
-		let listProducts;
+		const totalPage =
+			limit === -1 ? limit : Math.ceil(totalDocument / limit);
+		let listProducts = [];
 
-		if (page > totalPage && limit !== -1) {
-			listProducts = [];
-		} else {
+		if (totalPage === -1 || page <= totalPage) {
 			const _getProductList = this.aggregate().project({ _id: 0 });
 
 			// #region Populate Products.
@@ -214,7 +219,7 @@ ProductSchema.static(
 		return {
 			list: listProducts,
 			currentPage: page,
-			totalPage: limit === -1 ? limit : totalPage,
+			totalPage,
 		};
 	},
 );
