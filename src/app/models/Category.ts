@@ -2,6 +2,7 @@ import { ResponseText } from '@/utils';
 import { ValidateForList } from '@/utils/BackendUtils';
 import mongoose from 'mongoose';
 import Counter from './Counter';
+import Product from './Product';
 import {
 	CategoryData,
 	ICategory,
@@ -109,6 +110,12 @@ CategorySchema.static(
 			throw new Error(
 				ResponseText.NotExists(`Category with ID ${categoryId}`),
 			);
+
+		// Delete this category from all products.
+		await Product.updateMany(
+			{ categoryIds: deletedCategory.categoryId },
+			{ $pull: { categoryIds: deletedCategory.categoryId } },
+		);
 
 		return deletedCategory;
 	},
