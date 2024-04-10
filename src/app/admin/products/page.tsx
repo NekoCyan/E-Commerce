@@ -20,7 +20,6 @@ export default async function Page(props: any) {
 		},
 	);
 	const { data } = await fetchedProducts.json();
-	console.log(data);
 
 	return <Component props={props} products={data.list} />;
 }

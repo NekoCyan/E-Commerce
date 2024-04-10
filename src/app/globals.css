@@ -517,7 +517,8 @@ textarea.input {
 .product .product-body .product-name {
   text-transform: uppercase;
   font-size: 14px;
-  height: 40px;
+  line-height: 1.5rem;
+  height: 55px;
 }
 
 .product .product-body .product-name>a {
