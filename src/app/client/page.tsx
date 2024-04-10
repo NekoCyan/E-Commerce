@@ -41,7 +41,11 @@ export default async function Home() {
 		categories.length > 4
 			? LimitArray(ShuffleArray(categories), 4)
 			: categories;
-	categories.unshift({ categoryId: 0, name: 'All', description: '' });
+	limitCategoriesTabs.unshift({
+		categoryId: 0,
+		name: 'All',
+		description: '',
+	});
 
 	return (
 		<div>
