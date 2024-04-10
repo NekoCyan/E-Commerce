@@ -35,10 +35,12 @@ export default async function Home() {
 	});
 	const { data } = await fetchedCategories.json();
 
-	const theList = data.list;
+	const categories = data.list;
 
-	const categories =
-		theList.length > 4 ? LimitArray(ShuffleArray(theList), 4) : theList;
+	const limitCategoriesTabs =
+		categories.length > 4
+			? LimitArray(ShuffleArray(categories), 4)
+			: categories;
 	categories.unshift({ categoryId: 0, name: 'All', description: '' });
 
 	return (
@@ -46,7 +48,11 @@ export default async function Home() {
 			<Collection collectionData={collections} />
 
 			{/* Product Shower */}
-			<ProductShower title='Featured Products' categories={categories} />
+			<ProductShower
+				title='Featured Products'
+				categories={categories}
+				limitCategoriesTabs={limitCategoriesTabs}
+			/>
 			<HotDeal />
 			{/* <ProductShower
 				title='Top Selling'

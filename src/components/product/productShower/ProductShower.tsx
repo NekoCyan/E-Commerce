@@ -16,10 +16,12 @@ import ProductShowerTabs from './productShowerComponents/ProductShowerTabs';
 export default function ProductShower({
 	title,
 	categories,
+	limitCategoriesTabs,
 	customNavId,
 }: Readonly<{
 	title: string;
 	categories: CategoryData[];
+	limitCategoriesTabs?: CategoryData[];
 	customNavId?: string;
 }>) {
 	const navId = customNavId ?? title.toLowerCase().replace(/ +/g, '-');
@@ -132,7 +134,7 @@ export default function ProductShower({
 					{/* Categories Filter */}
 					<ProductShowerTabs
 						title={title}
-						categories={categories}
+						categories={limitCategoriesTabs ?? categories}
 						setCurrentCategory={setCurrentCategory}
 						isDisabled={isFetching}
 					/>
