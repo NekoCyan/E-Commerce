@@ -1,16 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { BadRequestResponse, MiddlewareSession, ROUTES } from './utils';
-import { BASE_URL } from './utils/getUrl';
 
 const routePrefix = '/client';
 const loginToAccess = ['/profile'];
 const adminRoutePrefix = '/admin';
 const adminAccess = [''];
 
-const allowedOrigins = [
-	'http://localhost:3000',
-	'http://localhost:19006',
-	BASE_URL,
+const originsToAppend = [
+	...new Set(['http://localhost:3000', 'http://localhost:19006']),
 ];
 
 export async function middleware(req: NextRequest) {
@@ -57,16 +54,14 @@ export async function middleware(req: NextRequest) {
 		return NextResponse.redirect(new URL('', req.nextUrl.origin));
 	}
 
+	let headers: any = {};
+
 	const origin = req.headers.get('origin');
-	if (pathName.startsWith('/api/') && allowedOrigins.includes(origin || '')) {
-		return NextResponse.next({
-			request: {
-				headers: req.headers,
-			},
-		});
+	if (origin && originsToAppend.includes(origin)) {
+		headers['Access-Control-Allow-Origin'] = origin;
 	}
 
-	return NextResponse.next();
+	return NextResponse.next({ headers });
 }
 
 export const config = {
@@ -78,8 +73,9 @@ export const config = {
 		 * - _next/image (image optimization files)
 		 * - favicon.ico (favicon file)
 		 */
-		'/((?!api|_next/static|_next/image|favicon.ico|img/*|assets/*).*)',
+		'/((?!_next/static|_next/image|favicon.ico|img/*|assets/*).*)',
 		'/client/profile/:path*',
 		'/admin/:path*',
+		'/api/:path*',
 	],
 };
