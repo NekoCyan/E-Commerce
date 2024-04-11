@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { BadRequestResponse, MiddlewareSession, ROUTES } from './utils';
+import { BASE_URL } from './utils/getUrl';
 
 const routePrefix = '/client';
 const loginToAccess = ['/profile'];
 const adminRoutePrefix = '/admin';
 const adminAccess = [''];
+
+const allowedOrigins = [
+	'http://localhost:3000',
+	'http://localhost:19006',
+	BASE_URL,
+];
 
 export async function middleware(req: NextRequest) {
 	try {
@@ -48,6 +55,15 @@ export async function middleware(req: NextRequest) {
 			adminAccess.some((x) => pathName.startsWith(adminRoutePrefix + x)))
 	) {
 		return NextResponse.redirect(new URL('', req.nextUrl.origin));
+	}
+
+	const origin = req.headers.get('origin');
+	if (pathName.startsWith('/api/') && allowedOrigins.includes(origin || '')) {
+		return NextResponse.next({
+			request: {
+				headers: req.headers,
+			},
+		});
 	}
 
 	return NextResponse.next();
