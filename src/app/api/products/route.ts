@@ -8,6 +8,7 @@ import {
 	RequiredResponse,
 	Response,
 	SearchParamsToObject,
+	betweenResolveable,
 } from '@/utils';
 import { BEHandler, isAdmin } from '@/utils/BackendUtils';
 import { NextRequest } from 'next/server';
@@ -15,12 +16,18 @@ import { NextRequest } from 'next/server';
 export async function GET(req: NextRequest) {
 	try {
 		let {
+			name,
+			price,
+			inStock,
 			limit,
 			page,
 			filterByCategories,
 			filterByCategoriesType,
 			status,
 		} = SearchParamsToObject<{
+			name: string;
+			price: string;
+			inStock: string;
 			limit: string;
 			page: string;
 			filterByCategories: string;
@@ -35,6 +42,19 @@ export async function GET(req: NextRequest) {
 
 		let filter: any = {};
 
+		if (name) filter.name = name;
+		if (price) {
+			const { from, to } = betweenResolveable(price);
+			if (from <= 0 || !to || to <= 0 || from > to)
+				return InvalidResponse('price');
+			filter.price = {
+				from: Number(from.toFixed(2)),
+				to: Number(to.toFixed(2)),
+			};
+		}
+		if (!IsNullOrUndefined(inStock)) {
+			filter.inStock = true;
+		}
 		if (filterByCategories) {
 			const validateCategoriesNumber = filterByCategories
 				?.split(',')

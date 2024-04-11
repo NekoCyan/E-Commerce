@@ -251,3 +251,66 @@ export function Truncate(str: string, length: number, suffix: string = '...') {
 	if (str.length <= length) return str;
 	return str.substring(0, length - suffix.length) + suffix;
 }
+
+export function betweenResolveable(
+	value: string,
+	options?: { midfix?: string; checkOnly: false },
+): {
+	from: number;
+	to: number;
+};
+export function betweenResolveable(
+	value: string,
+	options: { midfix?: string; checkOnly: true },
+): boolean;
+export function betweenResolveable(
+	value: string,
+	options: { midfix?: string; checkOnly?: boolean } = {
+		midfix: '-',
+		checkOnly: false,
+	},
+):
+	| {
+			from: number;
+			to: number | undefined;
+	  }
+	| boolean {
+	options = {
+		midfix: '-',
+		checkOnly: false,
+		...options,
+	};
+	if (!value) {
+		if (options.checkOnly) return false;
+		throw new Error(`Invalid value.`);
+	}
+	let [_from, _to] = value.split(options.midfix!).map((x) => x?.trim());
+	if (!_from) {
+		if (options.checkOnly) return false;
+		throw new Error(`Invalid value.`);
+	}
+	if (isNaN(_from as any)) {
+		if (options.checkOnly) return false;
+		throw new Error(`Invalid leftside value.`);
+	}
+	let from = Number(_from as any);
+	let to = undefined;
+	if (_to) {
+		if (isNaN(_to as any)) {
+			if (options.checkOnly) return false;
+			throw new Error(`Invalid rightside value.`);
+		}
+		to = Number(_to as any);
+		if (from > to) {
+			if (options.checkOnly) return false;
+			throw new Error(`Invalid range.`);
+		}
+	}
+
+	if (options.checkOnly) return true;
+
+	return {
+		from: from,
+		to: to,
+	};
+}

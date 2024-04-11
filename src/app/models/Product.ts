@@ -152,6 +152,12 @@ ProductSchema.static(
 		_limit: string | number,
 		_page: string | number,
 		filter?: {
+			name?: string;
+			price?: {
+				from: number;
+				to: number;
+			};
+			inStock?: boolean;
 			category?: {
 				Ids: number[];
 				Type: 'AND' | 'OR';
@@ -177,6 +183,23 @@ ProductSchema.static(
 
 		// Matching.
 		const matcher: any = {};
+		if (filter?.name) {
+			matcher['name'] = {
+				$regex: filter.name,
+				$options: 'i',
+			};
+		}
+		if (filter?.price) {
+			matcher['price'] = {
+				$gte: filter.price.from,
+				$lte: filter.price.to,
+			};
+		}
+		if (filter?.inStock === true) {
+			matcher['stock'] = {
+				$gt: 0,
+			};
+		}
 		if (filter?.category && filter.category.Ids.length > 0) {
 			if (filter.category.Type === 'AND') {
 				matcher['categoryIds'] = {

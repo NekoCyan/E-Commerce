@@ -38,6 +38,12 @@ export interface IProductModel extends Model<IProduct, {}, IProductMethods> {
 		limit?: string | number,
 		page?: string | number,
 		filter?: {
+			name?: string;
+			price?: {
+				from: number;
+				to: number;
+			};
+			inStock?: boolean;
 			category?: {
 				Ids: number[];
 				Type: 'AND' | 'OR';

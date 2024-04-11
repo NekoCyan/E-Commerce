@@ -9,7 +9,7 @@ const adminAccess = [''];
 export async function middleware(req: NextRequest) {
 	try {
 		if (
-			['POST', 'PUT', 'PATCH'].some((x) => x == req.method) &&
+			['POST', 'PUT', 'PATCH'].some((x) => x === req.method) &&
 			!req.nextUrl.pathname.startsWith('/api/auth/')
 		) {
 			const reqText = await req.text();
