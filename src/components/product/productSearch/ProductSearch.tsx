@@ -42,7 +42,7 @@ export default function ProductSearch({
 					<p className={'product-category'}>
 						{categories.find(
 							(x) =>
-								x.id === productData.categoryIds[0].toString(),
+								x.id === productData.categoryIds[0]?.toString(),
 						)?.name ?? 'Unknown'}
 					</p>
 					<h3 className={'product-name'}>
