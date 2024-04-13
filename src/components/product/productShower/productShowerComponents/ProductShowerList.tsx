@@ -197,12 +197,9 @@ export default function ProductShowerList({
 															add to wishlist{' '}
 														</span>
 													</button>
-													<button
-														className='quick-view'
-														onClick={() => {
-															window.location.href =
-																productDetailsURL;
-														}}
+													<Link
+														href={productDetailsURL}
+														className='p-5'
 													>
 														<i className='fa fa-th-list'></i>
 														<span
@@ -213,7 +210,7 @@ export default function ProductShowerList({
 															{' '}
 															more details{' '}
 														</span>
-													</button>
+													</Link>
 												</div>
 											</div>
 											<div className={'add-to-cart'}>

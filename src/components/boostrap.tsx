@@ -2,7 +2,14 @@
 
 import { MultiStyles } from '@/utils';
 import Link from 'next/link';
-import { ChangeEvent, FocusEvent, useEffect, useRef, useState } from 'react';
+import {
+	ChangeEvent,
+	FocusEvent,
+	KeyboardEvent,
+	useEffect,
+	useRef,
+	useState,
+} from 'react';
 
 export function TextInput({
 	id,
@@ -13,6 +20,7 @@ export function TextInput({
 	value,
 	onChange,
 	onFocus,
+	onKeyDown,
 	min,
 	max,
 }: Readonly<{
@@ -31,6 +39,9 @@ export function TextInput({
 	onFocus?: (
 		e: FocusEvent<HTMLInputElement> | FocusEvent<HTMLTextAreaElement>,
 	) => void;
+	onKeyDown?: (
+		e: KeyboardEvent<HTMLInputElement> | KeyboardEvent<HTMLTextAreaElement>,
+	) => void;
 	min?: number | string;
 	max?: number | string;
 }>) {
@@ -45,6 +56,7 @@ export function TextInput({
 				placeholder={placeholder}
 				onFocus={onFocus}
 				onChange={onChange}
+				onKeyDown={onKeyDown}
 				value={value}
 			/>
 		);
@@ -61,6 +73,7 @@ export function TextInput({
 				placeholder={placeholder}
 				onChange={onChange}
 				onFocus={onFocus}
+				onKeyDown={onKeyDown}
 				value={value}
 				min={min}
 				max={max}

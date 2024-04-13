@@ -2,9 +2,9 @@
 
 import { ProductData } from '@/app/models/interfaces';
 import { SearchInput } from '@/components/boostrap';
+import ToolTip from '@/components/tooltip/ToolTip';
 import { PageProps } from '@/types';
 import { ROUTES } from '@/utils';
-import { Tooltip } from '@nextui-org/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -65,9 +65,7 @@ export default function Component({
 					{exportProductFilter.map((data, index) => (
 						<tr key={data.productId}>
 							<td width={'1%'}>{index + 1}</td>
-							<td className='w-full'>
-								{data.name}
-							</td>
+							<td className='w-full'>{data.name}</td>
 							<td className='text-center'>
 								<input
 									key={data.productId}
@@ -78,11 +76,7 @@ export default function Component({
 								/>
 							</td>
 							<td className='flex flex-row gap-5'>
-								<Tooltip
-									className='bg-red-500 p-2 px-5 rounded-lg text-white'
-									content='Edit'
-									closeDelay={0}
-								>
+								<ToolTip text='Edit'>
 									<Link
 										href={ROUTES.AdminProductsEdit(
 											data.productId.toString(),
@@ -90,12 +84,8 @@ export default function Component({
 									>
 										<i className='fa fa-edit'></i>
 									</Link>
-								</Tooltip>
-								<Tooltip
-									className='bg-red-500 p-2 px-5 rounded-lg text-white'
-									content='Preview'
-									closeDelay={0}
-								>
+								</ToolTip>
+								<ToolTip text='Preview'>
 									<Link
 										href={
 											ROUTES.AdminProductsPreview(
@@ -105,12 +95,8 @@ export default function Component({
 									>
 										<i className='fa fa-solid fa-eye'></i>
 									</Link>
-								</Tooltip>
-								<Tooltip
-									className='bg-red-500 p-2 px-5 rounded-lg text-white'
-									content='Delete'
-									closeDelay={0}
-								>
+								</ToolTip>
+								<ToolTip text='Delete'>
 									<Link
 										href='#'
 										onClick={(e) => {
@@ -122,7 +108,7 @@ export default function Component({
 									>
 										<i className='fa fa-solid fa-trash'></i>
 									</Link>
-								</Tooltip>
+								</ToolTip>
 							</td>
 						</tr>
 					))}

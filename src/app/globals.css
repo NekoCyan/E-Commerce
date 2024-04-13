@@ -817,6 +817,33 @@ textarea.input {
   width: 100%;
 }
 
+/*-- Price Filter --*/
+
+.noUi-connect {
+  background-color: #D10024;
+}
+
+.noUi-horizontal {
+  height: 6px;
+}
+
+.noUi-horizontal .noUi-handle {
+  width: 12px;
+  height: 12px;
+  top: -4px;
+  right: -3px;
+  border: none;
+  background: #D10024;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-radius: 50%;
+}
+
+.noUi-handle:before,
+.noUi-handle:after {
+  display: none;
+}
+
 /*=========================================================
 	13 -> RESPONSIVE
 ===========================================================*/
