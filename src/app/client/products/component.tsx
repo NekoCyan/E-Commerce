@@ -223,11 +223,10 @@ export default function Component({
 		let priceMax = document.getElementById('price-max') as any;
 		searchParams.set('price', `${priceMin.value}-${priceMax.value}`);
 
-		router.refresh();
-
 		if (isRequesting) {
 			router.push(url.toString());
 			setFields({ ...fields, page: 1 });
+			router.refresh();
 			setIsRequesting(false);
 		} else if (isLoadMore) {
 			searchParams.set('page', (fields.page + 1).toString());
@@ -514,8 +513,8 @@ export default function Component({
 				</Fragment>
 			) : (
 				<h3 className='text-center mt-14'>
-					No product found as your filter, please try to use another keyword or
-					filter type...
+					No product found as your filter, please try to use another
+					keyword or filter type...
 				</h3>
 			)}
 		</Container>
