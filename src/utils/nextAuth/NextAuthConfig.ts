@@ -44,7 +44,7 @@ const AuthConfig: NextAuthOptions = {
 	callbacks: {
 		async signIn(params) {
 			const { user, account } = params;
-			if (account?.provider == 'credentials') {
+			if (account?.provider === 'credentials') {
 				return true;
 			}
 
@@ -54,7 +54,7 @@ const AuthConfig: NextAuthOptions = {
 			const callbackUrl = new URL(url, baseUrl).searchParams.get(
 				'callbackUrl',
 			);
-			return callbackUrl || baseUrl;
+			return callbackUrl ?? baseUrl;
 		},
 		// https://reacthustle.com/blog/extend-user-session-nextauth-typescript
 		async jwt({ token, user }) {
