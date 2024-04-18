@@ -1,7 +1,13 @@
 'use client';
 
 import { CategoryData, ProductData } from '@/app/models/interfaces';
-import { FormatCurrency, MarkupHTML, MultiStyles } from '@/utils/ComponentUtils';
+import { ROUTES } from '@/utils';
+import {
+	FormatCurrency,
+	MarkupHTML,
+	MultiStyles,
+} from '@/utils/ComponentUtils';
+import { BASE_URL } from '@/utils/getUrl';
 import Link from 'next/link';
 import styles from '../ProductDetails.module.css';
 
@@ -9,7 +15,11 @@ export default function ProductDetailsData({
 	props,
 	isPreview,
 	categories,
-}: Readonly<{ props: ProductData; isPreview?: boolean, categories: CategoryData[] }>) {
+}: Readonly<{
+	props: ProductData;
+	isPreview?: boolean;
+	categories: CategoryData[];
+}>) {
 	const salePrice = FormatCurrency(
 		props.price * (1 - (props.salePercentage ?? 0) / 100),
 	);
@@ -152,14 +162,30 @@ export default function ProductDetailsData({
 
 				<ul className={styles['product-links']}>
 					<li>Category:</li>
-					{props.categoryIds.map((id) => (
-						<li key={id}>
-							<Link href='#' onClick={(e) => e.preventDefault()}>
-								{categories.find((c) => c.categoryId === id)
-									?.name ?? 'Unknown'}
-							</Link>
-						</li>
-					))}
+					{props.categoryIds.map((id) => {
+						const url = new URL(BASE_URL);
+						url.pathname = ROUTES.Products;
+						url.searchParams.set(
+							'filterByCategories',
+							id.toString(),
+						);
+
+						return (
+							<li key={id}>
+								<Link
+									href={isPreview ? '#' : url.toString()}
+									target='_blank'
+									onClick={(e) =>
+										e.currentTarget.href === '#' &&
+										e.preventDefault()
+									}
+								>
+									{categories.find((c) => c.categoryId === id)
+										?.name ?? 'Unknown'}
+								</Link>
+							</li>
+						);
+					})}
 				</ul>
 
 				<ul className={styles['product-links']}>

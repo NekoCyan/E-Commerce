@@ -1,6 +1,7 @@
 'use client';
 
 import { ProductData } from '@/app/models/interfaces';
+import { ROUTES } from '@/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Container } from 'react-bootstrap';
@@ -27,7 +28,22 @@ export default function Component({
 				</Link>
 			</div>
 			<hr />
-			{productData.status === false && (
+			{productData.status === true ? (
+				<h4 className='text-center'>
+					You are previewing{' '}
+					<span className='text-green-500'>Published</span> page, you
+					can see final result in{' '}
+					<Link
+						className='font-bold text-blue-500 underline'
+						target='_blank'
+						href={ROUTES.ProductDetails(
+							productData.productId.toString(),
+						)}
+					>
+						HERE
+					</Link>
+				</h4>
+			) : (
 				<h4 className='text-center'>
 					This page will not be found by User because{' '}
 					<span className='text-red-500'>No Published</span>.

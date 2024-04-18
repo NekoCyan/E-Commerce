@@ -16,6 +16,13 @@ export const ROUTES = {
 	Wishlist: '/profile/wishlist',
 	// Produts.
 	Products: '/products',
+	/**
+	 * @param id Product ID
+	 * @param withBreakcrumb Default is true
+	 * @returns
+	 */
+	ProductDetails: (id: string, withBreakcrumb: boolean = true) =>
+		`/product-details/${id}` + (withBreakcrumb ? `#breadcrumb` : ''),
 	// Admin.
 	Admin: '/admin',
 	AdminUsers: '/admin/users',
