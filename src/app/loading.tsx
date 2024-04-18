@@ -1,6 +1,8 @@
+import { MultiStyles } from '@/utils';
 import Image from 'next/image';
 
 type LoadingProps = {
+	className?: string;
 	width?: number;
 	height?: number;
 };
@@ -18,7 +20,7 @@ export default function Loading(props: Readonly<LoadingProps>) {
 			alt='loader'
 			width={props.width}
 			height={props.height}
-			className='d-block m-auto p-5'
+			className={MultiStyles('d-block m-auto p-5', props.className)}
 			style={{
 				display: 'block',
 				margin: 'auto',
