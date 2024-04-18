@@ -4,11 +4,14 @@ import { CategoryData, ProductData } from '@/app/models/interfaces';
 import { ROUTES } from '@/utils';
 import {
 	FormatCurrency,
-	MarkupHTML,
 	MultiStyles,
+	RehypeMarkdown,
 } from '@/utils/ComponentUtils';
 import { BASE_URL } from '@/utils/getUrl';
 import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
+import remarkBreaks from 'remark-breaks';
+import RemarkGfm from 'remark-gfm';
 import styles from '../ProductDetails.module.css';
 
 export default function ProductDetailsData({
@@ -74,7 +77,20 @@ export default function ProductDetailsData({
 						</span>
 					)}
 				</div>
-				<p dangerouslySetInnerHTML={MarkupHTML(props.description)} />
+				<ReactMarkdown
+					remarkPlugins={[RemarkGfm, remarkBreaks]}
+					components={{
+						a: (props) => {
+							return (
+								<a href={props.href} target='_blank'>
+									{props.children}
+								</a>
+							);
+						},
+					}}
+				>
+					{RehypeMarkdown(props.description)}
+				</ReactMarkdown>
 
 				{/* <div className={styles['product-options']}>
 					<label>

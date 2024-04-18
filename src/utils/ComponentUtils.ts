@@ -74,3 +74,9 @@ export function MarkupHTML(markup: string) {
 
 	return { __html: markup };
 }
+
+export function RehypeMarkdown(html: string) {
+	html = html.replace(/(?:\r\n|\r|\n)/g, '\n&nbsp;');
+
+	return html;
+}

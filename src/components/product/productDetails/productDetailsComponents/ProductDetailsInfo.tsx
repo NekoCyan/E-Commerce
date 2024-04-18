@@ -1,8 +1,11 @@
 'use client';
 
 import { ProductData } from '@/app/models/interfaces';
-import { MarkupHTML, MultiStyles } from '@/utils/ComponentUtils';
+import { MultiStyles, RehypeMarkdown } from '@/utils/ComponentUtils';
 import { Row } from 'react-bootstrap';
+import ReactMarkdown from 'react-markdown';
+import remarkBreaks from 'remark-breaks';
+import RemarkGfm from 'remark-gfm';
 import styles from '../ProductDetails.module.css';
 
 export default function ProductDetailsInfo({
@@ -71,11 +74,23 @@ export default function ProductDetailsInfo({
 					<div id='tab1' className='tab-pane fade in active'>
 						<Row>
 							<div className='col-md-12'>
-								<p
-									dangerouslySetInnerHTML={MarkupHTML(
-										props.description,
-									)}
-								/>
+								<ReactMarkdown
+									remarkPlugins={[RemarkGfm, remarkBreaks]}
+									components={{
+										a: (props) => {
+											return (
+												<a
+													href={props.href}
+													target='_blank'
+												>
+													{props.children}
+												</a>
+											);
+										},
+									}}
+								>
+									{RehypeMarkdown(props.description)}
+								</ReactMarkdown>
 							</div>
 						</Row>
 					</div>
@@ -83,11 +98,23 @@ export default function ProductDetailsInfo({
 					<div id='tab2' className='tab-pane fade in'>
 						<Row>
 							<div className='col-md-12'>
-								<p
-									dangerouslySetInnerHTML={MarkupHTML(
-										props.details,
-									)}
-								/>
+								<ReactMarkdown
+									remarkPlugins={[RemarkGfm, remarkBreaks]}
+									components={{
+										a: (props) => {
+											return (
+												<a
+													href={props.href}
+													target='_blank'
+												>
+													{props.children}
+												</a>
+											);
+										},
+									}}
+								>
+									{RehypeMarkdown(props.details)}
+								</ReactMarkdown>
 							</div>
 						</Row>
 					</div>
