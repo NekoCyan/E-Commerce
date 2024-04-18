@@ -109,7 +109,8 @@ export default function HeaderSearch({
 						)}
 					>
 						{isSearching && <Loading width={250} height={100} />}
-						{!isSearching && searchResults.length > 0 ? (
+						{!isSearching &&
+							searchResults.length > 0 &&
 							searchResults.map((product) => (
 								<Link
 									key={product.productId}
@@ -138,8 +139,8 @@ export default function HeaderSearch({
 										{product.name}
 									</a>
 								</Link>
-							))
-						) : (
+							))}
+						{!isSearching && searchResults.length === 0 && (
 							<div className='flex justify-center items-center h-full'>
 								<h4 className='m-0 text-center'>
 									No results found, try to use another
