@@ -2,7 +2,7 @@
 
 import { CategoryData, ProductData } from '@/app/models/interfaces';
 import { DocumentList } from '@/app/models/interfaces/ExternalDocument';
-import { TextInput } from '@/components/boostrap';
+import { DragDrop, TextInput } from '@/components/boostrap';
 import Modal from '@/components/modal/Modal';
 import { APIResponse } from '@/types';
 import {
@@ -16,11 +16,10 @@ import {
 import { GET, POST, PUT } from '@/utils/Request';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, Fragment, useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 
 let availableCategories: { id: string; name: string }[] = [];
-let loaded = false;
 
 export default function Component({
 	productData,
@@ -28,6 +27,8 @@ export default function Component({
 	productData?: ProductData;
 }>) {
 	const router = useRouter();
+
+	const [isLoaded, setIsLoaded] = useState(false);
 
 	// State for the form fields
 	const [error, setError] = useState<{ [key: string]: string }>({});
@@ -184,8 +185,8 @@ export default function Component({
 
 	// Load the categories.
 	useEffect(() => {
-		if (loaded) return;
-		loaded = true;
+		if (isLoaded) return;
+		setIsLoaded(true);
 
 		fetchedCategories();
 	}, []);
@@ -231,6 +232,20 @@ export default function Component({
 		} else {
 			setCategories([...categories, category]);
 		}
+	};
+
+	const onDragEnd = (result: any, type: 'categories' | 'link') => {
+		if (!result.destination) return;
+		if (['categories', 'link'].indexOf(type) === -1) return;
+
+		const items = type === 'categories' ? categories : linkInput;
+
+		const newItems = Array.from(items);
+		const [reorderedItem] = newItems.splice(result.source.index, 1);
+		newItems.splice(result.destination.index, 0, reorderedItem);
+
+		if (type === 'categories') setCategories(newItems);
+		else setLinkInput(newItems);
 	};
 
 	const handleAddCategory = () => {
@@ -386,34 +401,56 @@ export default function Component({
 									<i className='fa fa-refresh'></i>
 								</Link>
 							</div>
-							<div className='category-input mt-2 flex items-center'>
-								<div className='selected-categories flex items-center flex-wrap gap-2'>
-									{categories.map((category) => (
-										<div
-											key={category}
-											className='category-chip bg-gray-200 text-gray-800 px-3 py-1 rounded-full mr-2 mb-2 flex items-center gap-2'
-										>
-											{availableCategories.find(
-												(x) => x.id === category,
-											)?.name ?? 'Unknown'}
-											<Link
-												href='#'
-												className='remove-category ml-2 cursor-pointer text-bold'
-												onClick={(e) => {
-													e.preventDefault();
-													toggleCategory(category);
-												}}
-											>
-												x
-											</Link>
-										</div>
-									))}
-								</div>
+							<div className='category-input flex items-end'>
+								{categories.length > 0 && (
+									<DragDrop
+										droppableId='categories'
+										dropableClassName='flex flex-wrap self-center gap-2 rounded-xl p-1'
+										draggableClassName='px-3 py-1 rounded-full inline-block'
+										data={categories}
+										direction='horizontal'
+										onDragEnd={(e) =>
+											onDragEnd(e, 'categories')
+										}
+									>
+										{(
+											provided,
+											snapshot,
+											providedDrop,
+											snapshotDrop,
+											item,
+										) => (
+											<Fragment>
+												{availableCategories.find(
+													(x) => x.id === item,
+												)?.name ?? 'Unknown'}
+												{!snapshotDrop.isDraggingOver && (
+													<Link
+														href='#'
+														className='ml-2 cursor-pointer text-2xl'
+														onClick={(e) => {
+															e.preventDefault();
+															toggleCategory(
+																item,
+															);
+														}}
+													>
+														x
+													</Link>
+												)}
+											</Fragment>
+										)}
+									</DragDrop>
+								)}
 								<button
-									className='add-category bg-gray-200 text-gray-800 px-2 py-1 rounded-full ml-2'
+									className='add-category bg-gray-200 text-gray-800 px-4 py-2 rounded-full ml-2'
 									onClick={handleAddCategory}
 								>
-									+
+									{categories.length > 0 ? (
+										<i className='fa fa-pencil'></i>
+									) : (
+										<i className='fa fa-plus'></i>
+									)}
 								</button>
 							</div>
 							{isCategoryModalOpen && (
@@ -643,34 +680,56 @@ export default function Component({
 								</i>
 							)}
 						</label>
-						{linkInput.map((input, i) => (
-							<div key={i} className='flex flex-row gap-2'>
-								<TextInput
-									placeholder='https://...'
-									className=' p-1 w-full'
-									onChange={(event) =>
-										handleInputChange(i, event as any)
-									}
-									value={input}
-								/>
-								{linkInput.length - 1 === i && (
-									<button
-										className='btn btn-success font-bold'
-										onClick={handleAddClick}
-									>
-										+
-									</button>
-								)}
-								{linkInput.length !== 1 && (
-									<button
-										className='btn btn-danger font-bold'
-										onClick={() => handleRemoveClick(i)}
-									>
-										{SYMBOLS.EN_DASH}
-									</button>
-								)}
-							</div>
-						))}
+						<DragDrop
+							droppableId='link'
+							data={linkInput.map((_, index) => index)}
+							direction='vertical'
+							dropableClassName='flex flex-col w-full self-center gap-2 rounded-xl p-1'
+							draggableClassName='flex flex-row items-center gap-2'
+							onDragEnd={(e) => onDragEnd(e, 'link')}
+						>
+							{(
+								provided,
+								snapshot,
+								providedDrop,
+								snapshotDrop,
+								item,
+								itemIndex,
+							) => (
+								<Fragment>
+									<i className='fa fa-bars cursor-move text-black text-3xl pl-3'></i>{' '}
+									<TextInput
+										placeholder='https://...'
+										className=' p-1 w-full'
+										onChange={(event) =>
+											handleInputChange(
+												itemIndex,
+												event as any,
+											)
+										}
+										value={linkInput[itemIndex]}
+									/>
+									{linkInput.length - 1 === itemIndex && (
+										<button
+											className='btn btn-success font-bold'
+											onClick={handleAddClick}
+										>
+											+
+										</button>
+									)}
+									{linkInput.length !== 1 && (
+										<button
+											className='btn btn-danger font-bold'
+											onClick={() =>
+												handleRemoveClick(itemIndex)
+											}
+										>
+											{SYMBOLS.EN_DASH}
+										</button>
+									)}
+								</Fragment>
+							)}
+						</DragDrop>
 					</div>
 				</div>
 			</div>

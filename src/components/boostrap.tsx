@@ -10,6 +10,17 @@ import {
 	useRef,
 	useState,
 } from 'react';
+import {
+	Direction,
+	DragDropContext,
+	Draggable,
+	DraggableProvided,
+	DraggableStateSnapshot,
+	Droppable,
+	DroppableProvided,
+	DroppableStateSnapshot,
+	OnDragEndResponder,
+} from 'react-beautiful-dnd';
 
 export function TextInput({
 	id,
@@ -151,6 +162,82 @@ export function SearchInput({
 				></Link>
 			)}
 		</div>
+	);
+}
+
+export function DragDrop<T>({
+	data,
+	droppableId,
+	direction,
+	dropableClassName,
+	draggableClassName,
+	onDragEnd,
+	children,
+}: Readonly<{
+	data: T[];
+	droppableId: string;
+	direction?: Direction;
+	dropableClassName?: string;
+	draggableClassName?: string;
+	onDragEnd: OnDragEndResponder;
+	children?: (
+		providedDrag: DraggableProvided,
+		snapshotDrag: DraggableStateSnapshot,
+		providedDrop: DroppableProvided,
+		snapshotDrop: DroppableStateSnapshot,
+		item: T,
+		itemIndex: number,
+	) => React.ReactNode;
+}>) {
+	return (
+		<DragDropContext onDragEnd={onDragEnd}>
+			<Droppable droppableId={droppableId} direction={direction}>
+				{(providedDrop, snapshotDrop) => (
+					<div
+						ref={providedDrop.innerRef}
+						className={MultiStyles(
+							snapshotDrop.isDraggingOver
+								? 'bg-green-200'
+								: 'bg-gray-100',
+							dropableClassName,
+						)}
+						{...providedDrop.droppableProps}
+					>
+						{data.map((item, index) => (
+							<Draggable
+								key={`${item}`}
+								draggableId={`${item}`}
+								index={index}
+							>
+								{(provided, snapshot) => (
+									<div
+										ref={provided.innerRef}
+										className={MultiStyles(
+											snapshot.isDragging
+												? 'bg-gray-700 text-white'
+												: 'bg-gray-200 text-gray-800',
+											draggableClassName,
+										)}
+										{...provided.draggableProps}
+										{...provided.dragHandleProps}
+									>
+										{children?.(
+											provided,
+											snapshot,
+											providedDrop,
+											snapshotDrop,
+											item,
+											index,
+										)}
+									</div>
+								)}
+							</Draggable>
+						))}
+						{providedDrop.placeholder}
+					</div>
+				)}
+			</Droppable>
+		</DragDropContext>
 	);
 }
 
