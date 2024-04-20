@@ -10,6 +10,8 @@ import { getServerSession } from 'next-auth';
 import { Montserrat } from 'next/font/google';
 import Link from 'next/link';
 import 'nouislider/dist/nouislider.min.css';
+import { Bounce, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import LinkClickPreventer from './LinkClickPreventer';
@@ -68,6 +70,15 @@ export default async function RootLayout({
 				<NextAuthProvider session={session}>
 					{children}
 				</NextAuthProvider>
+				<ToastContainer
+					position='top-right'
+					autoClose={4000}
+					hideProgressBar={false}
+					newestOnTop={true}
+					theme='light'
+					transition={Bounce}
+					className='w-[200px] sm:w-[250px] lg:w-[300px] left-auto right-0 z-30'
+				/>
 				<LinkClickPreventer />
 			</body>
 		</html>
