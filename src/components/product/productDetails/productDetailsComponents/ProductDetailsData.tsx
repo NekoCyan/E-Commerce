@@ -69,7 +69,7 @@ export default function ProductDetailsData({
 					</h3>
 					{props.stock > 0 ? (
 						<span className={styles['product-available']}>
-							In Stock
+							In Stock ({props.stock} Available)
 						</span>
 					) : (
 						<span className={styles['product-unavailable']}>
@@ -128,7 +128,12 @@ export default function ProductDetailsData({
 									'input-number',
 								)}
 							>
-								<input type='number' defaultValue={1} min={1} />
+								<input
+									type='number'
+									defaultValue={1}
+									min={1}
+									max={props.stock}
+								/>
 								<span
 									className={MultiStyles(
 										styles['qty-up'],
