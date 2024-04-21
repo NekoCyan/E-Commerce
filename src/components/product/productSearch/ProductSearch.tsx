@@ -1,5 +1,5 @@
 import { ProductData } from '@/app/models/interfaces';
-import { FormatCurrency, Truncate } from '@/utils';
+import { FormatCurrency, MultiStyles, Truncate } from '@/utils';
 import Link from 'next/link';
 
 export default function ProductSearch({
@@ -82,7 +82,12 @@ export default function ProductSearch({
 					</div>
 				</div>
 				<div className={'add-to-cart'}>
-					<button className={'add-to-cart-btn'}>
+					<button
+						className={MultiStyles(
+							'add-to-cart-btn',
+							productData.stock <= 0 && 'disabled',
+						)}
+					>
 						<i className='fa fa-shopping-cart'></i> add to cart
 					</button>
 				</div>

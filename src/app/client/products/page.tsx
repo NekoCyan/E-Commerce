@@ -18,6 +18,7 @@ export default async function Page(
 				name: string;
 				price: string;
 				filterByCategories: string;
+				inStock: string;
 				page: string;
 			}>
 		>
@@ -33,6 +34,8 @@ export default async function Page(
 			'filterByCategories',
 			props.searchParams.filterByCategories!,
 		);
+	!IsNullOrUndefined(props.searchParams.inStock) &&
+		searchParams.append('inStock', props.searchParams.inStock!);
 
 	const fetchedProducts = await fetch(
 		getUrl('/api/products') + '?' + searchParams.toString(),

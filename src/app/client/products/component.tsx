@@ -9,6 +9,7 @@ import ToolTip from '@/components/tooltip/ToolTip';
 import { APIResponse, NekoResponse, PageProps } from '@/types';
 import { API, LimitArray, MultiStyles, betweenResolveable } from '@/utils';
 import { GET } from '@/utils/Request';
+import debounce from 'lodash.debounce';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
@@ -30,6 +31,7 @@ export default function Component({
 			name: string;
 			price: string;
 			filterByCategories: string;
+			inStock: string;
 			page: string;
 		}>
 	>;
@@ -42,6 +44,10 @@ export default function Component({
 	const [isRequesting, setIsRequesting] = useState(false);
 	const [isLoadMore, setIsLoadMore] = useState(false);
 
+	const debounceSearch = debounce(() => {
+		setIsRequesting(true);
+	}, 500);
+
 	// State for the form fields
 	const [loaded, setLoaded] = useState(false);
 	const [error, setError] = useState<{ [key: string]: string }>({});
@@ -49,11 +55,13 @@ export default function Component({
 		name: string;
 		price: string;
 		filterByCategories: string;
+		inStock: string;
 		page: number;
 	}>({
 		name: props.searchParams.name ?? '',
 		price: props.searchParams.price ?? '',
 		filterByCategories: props.searchParams.filterByCategories ?? '',
+		inStock: props.searchParams.inStock ?? '0',
 		page: 1,
 	});
 
@@ -127,7 +135,6 @@ export default function Component({
 				},
 				behaviour: 'drag',
 			});
-
 			(priceSlider as any).noUiSlider.on(
 				'update',
 				function (values: any, handle: any) {
@@ -137,6 +144,9 @@ export default function Component({
 					} else {
 						inputUp.value = parseInt(value);
 					}
+
+					debounceSearch.cancel();
+					debounceSearch();
 				},
 			);
 
@@ -218,6 +228,7 @@ export default function Component({
 		if (fields.name) searchParams.set('name', fields.name);
 		if (categories.length > 0)
 			searchParams.set('filterByCategories', categories.join(','));
+		if (fields.inStock === '1') searchParams.set('inStock', '1');
 		// price.
 		let priceMin = document.getElementById('price-min') as any;
 		let priceMax = document.getElementById('price-max') as any;
@@ -283,13 +294,21 @@ export default function Component({
 								'w-full h-[40px]',
 								error.name ? 'border-red-400' : '',
 							)}
-							onChange={(e) =>
-								setFields({ ...fields, name: e.target.value })
-							}
+							onChange={(e) => {
+								setFields({
+									...fields,
+									name: e.target.value,
+								});
+								debounceSearch.cancel();
+								debounceSearch();
+							}}
 							value={fields.name}
 							onFocus={handleFocus}
 							onKeyDown={(e) => {
-								e.key === 'Enter' && setIsRequesting(true);
+								if (e.key === 'Enter') {
+									debounceSearch.cancel();
+									setIsRequesting(true);
+								}
 							}}
 						/>
 					</div>
@@ -327,7 +346,7 @@ export default function Component({
 					</div>
 				</div>
 				<div className='flex flex-col justify-between gap-2 md:flex-row'>
-					<div className='form-group col-md-9 sol-sm-12 flex flex-col'>
+					<div className='form-group col-md-9 mt-5 flex flex-col'>
 						{/* <label htmlFor='categories'>
 							Categories*
 							{error.categories && (
@@ -460,12 +479,25 @@ export default function Component({
 							)}
 						</div>
 					</div>
-					<button
-						className='btn btn-primary uppercase w-[220px] h-[40px] self-end'
-						onClick={() => setIsRequesting(true)}
-					>
-						Search follow filters
-					</button>
+					<div className='flex flex-row col-sm-3 self-center items-center gap-2'>
+						<label htmlFor='inStock' className='m-0'>
+							In Stock
+						</label>
+						<input
+							id='inStock'
+							type='checkbox'
+							className='m-0 w-10 h-10'
+							checked={fields.inStock === '1'}
+							onChange={(e) => {
+								setFields({
+									...fields,
+									inStock: e.target.checked ? '1' : '0',
+								});
+								debounceSearch.cancel();
+								setIsRequesting(true);
+							}}
+						/>
+					</div>
 				</div>
 			</div>
 			{errorMsg ? (
