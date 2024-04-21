@@ -249,7 +249,7 @@ ProductSchema.static(
 
 // middlewares.
 ProductSchema.pre('save', async function (this: IProduct, next) {
-	const product = this as IProduct;
+	const product = this;
 	if (product.isNew) {
 		this.productId = await Counter.getNextSequence(Product, 'categoryId');
 	}
