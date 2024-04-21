@@ -16,9 +16,9 @@ type HeaderMiscProps = {
 export default function HeaderMisc({
 	isDisabled,
 	miscExcluded,
-}: HeaderMiscProps) {
+}: Readonly<HeaderMiscProps>) {
 	const navigationClassName = navigationStyles['navigation'];
-	const { data, status } = useSession();
+	const { status } = useSession();
 
 	// Check if the document is loaded (and there's navigation in page).
 	const [isDocumentLoaded, setIsDocumentLoaded] = useState(false);

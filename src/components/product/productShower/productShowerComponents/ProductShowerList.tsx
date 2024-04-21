@@ -215,9 +215,11 @@ export default function ProductShowerList({
 											</div>
 											<div className={'add-to-cart'}>
 												<button
-													className={
-														'add-to-cart-btn'
-													}
+													className={MultiStyles(
+														'add-to-cart-btn',
+														productData.stock <=
+															0 && 'disabled',
+													)}
 												>
 													<i className='fa fa-shopping-cart'></i>{' '}
 													add to cart

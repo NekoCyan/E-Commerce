@@ -54,11 +54,18 @@ export default function ProductShower({
 		if (!isFetching) return;
 
 		if (currentCategory.name.toLowerCase() === 'all') {
-			GET(API.ProductsList, {
-				headers: {
-					'Content-Type': 'application/json',
+			GET(
+				API.ProductsList +
+					'?' +
+					new URLSearchParams({
+						inStock: '',
+					}),
+				{
+					headers: {
+						'Content-Type': 'application/json',
+					},
 				},
-			})
+			)
 				.then((x) => {
 					const data = x.data as NekoResponse<
 						DocumentList<ProductData>
@@ -80,6 +87,7 @@ export default function ProductShower({
 					new URLSearchParams({
 						filterByCategories:
 							currentCategory.categoryId.toString(),
+						inStock: '',
 					}),
 				{
 					headers: {

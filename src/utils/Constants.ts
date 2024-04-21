@@ -40,15 +40,20 @@ export const ROUTES = {
 };
 
 export const API = {
+	// Categories.
 	CategoriesList: '/api/categories',
 	CategoriesNew: '/api/categories',
 	CategoriesEdit: (id: string) => `/api/categories/${id}`,
 	CategoriesDelete: (id: string) => `/api/categories/${id}`,
+	// Products.
 	ProductsList: '/api/products',
 	ProductsNew: '/api/products',
 	ProductsGet: (id: string) => `/api/products/${id}`,
 	ProductsEdit: (id: string) => `/api/products/${id}`,
 	ProductsDelete: (id: string) => `/api/products/${id}`,
+	// Carts.
+	Cart: '/api/cart',
+	CartCount: '/api/cart/count',
 };
 
 export const LIMITER = {

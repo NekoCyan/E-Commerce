@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 
+import store from '@/redux/store';
 import { ROUTES, WEBSITE } from '@/utils';
 import { MultiStyles } from '@/utils/ComponentUtils';
 import NextAuthProvider from '@/utils/nextAuth/NextAuthProvider';
+import ReduxProvider from '@/utils/redux/ReduxProvider';
 import 'bootstrap/dist/css/bootstrap-theme.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -67,18 +69,20 @@ export default async function RootLayout({
 					</u>
 					, not for Commercial.
 				</h5>
-				<NextAuthProvider session={session}>
-					{children}
-				</NextAuthProvider>
-				<ToastContainer
-					position='top-right'
-					autoClose={4000}
-					hideProgressBar={false}
-					newestOnTop={true}
-					theme='light'
-					transition={Bounce}
-					className='w-[200px] sm:w-[250px] lg:w-[300px] left-auto right-0 z-30'
-				/>
+				<ReduxProvider store={store}>
+					<NextAuthProvider session={session}>
+						{children}
+					</NextAuthProvider>
+					<ToastContainer
+						position='top-right'
+						autoClose={4000}
+						hideProgressBar={false}
+						newestOnTop={true}
+						theme='light'
+						transition={Bounce}
+						className='w-[200px] sm:w-[250px] lg:w-[300px] left-auto right-0 z-30'
+					/>
+				</ReduxProvider>
 				<LinkClickPreventer />
 			</body>
 		</html>
