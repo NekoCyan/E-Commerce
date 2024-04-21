@@ -694,6 +694,11 @@ textarea.input {
   visibility: hidden;
 }
 
+.product .add-to-cart .add-to-cart-btn.disabled {
+  background-color: #8D99AE;
+  pointer-events: none;
+}
+
 .product .add-to-cart .add-to-cart-btn:hover {
   background-color: #FFF;
   color: #D10024;
