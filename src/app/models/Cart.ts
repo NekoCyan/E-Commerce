@@ -110,24 +110,6 @@ CartSchema.static('deleteCart', async function (userId: string): Promise<
 
 // middlewares.
 CartSchema.pre('save', async function (this: ICart, next) {
-	const productIds = this.data.map(({ productId }) => productId);
-	const products = await Product.find({
-		productId: { $in: productIds },
-		status: true,
-	})
-		.select('productId stock')
-		.lean()
-		.exec();
-
-	this.data = this.data.filter((x) => {
-		return products.find((y) => y.productId === x.productId);
-	}) as any;
-	this.data = this.data.map((x) => {
-		const product = products.find((y) => y.productId === x.productId)!;
-		if (x.quantity > product.stock) x.quantity = product.stock;
-		return x;
-	}) as any;
-
 	next();
 });
 
