@@ -52,68 +52,70 @@ export default function Component({
 				</div>
 			</Row>
 
-			<Table className='w-full'>
-				<thead>
-					<tr>
-						<th className='text-center'>#</th>
-						<th>Product Name</th>
-						<th>Published?</th>
-						<th className='text-center'>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					{exportProductFilter.map((data, index) => (
-						<tr key={data.productId}>
-							<td width={'1%'}>{index + 1}</td>
-							<td className='w-full'>{data.name}</td>
-							<td className='text-center'>
-								<input
-									key={data.productId}
-									type='checkbox'
-									className='w-[15px] h-[15px]'
-									checked={data.status}
-									readOnly={true}
-								/>
-							</td>
-							<td className='flex flex-row gap-5'>
-								<ToolTip text='Edit'>
-									<Link
-										href={ROUTES.AdminProductsEdit(
-											data.productId.toString(),
-										)}
-									>
-										<i className='fa fa-edit'></i>
-									</Link>
-								</ToolTip>
-								<ToolTip text='Preview'>
-									<Link
-										href={
-											ROUTES.AdminProductsPreview(
-												data.productId.toString(),
-											) + '#preview'
-										}
-									>
-										<i className='fa fa-solid fa-eye'></i>
-									</Link>
-								</ToolTip>
-								<ToolTip text='Delete'>
-									<Link
-										href='#'
-										onClick={(e) => {
-											e.preventDefault();
-											// router.push(
-											// 	`?action=delete&categoryId=${data.categoryId}`,
-											// );
-										}}
-									>
-										<i className='fa fa-solid fa-trash'></i>
-									</Link>
-								</ToolTip>
-							</td>
+			<div className='overflow-x-auto'>
+				<Table className='w-full'>
+					<thead>
+						<tr>
+							<th className='text-center'>#</th>
+							<th>Product Name</th>
+							<th>Published?</th>
+							<th className='text-center'>Action</th>
 						</tr>
-					))}
-				</tbody>
-			</Table>
+					</thead>
+					<tbody>
+						{exportProductFilter.map((data, index) => (
+							<tr key={data.productId}>
+								<td width={'1%'}>{index + 1}</td>
+								<td className='w-full'>{data.name}</td>
+								<td className='text-center'>
+									<input
+										key={data.productId}
+										type='checkbox'
+										className='w-[15px] h-[15px]'
+										checked={data.status}
+										readOnly={true}
+									/>
+								</td>
+								<td className='flex flex-row gap-5'>
+									<ToolTip text='Edit'>
+										<Link
+											href={ROUTES.AdminProductsEdit(
+												data.productId.toString(),
+											)}
+										>
+											<i className='fa fa-edit'></i>
+										</Link>
+									</ToolTip>
+									<ToolTip text='Preview'>
+										<Link
+											href={
+												ROUTES.AdminProductsPreview(
+													data.productId.toString(),
+												) + '#preview'
+											}
+										>
+											<i className='fa fa-solid fa-eye'></i>
+										</Link>
+									</ToolTip>
+									<ToolTip text='Delete'>
+										<Link
+											href='#'
+											onClick={(e) => {
+												e.preventDefault();
+												// router.push(
+												// 	`?action=delete&categoryId=${data.categoryId}`,
+												// );
+											}}
+										>
+											<i className='fa fa-solid fa-trash'></i>
+										</Link>
+									</ToolTip>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</Table>
+			</div>
 			{exportProductFilter.length === 0 && products.length !== 0 && (
 				<h3 className='text-center py-10'>
 					No product found with the keyword "{searchInput}"

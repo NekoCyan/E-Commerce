@@ -132,49 +132,53 @@ export default function Component({
 					</div>
 				</Row>
 
-				<Table className={styles.table}>
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>Category Name</th>
-							<th>Description</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						{categories.list.map((data, index) => (
-							<tr key={data.categoryId}>
-								<td>{index + 1}</td>
-								<td>{data.name}</td>
-								<td>{data.description}</td>
-								<td>
-									<Link
-										href='#'
-										onClick={(e) => {
-											e.preventDefault();
-											router.push(
-												`?action=edit&categoryId=${data.categoryId}`,
-											);
-										}}
-									>
-										<i className='fa fa-edit'></i>
-									</Link>
-									<Link
-										href='#'
-										onClick={(e) => {
-											e.preventDefault();
-											router.push(
-												`?action=delete&categoryId=${data.categoryId}`,
-											);
-										}}
-									>
-										<i className='fa fa-solid fa-trash'></i>
-									</Link>
-								</td>
+				<div className='overflow-x-auto'>
+					<Table className={styles.table}>
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Category Name</th>
+								<th>Description</th>
+								<th>Action</th>
 							</tr>
-						))}
-					</tbody>
-				</Table>
+						</thead>
+						<tbody>
+							{categories.list.map((data, index) => (
+								<tr key={data.categoryId}>
+									<td>{index + 1}</td>
+									<td>{data.name}</td>
+									<td className='w-full'>
+										{data.description}
+									</td>
+									<td>
+										<Link
+											href='#'
+											onClick={(e) => {
+												e.preventDefault();
+												router.push(
+													`?action=edit&categoryId=${data.categoryId}`,
+												);
+											}}
+										>
+											<i className='fa fa-edit'></i>
+										</Link>
+										<Link
+											href='#'
+											onClick={(e) => {
+												e.preventDefault();
+												router.push(
+													`?action=delete&categoryId=${data.categoryId}`,
+												);
+											}}
+										>
+											<i className='fa fa-solid fa-trash'></i>
+										</Link>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</Table>
+				</div>
 				{categories.list.length === 0 && (
 					<h3 className='text-center py-10'>
 						No category available, go add first.
