@@ -1,5 +1,11 @@
 import { CommaAnd, CreateEnum, Truncate } from './Utilities';
 
+export const REVALIDATE = {
+	Product: 10,
+	Category: 10,
+	ProductSearch: 10,
+};
+
 export const WEBSITE = {
 	titleName: `Ocean Electro`,
 	title: (sub_name: string) =>

@@ -1,10 +1,9 @@
 import { ProductData } from '@/app/models/interfaces';
 import { DocumentList } from '@/app/models/interfaces/ExternalDocument';
 import { NekoResponse, PageProps } from '@/types';
-import { IsNullOrUndefined, WEBSITE } from '@/utils';
+import { IsNullOrUndefined, REVALIDATE, WEBSITE } from '@/utils';
 import getUrl from '@/utils/getUrl';
 import { Metadata } from 'next';
-import { cookies } from 'next/headers';
 import Component from './component';
 
 export const metadata: Metadata = {
@@ -35,14 +34,14 @@ export default async function Page(
 			props.searchParams.filterByCategories!,
 		);
 
-	const Cookies = cookies();
 	const fetchedProducts = await fetch(
 		getUrl('/api/products') + '?' + searchParams.toString(),
 		{
-			cache: 'no-cache',
 			headers: {
 				'Content-Type': 'application/json',
-				Cookie: Cookies.toString(),
+			},
+			next: {
+				revalidate: REVALIDATE.ProductSearch,
 			},
 		},
 	);

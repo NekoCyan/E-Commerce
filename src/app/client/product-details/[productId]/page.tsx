@@ -1,7 +1,7 @@
 import BreadCrumb from '@/components/breadcrumb/BreadCrumb';
 import ProductDetails from '@/components/product/productDetails/ProductDetails';
 import { PageProps } from '@/types';
-import { API, ROUTES, Truncate, WEBSITE } from '@/utils';
+import { API, REVALIDATE, ROUTES, Truncate, WEBSITE } from '@/utils';
 import getUrl from '@/utils/getUrl';
 import { notFound } from 'next/navigation';
 import { Fragment } from 'react';
@@ -16,7 +16,7 @@ export async function generateMetadata(
 				'Content-Type': 'application/json',
 			},
 			next: {
-				revalidate: 10,
+				revalidate: REVALIDATE.Product,
 			},
 		},
 	);
@@ -45,7 +45,7 @@ export default async function Page(
 				'Content-Type': 'application/json',
 			},
 			next: {
-				revalidate: 10,
+				revalidate: REVALIDATE.Product,
 			},
 		},
 	);
@@ -53,7 +53,9 @@ export default async function Page(
 	if (Object.keys(product).includes('name')) {
 		product['productId'] = props.params.productId;
 		const fetchedCategories = await fetch(getUrl('/api/categories'), {
-			cache: 'no-cache',
+			next: {
+				revalidate: REVALIDATE.Category,
+			},
 		});
 		const categories = (await fetchedCategories.json()).data;
 
