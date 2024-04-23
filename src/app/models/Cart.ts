@@ -27,6 +27,7 @@ CartSchema.static('getCart', async function (userId: string): Promise<
 	ReturnType<ICartModel['getCart']>
 > {
 	let isChanged = false;
+	let result: Awaited<ReturnType<ICartModel['getCart']>>[0] = [];
 
 	const cart = await this.findOne({ userId });
 	if (!cart) return [null, isChanged];
@@ -38,25 +39,50 @@ CartSchema.static('getCart', async function (userId: string): Promise<
 		productId: { $in: productIds },
 		status: true,
 	})
-		.select('productId stock')
+		.select('productId name price salePercentage stock')
 		.lean()
 		.exec();
 
-	cart.data = cart.data.filter((x) => {
-		return products.find((y) => y.productId === x.productId);
-	}) as any;
-	cart.data = cart.data.map((x) => {
-		const product = products.find((y) => y.productId === x.productId)!;
-		if (x.quantity > product.stock) x.quantity = product.stock;
-		return x;
-	}) as any;
+	// Filter data that not in based.
+	for (const data of cart.data) {
+		const productIndex = products.findIndex(
+			(x) => x.productId === data.productId,
+		);
+		const cartIndex = cart.data.indexOf(data);
+		if (productIndex === -1) {
+			cart.data.splice(cartIndex, 1);
+			isChanged = true;
+			continue;
+		}
 
-	if (JSON.stringify(beforeModify) !== JSON.stringify(cart.data)) {
+		const currentProduct = products[productIndex];
+		if (data.quantity > currentProduct.stock) {
+			data.quantity = currentProduct.stock;
+			isChanged = true;
+		}
+
+		result.push({
+			productId: data.productId,
+			name: currentProduct.name,
+			price: currentProduct.price,
+			quantity: data.quantity,
+			salePercentage: currentProduct.salePercentage,
+		});
+	}
+
+	if (
+		beforeModify.some((x) => {
+			const checkCart = result.find((y) => y.productId === x.productId);
+			if (!checkCart) return true;
+			return checkCart.quantity !== x.quantity;
+		})
+	) {
 		isChanged = true;
+		cart.markModified('data');
 		await cart.save();
 	}
 
-	return [cart.data, isChanged];
+	return [result, isChanged];
 });
 CartSchema.static(
 	'insertCart',

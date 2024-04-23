@@ -3,18 +3,30 @@ import { DocumentResult } from './ExternalDocument';
 
 export interface CartData {
 	userId: number;
-	data: [
-		{
-			productId: number;
-			quantity: number;
-		},
-	];
+	data: {
+		productId: number;
+		quantity: number;
+	}[];
 }
 export interface ICart extends CartData, DocumentResult<CartData>, Document {}
 export interface ICartMethods {}
 export interface ICartModel extends Model<ICart, {}, ICartMethods> {
 	// The second of return is whether the cart is modified or not.
-	getCart(userId: number): Promise<[CartData['data'] | null, boolean]>;
+	getCart(userId: number): Promise<
+		[
+			(
+				| {
+						productId: number;
+						name: string;
+						price: number;
+						salePercentage: number;
+						quantity: number;
+				  }[]
+				| null
+			),
+			boolean,
+		]
+	>;
 	insertCart(userId: number, data: CartData['data']): Promise<void>;
 	deleteCart(userId: number): Promise<CartData['data'] | null>;
 }
