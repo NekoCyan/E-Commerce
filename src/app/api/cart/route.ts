@@ -11,10 +11,10 @@ export async function GET(req: NextRequest) {
 		})) as Session;
 		if (!session.user) return UnauthorizedResponse();
 
-		const data = await Cart.getCart(parseInt(session.user.id));
+		const result = await Cart.getCart(parseInt(session.user.id));
 		return Response({
-			isUnexpectedChange: data[1],
-			data: data[0] ?? [],
+			isUnexpectedChange: result[1],
+			data: result[0] ?? [],
 		});
 	} catch (e: any) {
 		return ErrorResponse(e);
