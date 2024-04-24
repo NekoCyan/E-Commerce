@@ -66,7 +66,9 @@ export default function Component({
 						{exportProductFilter.map((data, index) => (
 							<tr key={data.productId}>
 								<td width={'1%'}>{index + 1}</td>
-								<td className='w-full'>{data.name}</td>
+								<td className='min-w-[200px] sm:w-full'>
+									<p className='line-clamp-3'>{data.name}</p>
+								</td>
 								<td className='text-center'>
 									<input
 										key={data.productId}
