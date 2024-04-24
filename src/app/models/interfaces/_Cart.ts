@@ -20,6 +20,23 @@ export interface ICartModel extends Model<ICart, {}, ICartMethods> {
 						name: string;
 						price: number;
 						salePercentage: number;
+						imageUrls: string[];
+						quantity: number;
+				  }[]
+				| null
+			),
+			boolean,
+		]
+	>;
+	getCart(data: CartData['data']): Promise<
+		[
+			(
+				| {
+						productId: number;
+						name: string;
+						price: number;
+						salePercentage: number;
+						imageUrls: string[];
 						quantity: number;
 				  }[]
 				| null

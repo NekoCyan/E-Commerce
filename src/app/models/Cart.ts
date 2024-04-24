@@ -23,67 +23,86 @@ const CartSchema = new mongoose.Schema<ICart, ICartModel, ICartMethods>({
 });
 
 // statics.
-CartSchema.static('getCart', async function (userId: string): Promise<
-	ReturnType<ICartModel['getCart']>
-> {
-	let isChanged = false;
-	let result: Awaited<ReturnType<ICartModel['getCart']>>[0] = [];
+CartSchema.static(
+	'getCart',
+	async function (
+		data: number | CartData['data'],
+	): Promise<ReturnType<ICartModel['getCart']>> {
+		let isChanged = false;
+		let result: Awaited<ReturnType<ICartModel['getCart']>>[0] = [];
 
-	const cart = await this.findOne({ userId });
-	if (!cart) return [null, isChanged];
+		let cart: CartData['data'] = [];
+		let fetchedUser: any = null;
+		if (typeof data === 'number') {
+			const fetchedUser = await this.findOne({ userId: data });
+			if (!fetchedUser) return [null, isChanged];
 
-	let beforeModify = cart.data;
+			cart = fetchedUser.data;
+		} else cart = data;
 
-	const productIds = cart.data.map(({ productId }) => productId);
-	const products = await Product.find({
-		productId: { $in: productIds },
-		status: true,
-	})
-		.select('productId name price salePercentage stock')
-		.lean()
-		.exec();
+		// Create a deep copy of cart
+		let beforeModify = JSON.parse(JSON.stringify(cart));
 
-	// Filter data that not in based.
-	for (const data of cart.data) {
-		const productIndex = products.findIndex(
-			(x) => x.productId === data.productId,
-		);
-		const cartIndex = cart.data.indexOf(data);
-		if (productIndex === -1) {
-			cart.data.splice(cartIndex, 1);
-			isChanged = true;
-			continue;
-		}
-
-		const currentProduct = products[productIndex];
-		if (data.quantity > currentProduct.stock) {
-			data.quantity = currentProduct.stock;
-			isChanged = true;
-		}
-
-		result.push({
-			productId: data.productId,
-			name: currentProduct.name,
-			price: currentProduct.price,
-			quantity: data.quantity,
-			salePercentage: currentProduct.salePercentage,
-		});
-	}
-
-	if (
-		beforeModify.some((x) => {
-			const checkCart = result.find((y) => y.productId === x.productId);
-			if (!checkCart) return true;
-			return checkCart.quantity !== x.quantity;
+		const productIds = cart.map(({ productId }) => productId);
+		const products = await Product.find({
+			productId: { $in: productIds },
+			status: true,
 		})
-	) {
-		isChanged = true;
-		cart.markModified('data');
-		await cart.save();
-	}
+			.select('productId name price salePercentage imageUrls stock')
+			.lean()
+			.exec();
 
-	return [result, isChanged];
-});
+		// Filter data that not in based.
+		for (const data of cart) {
+			const productIndex = products.findIndex(
+				(x) => x.productId === data.productId,
+			);
+			const cartIndex = cart.indexOf(data);
+			if (productIndex === -1) {
+				cart.splice(cartIndex, 1);
+				isChanged = true;
+				continue;
+			}
+
+			const currentProduct = products[productIndex];
+			if (data.quantity > currentProduct.stock) {
+				data.quantity = currentProduct.stock;
+				isChanged = true;
+			}
+
+			result.push({
+				productId: data.productId,
+				name: currentProduct.name,
+				price: currentProduct.price,
+				quantity: data.quantity,
+				salePercentage: currentProduct.salePercentage,
+				imageUrls: currentProduct.imageUrls,
+			});
+		}
+
+		if (
+			beforeModify.some((x: any) => {
+				const checkCart = result.find(
+					(y) => y.productId === x.productId,
+				);
+				if (!checkCart) return true;
+				return checkCart.quantity !== x.quantity;
+			})
+		) {
+			isChanged = true;
+			if (fetchedUser) {
+				fetchedUser.data = result.map((x) => ({
+					productId: x.productId,
+					quantity: x.quantity,
+				}));
+				fetchedUser.markModified('data');
+				await fetchedUser.save();
+			}
+		}
+
+		return [result, isChanged];
+	},
+);
 CartSchema.static(
 	'insertCart',
 	async function (
