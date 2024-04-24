@@ -27,11 +27,6 @@ const userOptions: (HeaderUserOptionsProps & {
 		href: '/profile',
 	},
 	{
-		text: 'Orders',
-		icon: 'fa fa-shopping-cart',
-		href: '/orders',
-	},
-	{
 		text: 'Logout',
 		icon: 'fa fa-sign-out',
 		onClick: () => {

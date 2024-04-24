@@ -2,7 +2,7 @@ import Collection from '@/components/collection/Collection';
 import HotDeal from '@/components/hotdeal/HotDeal';
 import NewsLetter from '@/components/newsletter/NewsLetter';
 import ProductShower from '@/components/product/productShower/ProductShower';
-import { API, LimitArray, ShuffleArray } from '@/utils';
+import { API, LimitArray, ROUTES, ShuffleArray } from '@/utils';
 import getUrl from '@/utils/getUrl';
 
 const collections: {
@@ -13,17 +13,17 @@ const collections: {
 	{
 		name: 'Laptop',
 		imageURL: '/img/shop01.png',
-		destinationHref: '#',
+		destinationHref: ROUTES.Products,
 	},
 	{
 		name: 'Accessories',
 		imageURL: '/img/shop03.png',
-		destinationHref: '#',
+		destinationHref: ROUTES.Products,
 	},
 	{
 		name: 'Cameras',
 		imageURL: '/img/shop02.png',
-		destinationHref: '#',
+		destinationHref: ROUTES.Products,
 	},
 ];
 

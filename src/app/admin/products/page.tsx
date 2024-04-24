@@ -1,3 +1,4 @@
+import { API } from '@/utils';
 import getUrl from '@/utils/getUrl';
 import { cookies } from 'next/headers';
 import Component from './component';
@@ -5,7 +6,7 @@ import Component from './component';
 export default async function Page(props: any) {
 	const Cookies = cookies();
 	const fetchedProducts = await fetch(
-		getUrl('/api/products') +
+		getUrl(API.ProductsList) +
 			'?' +
 			new URLSearchParams({
 				limit: '-1',

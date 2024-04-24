@@ -20,6 +20,8 @@ export const ROUTES = {
 	// Profile.
 	Profile: '/profile',
 	Wishlist: '/profile/wishlist',
+	// Cart.
+	Cart: '/cart',
 	// Produts.
 	Products: '/products',
 	/**
@@ -52,13 +54,16 @@ export const API = {
 	ProductsEdit: (id: string) => `/api/products/${id}`,
 	ProductsDelete: (id: string) => `/api/products/${id}`,
 	// Carts.
-	Cart: '/api/cart',
+	CartList: '/api/cart',
 	CartCount: '/api/cart/count',
 };
 
 export const LIMITER = {
 	HTML: {
 		title: 63, // Less than 64.
+	},
+	Cart: {
+		ProductName: 50,
 	},
 };
 

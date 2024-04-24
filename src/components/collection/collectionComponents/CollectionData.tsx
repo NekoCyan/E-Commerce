@@ -8,7 +8,7 @@ type CollectionProps = {
 	externalClassName?: string;
 };
 
-export default function CollectionData(props: CollectionProps) {
+export default function CollectionData(props: Readonly<CollectionProps>) {
 	props = {
 		externalClassName: 'col-md-4 col-xs-6',
 		...props,
