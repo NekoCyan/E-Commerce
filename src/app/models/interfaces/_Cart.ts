@@ -22,6 +22,7 @@ export interface ICartModel extends Model<ICart, {}, ICartMethods> {
 						salePercentage: number;
 						imageUrls: string[];
 						quantity: number;
+						stock: number;
 				  }[]
 				| null
 			),
@@ -38,6 +39,7 @@ export interface ICartModel extends Model<ICart, {}, ICartMethods> {
 						salePercentage: number;
 						imageUrls: string[];
 						quantity: number;
+						stock: number;
 				  }[]
 				| null
 			),

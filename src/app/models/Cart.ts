@@ -77,6 +77,7 @@ CartSchema.static(
 				quantity: data.quantity,
 				salePercentage: currentProduct.salePercentage,
 				imageUrls: currentProduct.imageUrls,
+				stock: currentProduct.stock,
 			});
 		}
 
