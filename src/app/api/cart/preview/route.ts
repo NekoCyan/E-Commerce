@@ -2,6 +2,7 @@ import Cart from '@/app/models/Cart';
 import {
     ErrorResponse,
     InvalidResponse,
+    InvalidTypeResponse,
     IsNullOrUndefined,
     RequiredResponse,
     Response,
@@ -18,24 +19,27 @@ export async function POST(req: NextRequest) {
 		} = await req.json();
 		let { data } = body;
 		if (!IsNullOrUndefined(data)) return RequiredResponse('data');
-		if (
-			data.some(
-				(x) =>
-					typeof x.productId !== 'number' ||
-					x.productId < 0 ||
-					!Number.isInteger(x.productId),
+		if (!Array.isArray(data)) return InvalidTypeResponse('data', 'array');
+		if (data.length !== 0) {
+			if (
+				data.some(
+					(x) =>
+						typeof x.productId !== 'number' ||
+						x.productId < 0 ||
+						!Number.isInteger(x.productId),
+				)
 			)
-		)
-			return InvalidResponse('productId in data');
-		if (
-			data.some(
-				(x) =>
-					typeof x.quantity !== 'number' ||
-					x.quantity < 0 ||
-					!Number.isInteger(x.quantity),
+				return InvalidResponse('productId in data');
+			if (
+				data.some(
+					(x) =>
+						typeof x.quantity !== 'number' ||
+						x.quantity < 0 ||
+						!Number.isInteger(x.quantity),
+				)
 			)
-		)
-			return InvalidResponse('quantity in data');
+				return InvalidResponse('quantity in data');
+		}
 
 		const result = await Cart.getCart(data);
 

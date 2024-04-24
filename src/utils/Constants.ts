@@ -55,6 +55,7 @@ export const API = {
 	ProductsDelete: (id: string) => `/api/products/${id}`,
 	// Carts.
 	CartList: '/api/cart',
+	CartPreview: '/api/cart/preview',
 	CartCount: '/api/cart/count',
 };
 
