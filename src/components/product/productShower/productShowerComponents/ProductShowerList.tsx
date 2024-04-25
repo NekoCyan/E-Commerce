@@ -1,6 +1,7 @@
 'use client';
 
 import { CategoryData, ProductData } from '@/app/models/interfaces';
+import AddToCartBtn from '@/components/cart/AddToCartBtn';
 import { Truncate } from '@/utils';
 import { FormatCurrency, MultiStyles } from '@/utils/ComponentUtils';
 import Link from 'next/link';
@@ -213,17 +214,10 @@ export default function ProductShowerList({
 													</Link>
 												</div>
 											</div>
-											<div className={'add-to-cart'}>
-												<button
-													className={MultiStyles(
-														'add-to-cart-btn',
-														productData.stock <=
-															0 && 'disabled',
-													)}
-												>
-													<i className='fa fa-shopping-cart'></i>{' '}
-													add to cart
-												</button>
+											<div className='add-to-cart'>
+												<AddToCartBtn
+													productData={productData}
+												/>
 											</div>
 										</div>
 									);

@@ -1,12 +1,13 @@
 import Cart from '@/app/models/Cart';
 import {
-    ErrorResponse,
-    InvalidResponse,
-    InvalidTypeResponse,
-    IsNullOrUndefined,
-    RequiredResponse,
-    Response,
+	ErrorResponse,
+	InvalidResponse,
+	InvalidTypeResponse,
+	IsNullOrUndefined,
+	RequiredResponse,
+	Response,
 } from '@/utils';
+import { BEHandler } from '@/utils/BackendUtils';
 import { NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -18,7 +19,7 @@ export async function POST(req: NextRequest) {
 			}[];
 		} = await req.json();
 		let { data } = body;
-		if (!IsNullOrUndefined(data)) return RequiredResponse('data');
+		if (IsNullOrUndefined(data)) return RequiredResponse('data');
 		if (!Array.isArray(data)) return InvalidTypeResponse('data', 'array');
 		if (data.length !== 0) {
 			if (
@@ -40,6 +41,8 @@ export async function POST(req: NextRequest) {
 			)
 				return InvalidResponse('quantity in data');
 		}
+
+		await BEHandler({ req, sessionRequired: false });
 
 		const result = await Cart.getCart(data);
 

@@ -77,10 +77,10 @@ export default async function RootLayout({
 						position='top-right'
 						autoClose={4000}
 						hideProgressBar={false}
-						newestOnTop={true}
 						theme='light'
 						transition={Bounce}
 						className='w-[200px] sm:w-[250px] lg:w-[300px] left-auto right-0 z-30'
+						stacked={true}
 					/>
 				</ReduxProvider>
 				<LinkClickPreventer />

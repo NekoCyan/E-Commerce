@@ -6,7 +6,7 @@ export default class CartStorage extends LocalStorage {
 	}
 
 	getCart(): { productId: number; quantity: number }[] {
-		const cart = localStorage.getItem('cart');
+		const cart = this.localStorage.getItem('cart');
 		if (!cart) {
 			this.localStorage.setItem('cart', '[]');
 			return [];
@@ -19,7 +19,8 @@ export default class CartStorage extends LocalStorage {
 		return cart.length;
 	}
 
-	addCartItem(productId: number, quantity: number): void {
+	addCartItem(productId: number | string, quantity: number): void {
+		productId = parseInt(productId as string);
 		const cart = this.getCart();
 		const item = cart.find((x) => x.productId === productId);
 		if (item) {
@@ -27,21 +28,39 @@ export default class CartStorage extends LocalStorage {
 		} else {
 			cart.push({ productId, quantity });
 		}
-		localStorage.setItem('cart', JSON.stringify(cart));
+		this.localStorage.setItem('cart', JSON.stringify(cart));
 	}
 
-	setCartItem(productId: number, quantity: number): void {
+	setCart(data: { productId: number; quantity: number }[]): void {
+		this.localStorage.setItem('cart', JSON.stringify(data));
+		this.revalidateCart();
+	}
+
+	setProductQuantity(productId: number, quantity: number): void {
 		const cart = this.getCart();
 		const item = cart.find((x) => x.productId === productId);
 		if (item) {
 			item.quantity = quantity;
-		} else {
-			cart.push({ productId, quantity });
+			this.localStorage.setItem('cart', JSON.stringify(cart));
+			this.revalidateCart();
 		}
-		localStorage.setItem('cart', JSON.stringify(cart));
+	}
+
+	deleteProduct(productId: number): void {
+		// Set quantity to 0 to delete product from cart
+		this.setProductQuantity(productId, 0);
+	}
+
+	revalidateCart(): void {
+		const allCarts = this.getCart();
+
+		this.localStorage.setItem(
+			'cart',
+			JSON.stringify(allCarts.filter((x) => x.quantity > 0)),
+		);
 	}
 
 	clearCart(): void {
-		localStorage.removeItem('cart');
+		this.localStorage.removeItem('cart');
 	}
 }

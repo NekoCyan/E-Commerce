@@ -3,7 +3,7 @@
 import { cartCountAction } from '@/redux/cartsCount/CartsCountSlice';
 import { RootDispatch, RootState } from '@/redux/store';
 import { NekoResponse } from '@/types';
-import { API } from '@/utils';
+import { API, ROUTES } from '@/utils';
 import { GET } from '@/utils/Request';
 import CartStorage from '@/utils/localStorage/CartStorage';
 import { useSession } from 'next-auth/react';
@@ -39,11 +39,11 @@ export default function HeaderCart() {
 	}, [status]);
 	return (
 		<div className='dropdown'>
-			<Link href='#'>
+			<Link href={ROUTES.Cart}>
 				<i className='fa fa-shopping-cart'></i>
 				<span>Your Cart</span>
 				<div className={styles.qty}>
-					{cartCount > 10 ? '9+' : cartCount}
+					{cartCount >= 10 ? '9+' : cartCount}
 				</div>
 			</Link>
 		</div>

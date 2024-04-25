@@ -1,6 +1,7 @@
 'use client';
 
 import { CategoryData, ProductData } from '@/app/models/interfaces';
+import AddToCartBtn from '@/components/cart/AddToCartBtn';
 import { ROUTES } from '@/utils';
 import {
 	FormatCurrency,
@@ -9,6 +10,7 @@ import {
 } from '@/utils/ComponentUtils';
 import { BASE_URL } from '@/utils/getUrl';
 import Link from 'next/link';
+import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
 import RemarkGfm from 'remark-gfm';
@@ -23,12 +25,32 @@ export default function ProductDetailsData({
 	isPreview?: boolean;
 	categories: CategoryData[];
 }>) {
+	const [quantity, setQuantity] = useState(1);
+
 	const salePrice = FormatCurrency(
 		props.price * (1 - (props.salePercentage ?? 0) / 100),
 	);
 	const isSale = !!(props.salePercentage && props.salePercentage > 0);
 	let rating = 5;
 	let review = 0;
+
+	const validateQuantity = (input: number) => {
+		if (input < 1) return 1;
+		if (input > props.stock) return props.stock;
+		return input;
+	};
+
+	const handleAddQuantityUp = () => {
+		setQuantity(validateQuantity(quantity + 1));
+	};
+
+	const handleAddQuantityDown = () => {
+		setQuantity(validateQuantity(quantity - 1));
+	};
+
+	const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setQuantity(validateQuantity(parseInt(e.target.value)));
+	};
 
 	return (
 		<div className='col-md-5'>
@@ -130,20 +152,17 @@ export default function ProductDetailsData({
 							>
 								<input
 									type='number'
-									defaultValue={1}
 									min={1}
 									max={props.stock}
+									onChange={handleQuantityChange}
+									value={quantity}
 								/>
 								<span
 									className={MultiStyles(
 										styles['qty-up'],
 										'qty-up',
 									)}
-									onClick={(e) => {
-										e.currentTarget.parentElement
-											?.querySelector('input')
-											?.stepUp(1);
-									}}
+									onClick={handleAddQuantityUp}
 								>
 									+
 								</span>
@@ -152,25 +171,18 @@ export default function ProductDetailsData({
 										styles['qty-down'],
 										'qty-down',
 									)}
-									onClick={(e) => {
-										e.currentTarget.parentElement
-											?.querySelector('input')
-											?.stepDown(1);
-									}}
+									onClick={handleAddQuantityDown}
 								>
 									-
 								</span>
 							</div>
 						</div>
 					)}
-					<button
-						className={MultiStyles(
-							styles['add-to-cart-btn'],
-							props.stock <= 0 && styles['disabled'],
-						)}
-					>
-						<i className='fa fa-shopping-cart'></i> add to cart
-					</button>
+					<AddToCartBtn
+						quantity={quantity}
+						className={styles['add-to-cart-btn']}
+						productData={props}
+					/>
 				</div>
 
 				<ul className={styles['product-btns']}>

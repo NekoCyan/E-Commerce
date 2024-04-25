@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { BadRequestResponse, MiddlewareSession, ROUTES } from './utils';
 
 const routePrefix = '/client';
-const loginToAccess = ['/profile'];
+const loginToAccess = ['/profile', '/checkout'];
 const adminRoutePrefix = '/admin';
 const adminAccess = [''];
 

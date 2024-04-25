@@ -22,6 +22,8 @@ export const ROUTES = {
 	Wishlist: '/profile/wishlist',
 	// Cart.
 	Cart: '/cart',
+	// Checkout.
+	Checkout: '/checkout',
 	// Produts.
 	Products: '/products',
 	/**
