@@ -1,14 +1,18 @@
 'use client';
 
 import Loading from '@/app/loading';
+import { cartCountAction } from '@/redux/cartsCount/CartsCountSlice';
+import { RootDispatch } from '@/redux/store';
 import { APIResponse } from '@/types';
-import { MultiStyles, PATTERN } from '@/utils';
-import { POST } from '@/utils/Request';
+import { API, MultiStyles, PATTERN } from '@/utils';
+import { GET, POST } from '@/utils/Request';
+import CartStorage from '@/utils/localStorage/CartStorage';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import styles from './auth.module.css';
 
 type Props = {
@@ -16,11 +20,12 @@ type Props = {
 	isRefresh: boolean;
 };
 
-export default function Component({ callbackUrl, isRefresh }: Props) {
+export default function Component({ callbackUrl, isRefresh }: Readonly<Props>) {
 	const errorMSG = 'Something went wrong... try again later.';
 
 	const router = useRouter();
-	const { data, status } = useSession();
+	const { status } = useSession();
+	const dispatch: RootDispatch = useDispatch();
 
 	// Why router.refresh() didn't work :dead: took 3 hours
 	// to find out by using window.location.href T_T.
@@ -75,8 +80,56 @@ export default function Component({ callbackUrl, isRefresh }: Props) {
 				password: inputFields.password,
 			})
 				.then((x) => {
-					if (x?.ok) router.replace(callbackUrl);
-					else setCBError('Email or Password is invalid.');
+					if (x?.ok) {
+						// Check if there's any product in cart and add to database.
+						const cartStorage = new CartStorage(localStorage);
+						if (cartStorage.getCartCount() > 0) {
+							POST(API.CartInsert, {
+								data: cartStorage.getCart(),
+							})
+								.then((x) => {
+									const data = x.data as APIResponse<{
+										count: number;
+									}>;
+									if (!data.success)
+										throw new Error(data.message);
+
+									dispatch(
+										cartCountAction.set(data.data.count),
+									);
+								})
+								.catch((err) => {
+									console.log(err.message);
+								})
+								.finally(() => {
+									router.replace(callbackUrl);
+									router.refresh();
+									cartStorage.clearCart();
+								});
+						} else {
+							// Do get cart count from account.
+							GET(API.CartCount)
+								.then((x) => {
+									const data = x.data as APIResponse<{
+										count: number;
+									}>;
+									if (!data.success)
+										throw new Error(data.message);
+
+									dispatch(
+										cartCountAction.set(data.data.count),
+									);
+								})
+								.catch((err) => {
+									console.log(err.message);
+									dispatch(cartCountAction.set(0));
+								})
+								.finally(() => {
+									router.replace(callbackUrl);
+									router.refresh();
+								});
+						}
+					} else setCBError('Email or Password is invalid.');
 				})
 				.catch((err) => {
 					setCBError(err.message);

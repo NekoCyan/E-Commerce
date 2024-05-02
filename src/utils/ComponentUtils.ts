@@ -1,5 +1,6 @@
 import { Session } from 'next-auth';
 import { NextRequest } from 'next/server';
+import { ROUTES } from './Constants';
 import getUrl, { BASE_URL } from './getUrl';
 
 export function MultiStyles(...styles: any[]) {
@@ -79,4 +80,8 @@ export function RehypeMarkdown(html: string) {
 	html = html.replace(/(?:\r\n|\r|\n)/g, '\n&nbsp;');
 
 	return html;
+}
+
+export function AuthHrefCallback(href: string) {
+	return ROUTES.Auth + `?callbackUrl=${href}&refresh=true`;
 }

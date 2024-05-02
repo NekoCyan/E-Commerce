@@ -46,7 +46,11 @@ export interface ICartModel extends Model<ICart, {}, ICartMethods> {
 			boolean,
 		]
 	>;
-	insertCart(userId: number, data: CartData['data']): Promise<void>;
+	insertCart(
+		userId: number,
+		data: CartData['data'],
+		type?: 'insert' | 'set', // set is to replace the cart product with the new data.
+	): Promise<void>;
 	deleteCart(userId: number): Promise<CartData['data'] | null>;
 }
 export type CartHydratedDocument = HydratedDocument<ICart, ICartMethods>;

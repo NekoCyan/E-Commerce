@@ -1,13 +1,22 @@
 'use client';
 
+import { RevalidateCart } from '@/app/action';
 import Loading from '@/app/loading';
 import { ICartModel } from '@/app/models/interfaces';
 import { TextInput } from '@/components/boostrap';
 import { cartCountAction } from '@/redux/cartsCount/CartsCountSlice';
 import { RootDispatch } from '@/redux/store';
 import { NekoResponse } from '@/types';
-import { API, FormatCurrency, LIMITER, ROUTES, Truncate } from '@/utils';
-import { POST } from '@/utils/Request';
+import {
+	API,
+	AuthHrefCallback,
+	FormatCurrency,
+	LIMITER,
+	ROUTES,
+	Truncate,
+} from '@/utils';
+import { POST, PUT } from '@/utils/Request';
+import getUrl from '@/utils/getUrl';
 import CartStorage from '@/utils/localStorage/CartStorage';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -36,6 +45,7 @@ export default function Component({ cart }: Readonly<CartProps>) {
 	useEffect(() => {
 		if (cart) {
 			if (cart.isUnexpectedChange) {
+				// This won't work cuz revalidateCart will do for 2 times.
 				toast.warning(
 					`Your cart data was revalidated, so some of your cart data was changed/remove about quantity or product.`,
 					{
@@ -44,6 +54,7 @@ export default function Component({ cart }: Readonly<CartProps>) {
 				);
 			}
 
+			RevalidateCart();
 			setIsLoaded(true);
 		} else {
 			const cartStorage = new CartStorage(localStorage);
@@ -155,9 +166,29 @@ export default function Component({ cart }: Readonly<CartProps>) {
 
 	// Quantity change for specific data.
 	const quantityChange = (productId: number, quantity: number) => {
-		const cartStorage = new CartStorage(localStorage);
-		cartStorage.setProductQuantity(productId, quantity);
-		dispatch(cartCountAction.set(cartStorage.getCartCount()));
+		// Check if authenticated or not, then update the cart.
+		if (status === 'authenticated') {
+			PUT(API.CartUpdate, {
+				productId: productId,
+				quantity: quantity,
+			})
+				.then((x) => {
+					const data = x.data as NekoResponse<{ count: number }>;
+					if (!data.success) throw new Error(data.message);
+
+					dispatch(cartCountAction.set(data.data.count));
+				})
+				.catch((err) => {
+					toast.error(err.message);
+				})
+				.finally(() => {
+					RevalidateCart();
+				});
+		} else {
+			const cartStorage = new CartStorage(localStorage);
+			cartStorage.setProductQuantity(productId, quantity);
+			dispatch(cartCountAction.set(cartStorage.getCartCount()));
+		}
 	};
 	const handleRemoveProduct = (productId: number) => {
 		if (!productCarts) return;
@@ -332,7 +363,11 @@ export default function Component({ cart }: Readonly<CartProps>) {
 						</span>
 					</h4>
 					<Link
-						href={ROUTES.Checkout}
+						href={
+							status === 'authenticated'
+								? ROUTES.Checkout
+								: AuthHrefCallback(getUrl(ROUTES.Cart))
+						}
 						className='btn btn-primary uppercase'
 					>
 						{status === 'authenticated'

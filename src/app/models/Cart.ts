@@ -34,7 +34,7 @@ CartSchema.static(
 		let cart: CartData['data'] = [];
 		let fetchedUser: any = null;
 		if (typeof data === 'number') {
-			const fetchedUser = await this.findOne({ userId: data });
+			fetchedUser = await this.findOne({ userId: data });
 			if (!fetchedUser) return [null, isChanged];
 
 			cart = fetchedUser.data;
@@ -91,6 +91,7 @@ CartSchema.static(
 			})
 		) {
 			isChanged = true;
+
 			if (fetchedUser) {
 				fetchedUser.data = result.map((x) => ({
 					productId: x.productId,
@@ -109,6 +110,7 @@ CartSchema.static(
 	async function (
 		userId: string,
 		data: CartData['data'],
+		type: 'insert' | 'set' = 'insert',
 	): Promise<ReturnType<ICartModel['insertCart']>> {
 		if (
 			data.some(
@@ -133,15 +135,30 @@ CartSchema.static(
 		if (!cart) {
 			await this.create({ userId, data });
 		} else {
+			let isChanged = false;
 			for (const { productId, quantity } of data) {
 				const index = cart.data.findIndex(
 					(x) => x.productId === productId,
 				);
 				if (index === -1) cart.data.push({ productId, quantity });
-				else cart.data[index].quantity += quantity;
+				else {
+					if (type === 'insert')
+						cart.data[index].quantity += quantity;
+					else {
+						if (quantity === 0) {
+							cart.data.splice(index, 1);
+						} else if (cart.data[index].quantity === quantity) {
+							continue; // This will skip isChanged.
+						} else {
+							cart.data[index].quantity = quantity;
+						}
+					}
+				}
+
+				isChanged = true;
 			}
 
-			await cart.save();
+			if (isChanged) await cart.save();
 		}
 	},
 );

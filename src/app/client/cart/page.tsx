@@ -1,9 +1,11 @@
-import { API } from '@/utils';
+import { API, TAGS } from '@/utils';
 import getUrl from '@/utils/getUrl';
 import AuthConfig from '@/utils/nextAuth/NextAuthConfig';
 import { getServerSession } from 'next-auth';
 import { cookies } from 'next/headers';
 import Component, { CartProps } from './component';
+
+export const revalidate = 0;
 
 export default async function Cart() {
 	let fetchedProducts: CartProps['cart'] = null;
@@ -16,10 +18,14 @@ export default async function Cart() {
 				'Content-Type': 'application/json',
 				Cookie: Cookies.toString(),
 			},
+			next: {
+				tags: [TAGS.Cart],
+			},
 		});
 		const { data } = await fetchedCart.json();
 		fetchedProducts = data;
 	}
+	console.log(fetchedProducts);
 
 	return <Component cart={fetchedProducts} />;
 }

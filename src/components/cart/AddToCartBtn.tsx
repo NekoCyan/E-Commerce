@@ -3,7 +3,9 @@
 import { ProductData } from '@/app/models/interfaces';
 import { cartCountAction } from '@/redux/cartsCount/CartsCountSlice';
 import { RootDispatch } from '@/redux/store';
-import { LIMITER, MultiStyles, Truncate } from '@/utils';
+import { NekoResponse } from '@/types';
+import { API, LIMITER, MultiStyles, Truncate } from '@/utils';
+import { POST } from '@/utils/Request';
 import CartStorage from '@/utils/localStorage/CartStorage';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
@@ -37,7 +39,26 @@ export default function AddToCart({
 			toast
 				.promise(
 					new Promise<any>((res, rej) =>
-						setTimeout(() => res('Test'), 1000),
+						POST(API.CartInsert, {
+							data: [
+								{
+									productId: parseInt(
+										productData.productId as any,
+									),
+									quantity,
+								},
+							],
+						})
+							.then((x) => {
+								const data = x.data as NekoResponse<{
+									count: number;
+								}>;
+								if (!data.success)
+									throw new Error(data.message);
+
+								res(data);
+							})
+							.catch(rej),
 					),
 					{
 						pending: {
@@ -46,14 +67,27 @@ export default function AddToCart({
 							},
 						},
 						success: {
-							render({ data }: { data: any }) {
-								return `Hello ${data}`;
+							render({
+								data,
+							}: {
+								data: NekoResponse<{ count: number }>;
+							}) {
+								dispatch(cartCountAction.set(data.data.count));
+
+								return `Added${
+									quantity > 1 ? ` x${quantity} ` : ' '
+								}${Truncate(
+									productData.name,
+									LIMITER.Cart.ProductName,
+								)} to cart.`;
 							},
 						},
 						error: {
 							render({ data }: { data: any }) {
 								// When the promise reject, data will contains the error
-								return `Error ${data}`;
+								return (
+									data?.message ?? 'Failed to add to cart.'
+								);
 							},
 						},
 					},
@@ -66,7 +100,7 @@ export default function AddToCart({
 			cartStorage.addCartItem(productData.productId, quantity);
 			dispatch(cartCountAction.set(cartStorage.getCartCount()));
 			toast.success(
-				`Added ${Truncate(
+				`Added${quantity > 1 ? ` x${quantity} ` : ' '}${Truncate(
 					productData.name,
 					LIMITER.Cart.ProductName,
 				)} to cart.`,
