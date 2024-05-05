@@ -10,11 +10,9 @@ export const metadata: Metadata = {
 export default function Page({
 	params,
 	searchParams,
-}: PageProps<{}, { callbackUrl: string; refresh: string }>) {
+}: Readonly<PageProps<{}, { callbackUrl: string; refresh: string }>>) {
 	const isRefresh =
-		searchParams?.refresh === 'true' && searchParams?.callbackUrl
-			? true
-			: false;
+		!!(searchParams?.refresh === 'true' && searchParams?.callbackUrl);
 	let callbackUrl: string | URL = ROUTES.Home;
 
 	// When refresh, user will force to refresh app.

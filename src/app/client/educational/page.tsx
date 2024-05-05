@@ -1,6 +1,12 @@
+import { WEBSITE } from '@/utils';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { Container } from 'react-bootstrap';
 import styles from './educational.module.css';
+
+export const metadata: Metadata = {
+	title: WEBSITE.title('Educational'),
+};
 
 export default function Page() {
 	return (

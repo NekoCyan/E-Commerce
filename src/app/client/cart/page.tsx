@@ -1,17 +1,23 @@
 import { PageProps } from '@/types';
+import { WEBSITE } from '@/utils';
+import { Metadata } from 'next';
 import Component from './component';
 
 export const revalidate = 0;
 
+export const metadata: Metadata = {
+	title: WEBSITE.title('Cart'),
+};
+
 export default async function Cart({
 	params,
 	searchParams,
-}: PageProps<
+}: Readonly<PageProps<
 	{},
 	{
 		must_revalidate?: string;
 	}
->) {
+>>) {
 	// let fetchedProducts: CartProps['cart'] = null;
 	// const session = await getServerSession(AuthConfig);
 	// if (session) {
