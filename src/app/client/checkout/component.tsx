@@ -125,7 +125,7 @@ export default function Component({ session }: Readonly<CheckoutProps>) {
 				paymentMethod: 'At least one payment method is required',
 			});
 
-		console.log('Requested', fields);
+		toast.error(`This feature is under development.`);
 		setIsRequesting(false);
 	}, [isRequesting]);
 
