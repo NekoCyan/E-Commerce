@@ -28,10 +28,6 @@ const UserSchema = new mongoose.Schema<IUser, IUserModel, IUserMethods>(
 			type: String,
 			default: '',
 		},
-		address: {
-			type: String,
-			default: '',
-		},
 		dob: {
 			type: Date,
 			default: new Date(0),
@@ -83,7 +79,6 @@ UserSchema.static(
 			email: user.email,
 			fullName: user.fullName,
 			phone: user.phone,
-			address: user.address,
 			dob: user.dob,
 			avatar: user.avatar,
 			role: user.role,

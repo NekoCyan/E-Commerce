@@ -34,6 +34,7 @@ export function TextInput({
 	onKeyDown,
 	min,
 	max,
+	required,
 }: Readonly<{
 	id?: string;
 	name?: string;
@@ -55,6 +56,7 @@ export function TextInput({
 	) => void;
 	min?: number | string;
 	max?: number | string;
+	required?: boolean;
 }>) {
 	if (type === 'textarea') {
 		return (
@@ -69,6 +71,7 @@ export function TextInput({
 				onChange={onChange}
 				onKeyDown={onKeyDown}
 				value={value}
+				required={required}
 			/>
 		);
 	} else {
@@ -88,6 +91,7 @@ export function TextInput({
 				value={value}
 				min={min}
 				max={max}
+				required={required}
 			/>
 		);
 	}

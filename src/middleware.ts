@@ -27,6 +27,7 @@ export async function middleware(req: NextRequest) {
 	const pathName = req.nextUrl.pathname.toLowerCase();
 	// Idk why this is not working
 	// const session = await getSession();
+	
 	const session = await MiddlewareSession(req);
 	if (
 		// In case no session.

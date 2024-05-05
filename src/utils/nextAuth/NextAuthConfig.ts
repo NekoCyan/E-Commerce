@@ -32,6 +32,8 @@ const AuthConfig: NextAuthOptions = {
 					return {
 						id: UserData.userId.toString(),
 						fullName: UserData.fullName,
+						email: UserData.email,
+						phone: UserData.phone,
 						keySession: UserData.keySession,
 						role: UserData.role,
 					} as any;
@@ -61,6 +63,8 @@ const AuthConfig: NextAuthOptions = {
 			if (user) {
 				token.id = user.id;
 				token.fullName = user.fullName;
+				token.email = user.email;
+				token.phone = user.phone;
 				token.keySession = user.keySession;
 				token.role = user.role;
 			}

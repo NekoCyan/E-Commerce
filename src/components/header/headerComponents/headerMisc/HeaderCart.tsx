@@ -39,7 +39,7 @@ export default function HeaderCart() {
 	}, [status]);
 	return (
 		<div className='dropdown'>
-			<Link href={ROUTES.Cart}>
+			<Link href={ROUTES.Cart + '#breadcrumb'}>
 				<i className='fa fa-shopping-cart'></i>
 				<span>Your Cart</span>
 				<div className={styles.qty}>
