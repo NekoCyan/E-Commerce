@@ -26,7 +26,7 @@ function getNavLink(navFor: 'client' | 'admin') {
 	} else {
 		allLinks.push(
 			{
-				title: 'Overview',
+				title: 'Orders',
 				path: '',
 				alt: [],
 			},
