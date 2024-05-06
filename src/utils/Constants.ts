@@ -1,6 +1,7 @@
 import { CommaAnd, CreateEnum, Truncate } from './Utilities';
 
 export const PAYMENT_METHOD = ['cod', 'paypal'];
+export const ORDER_STATUS = ['pending', 'processing', 'shipped', 'delivered'];
 
 export const REVALIDATE = {
 	Product: 10,

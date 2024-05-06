@@ -207,6 +207,20 @@ OrderSchema.pre<IOrder>('save', async function (next) {
 		} else this.orderId = newOrderId;
 	}
 
+	if (this.shipping.fullName)
+		this.shipping.fullName = this.shipping.fullName.trim();
+	if (this.shipping.email) this.shipping.email = this.shipping.email.trim();
+	if (this.shipping.phone) this.shipping.phone = this.shipping.phone.trim();
+	if (this.shipping.address)
+		this.shipping.address = this.shipping.address.trim();
+	if (this.shipping.country)
+		this.shipping.country = this.shipping.country.trim();
+	if (this.shipping.city) this.shipping.city = this.shipping.city.trim();
+	if (this.shipping.zip) this.shipping.zip = this.shipping.zip.trim();
+	if (this.shipping.note) this.shipping.note = this.shipping.note.trim();
+
+	if (this.cancel) this.cancel = this.cancel.trim();
+	
 	next();
 });
 
