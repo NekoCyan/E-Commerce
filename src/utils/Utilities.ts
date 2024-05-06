@@ -23,8 +23,13 @@ export function Capitalize(str: string) {
 	return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function IsNullOrUndefined(variable: any): boolean {
-	return variable === null || variable === undefined;
+export function IsNullOrUndefined(
+	variable: any,
+	isEmpty: boolean = false,
+): boolean {
+	if (isEmpty)
+		return variable === null || variable === undefined || variable === '';
+	else return variable === null || variable === undefined;
 }
 
 export function IsDecimal(value: any): boolean {

@@ -3,9 +3,9 @@ import { Metadata } from 'next';
 import { Container } from 'react-bootstrap';
 
 export const metadata: Metadata = {
-	title: WEBSITE.title('Profile'),
+	title: WEBSITE.title('Wishlist'),
 };
 
 export default async function Page() {
-	return <Container>Profile</Container>;
+	return <Container>Wishlist</Container>;
 }

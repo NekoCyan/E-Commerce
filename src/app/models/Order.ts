@@ -56,6 +56,18 @@ const OrderSchema = new mongoose.Schema<IOrder, IOrderModel, IOrderMethods>({
 	},
 });
 
+// methods.
+OrderSchema.methods = {
+	getOrderPrice() {
+		return this.products.reduce((acc, cur) => {
+			return (
+				acc +
+				cur.price * ((100 - cur.salePercentage) / 100) * cur.quantity
+			);
+		}, 0);
+	},
+};
+
 // statics.
 OrderSchema.statics = {
 	async createOrder(
@@ -65,6 +77,9 @@ OrderSchema.statics = {
 			paymentMethod: OrderData['paymentMethod'];
 		},
 	): Promise<ReturnType<IOrderModel['createOrder']>> {
+		if (products?.length === 0)
+			throw new Error(`Products when checkout cannot be empty.`);
+
 		return this.create({
 			userId,
 			products,

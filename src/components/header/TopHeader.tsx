@@ -18,13 +18,18 @@ const userOptions: (HeaderUserOptionsProps & {
 	{
 		text: 'Admin Panel',
 		icon: 'fa fa-user-o',
-		href: '/admin',
+		href: ROUTES.Admin,
 		isAdminRequired: true,
 	},
 	{
 		text: 'Profile',
 		icon: 'fa fa-user-o',
-		href: '/profile',
+		href: ROUTES.Profile,
+	},
+	{
+		text: 'Orders',
+		icon: 'fa fa-shopping-cart',
+		href: ROUTES.Orders,
 	},
 	{
 		text: 'Logout',

@@ -32,11 +32,16 @@ export interface IOrder
 	extends OrderData,
 		DocumentResult<OrderData>,
 		Document {}
-export interface IOrderMethods {}
+export interface IOrderMethods {
+	getOrderPrice: () => number;
+}
 export interface IOrderModel extends Model<IOrder, {}, IOrderMethods> {
 	createOrder: (
 		userId: number,
 		products: OrderData['products'],
+		info: Partial<OrderData['shipping']> & {
+			paymentMethod: OrderData['paymentMethod'];
+		},
 	) => Promise<OrderHydratedDocument>;
 	getOrder: (orderId: string) => Promise<OrderHydratedDocument | null>;
 	getOrdersFromUser: (
@@ -44,10 +49,7 @@ export interface IOrderModel extends Model<IOrder, {}, IOrderMethods> {
 		limit?: string | number,
 		page?: string | number,
 	) => Promise<DocumentList<OrderData>>;
-	cancelOrder: (
-		orderId: string,
-		reason: string,
-	) => Promise<boolean>;
+	cancelOrder: (orderId: string, reason: string) => Promise<boolean>;
 	updateOrderStatus: (
 		orderId: string,
 		status: OrderData['status'],

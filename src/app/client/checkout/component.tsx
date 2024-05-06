@@ -4,10 +4,11 @@ import Loading from '@/app/loading';
 import { ICartModel } from '@/app/models/interfaces';
 import { TextInput } from '@/components/boostrap';
 import BreadCrumb from '@/components/breadcrumb/BreadCrumb';
+import { cartCountAction } from '@/redux/cartsCount/CartsCountSlice';
 import { RootDispatch } from '@/redux/store';
-import { NekoResponse } from '@/types';
+import { APIResponse, NekoResponse } from '@/types';
 import { API, FormatCurrency, MultiStyles, ROUTES, SYMBOLS } from '@/utils';
-import { GET } from '@/utils/Request';
+import { GET, POST } from '@/utils/Request';
 import { Session } from 'next-auth';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -125,8 +126,31 @@ export default function Component({ session }: Readonly<CheckoutProps>) {
 				paymentMethod: 'At least one payment method is required',
 			});
 
-		toast.error(`This feature is under development.`);
-		setIsRequesting(false);
+		POST(API.Checkout, fields)
+			.then((x) => {
+				const data = x.data as APIResponse<{ orderId: string }>;
+				if (!data.success) throw new Error(data.message);
+
+				dispatch(cartCountAction.set(0));
+				toast.success('Order placed successfully.');
+
+				if (paymentMethod === 'cod') router.push(ROUTES.ThankYou);
+				// else router.push(ROUTES.Paypal(data.data.orderId));
+			})
+			.catch((err) => {
+				const msgErr: string = err.message;
+				if (
+					msgErr.toLowerCase().includes('Unexpected change in cart')
+				) {
+					setSubmitable(false);
+					router.push(ROUTES.Cart + '?must_revalidate=true');
+				} else {
+					toast.error(msgErr);
+				}
+			})
+			.finally(() => {
+				setIsRequesting(false);
+			});
 	}, [isRequesting]);
 
 	const handleFocus = (e: any) => {
@@ -478,26 +502,6 @@ export default function Component({ session }: Readonly<CheckoutProps>) {
 											your credit card if you don't have a
 											PayPal account.
 										</p>
-									</div>
-								</div>
-								<div className='input-radio'>
-									<input
-										type='radio'
-										name='payment'
-										id='payment-3'
-										onChange={() => {
-											setFields({
-												...fields,
-												paymentMethod: 'bank',
-											});
-										}}
-									/>
-									<label htmlFor='payment-3'>
-										<span></span>
-										Bank Directly
-									</label>
-									<div className='caption'>
-										<p>Via Vietnam Bank.</p>
 									</div>
 								</div>
 								{error.paymentMethod && (

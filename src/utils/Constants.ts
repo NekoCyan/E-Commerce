@@ -1,9 +1,12 @@
 import { CommaAnd, CreateEnum, Truncate } from './Utilities';
 
+export const PAYMENT_METHOD = ['cod', 'paypal'];
+
 export const REVALIDATE = {
 	Product: 10,
 	Category: 10,
 	ProductSearch: 10,
+	OrderSucceed: 2,
 };
 
 export const WEBSITE = {
@@ -20,10 +23,12 @@ export const ROUTES = {
 	// Profile.
 	Profile: '/profile',
 	Wishlist: '/profile/wishlist',
+	Orders: '/profile/orders',
 	// Cart.
 	Cart: '/cart',
 	// Checkout.
 	Checkout: '/checkout',
+	ThankYou: '/checkout/succeed',
 	// Produts.
 	Products: '/products',
 	/**
@@ -61,6 +66,10 @@ export const API = {
 	CartUpdate: '/api/cart',
 	CartPreview: '/api/cart/preview',
 	CartCount: '/api/cart/count',
+	// Checkout.
+	Checkout: '/api/checkout',
+	// Order.
+	OrderSucceed: '/api/order/succeed',
 };
 
 export const TAGS = {
