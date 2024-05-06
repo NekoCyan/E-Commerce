@@ -314,3 +314,62 @@ export function betweenResolveable(
 		to: to,
 	};
 }
+
+export function shuffleArray<T>(array: T[]): T[] {
+	const arr = array.slice();
+	for (let i = arr.length - 1; i > 0; i--) {
+		const j = Math.floor(RandomDecimal() * (i + 1));
+		[arr[i], arr[j]] = [arr[j], arr[i]];
+	}
+	return arr;
+}
+
+export function randomString(
+	length: number,
+	options: {
+		uppercase?: boolean;
+		lowercase?: boolean;
+		numbers?: boolean;
+		specialChars?: boolean;
+		expectChars?: string[];
+		shuffleString?: boolean;
+	} = {},
+	format: string = '{RANDOM}',
+): string {
+	options = {
+		uppercase: true,
+		lowercase: true,
+		numbers: true,
+		specialChars: false,
+		shuffleString: true,
+		expectChars: [],
+		...options,
+	};
+
+	let chars: string[] = [];
+	if (options.numbers) chars.push('0123456789');
+	if (options.uppercase) chars.push('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+	if (options.lowercase) chars.push('abcdefghijklmnopqrstuvwxyz');
+	if (options.specialChars) chars.push('!@#$%^&*()_+');
+	if (chars.length === 0) throw new Error('Invalid options.');
+	// Group all and split to array.
+	chars = chars.join('').split('');
+	if (options.expectChars!.length > 0) {
+		chars = chars.filter((x) => !options.expectChars!.includes(x));
+	}
+	if (options.shuffleString) chars = shuffleArray(chars);
+
+	const randomRegex = /{RANDOM}/g;
+	const makeRandom = () => {
+		let result = '';
+		for (let i = length; i > 0; --i) {
+			const randomChars = chars[Math.floor(Math.random() * chars.length)];
+			result += randomChars.charAt(
+				Math.floor(Math.random() * randomChars.length),
+			);
+		}
+		return result;
+	};
+
+	return format.replace(randomRegex, () => makeRandom());
+}
