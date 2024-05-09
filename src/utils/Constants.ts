@@ -66,6 +66,7 @@ export const API = {
 	CategoriesDelete: (id: string | number) => `/api/categories/${id}`,
 	// Products.
 	ProductsList: '/api/products',
+	ProductListIds: '/api/products/wishlist',
 	ProductsNew: '/api/products',
 	ProductsGet: (id: string | number) => `/api/products/${id}`,
 	ProductsEdit: (id: string | number) => `/api/products/${id}`,
@@ -82,6 +83,8 @@ export const API = {
 	OrdersList: '/api/orders',
 	OrderSucceed: '/api/orders/succeed',
 	OrderDetails: (id: string) => `/api/orders/${id}`,
+	// Wishlist.
+	Wishlist: '/api/wishlist',
 };
 
 export const TAGS = {

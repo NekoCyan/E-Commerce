@@ -37,6 +37,7 @@ export default function HeaderCart() {
 			dispatch(cartCountAction.set(cartStorage.getCartCount()));
 		}
 	}, [status]);
+	
 	return (
 		<div className='dropdown'>
 			<Link href={ROUTES.Cart + '#breadcrumb'}>

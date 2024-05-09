@@ -18,6 +18,7 @@ export interface IWishlistModel extends Model<IWishlist, {}, IWishlistMethods> {
 	 * @returns true if product is added to wishlist, false if removed.
 	 */
 	toggleWishlist: (userId: number, productId: number) => Promise<boolean>;
+	removeWishlist: (userId: number, productId: number) => Promise<boolean>;
 	getWishlist: (userId: number) => Promise<number[]>;
 }
 export type WishlistHydratedDocument = HydratedDocument<

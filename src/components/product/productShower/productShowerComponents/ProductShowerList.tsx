@@ -2,11 +2,18 @@
 
 import { CategoryData, ProductData } from '@/app/models/interfaces';
 import AddToCartBtn from '@/components/cart/AddToCartBtn';
-import { Truncate } from '@/utils';
+import ToolTip from '@/components/tooltip/ToolTip';
+import { RootDispatch, RootState } from '@/redux/store';
+import { wishlistAction } from '@/redux/wishlistCount/WishlistSlice';
+import { APIResponse } from '@/types';
+import { API, Truncate } from '@/utils';
 import { FormatCurrency, MultiStyles } from '@/utils/ComponentUtils';
+import { POST } from '@/utils/Request';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Row } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import styles from '../ProductShower.module.css';
 
 export default function ProductShowerList({
@@ -18,6 +25,11 @@ export default function ProductShowerList({
 	categories: CategoryData[];
 	navId: string;
 }>) {
+	const wishlist = useSelector<RootState, number[]>(
+		(state) => state.wishlist.value,
+	);
+	const dispatch: RootDispatch = useDispatch();
+
 	useEffect(() => {
 		try {
 			var $this = $(`div[data-nav="#${navId}"]`),
@@ -89,6 +101,57 @@ export default function ProductShowerList({
 										'/product-details/' +
 										productData.productId +
 										'#breadcrumb';
+
+									const [isSubmitting, setIsSubmitting] =
+										useState(false);
+
+									useEffect(() => {
+										if (!isSubmitting) return;
+
+										POST(API.Wishlist, {
+											productId: parseInt(
+												productData.productId as any,
+											),
+										})
+											.then((x) => {
+												const data =
+													x.data as APIResponse<{
+														status: boolean;
+													}>;
+												if (!data.success)
+													throw new Error(
+														data.message,
+													);
+
+												if (data.data.status === true) {
+													dispatch(
+														wishlistAction.add(
+															parseInt(
+																productData.productId as any,
+															),
+														),
+													);
+												} else {
+													dispatch(
+														wishlistAction.remove(
+															parseInt(
+																productData.productId as any,
+															),
+														),
+													);
+												}
+											})
+											.catch((err: any) => {
+												toast.error(err.msg);
+											})
+											.finally(() => {
+												setIsSubmitting(false);
+											});
+									}, [isSubmitting]);
+
+									const isWishlist = wishlist.includes(
+										parseInt(productData.productId as any),
+									);
 
 									return (
 										<div
@@ -187,16 +250,29 @@ export default function ProductShowerList({
 														className={
 															'add-to-wishlist'
 														}
+														disabled={isSubmitting}
+														onClick={() =>
+															setIsSubmitting(
+																true,
+															)
+														}
 													>
-														<i className='fa fa-heart-o'></i>
-														<span
-															className={
-																'tooltipp'
+														<ToolTip
+															text={
+																isWishlist
+																	? 'Remove from Wishlist'
+																	: 'Add to Wishlist'
 															}
 														>
-															{' '}
-															add to wishlist{' '}
-														</span>
+															<i
+																className={MultiStyles(
+																	'text-red-500 fa',
+																	isWishlist
+																		? 'fa-heart'
+																		: 'fa-heart-o',
+																)}
+															></i>
+														</ToolTip>
 													</button>
 													<Link
 														href={productDetailsURL}

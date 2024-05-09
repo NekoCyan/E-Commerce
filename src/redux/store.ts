@@ -1,11 +1,13 @@
 'use client';
 
 import { configureStore } from '@reduxjs/toolkit';
-import CartsCountReducer from './cartsCount/CartsCountSlice';
+import CartsCountSlice from './cartsCount/CartsCountSlice';
+import WishlistSlice from './wishlistCount/WishlistSlice';
 
 export const store = configureStore({
 	reducer: {
-		cartCount: CartsCountReducer,
+		cartCount: CartsCountSlice,
+		wishlist: WishlistSlice,
 	},
 });
 

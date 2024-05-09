@@ -1,12 +1,23 @@
 'use client';
 
 import { IOrderModel } from '@/app/models/interfaces';
+import BreadCrumb from '@/components/breadcrumb/BreadCrumb';
 import Modal from '@/components/modal/Modal';
 import { OrderIdToDate, ROUTES } from '@/utils';
 import Link from 'next/link';
 import { Fragment, useState } from 'react';
 import { Container, Table } from 'react-bootstrap';
 
+const breadcrumbNav = [
+	{
+		name: 'Profile',
+		url: ROUTES.Profile,
+	},
+	{
+		name: 'Orders',
+		url: '#',
+	},
+];
 export interface OrdersProps {
 	orders: Awaited<ReturnType<IOrderModel['getOrdersIdFromUser']>>['list'];
 	currentPage: number;
@@ -35,6 +46,7 @@ export default function Component({
 
 	return (
 		<Fragment>
+			<BreadCrumb navigation={breadcrumbNav} />
 			<Container className='my-5'>
 				<div className='overflow-x-auto mb-2 sm:mb-0'>
 					<Table className='table-auto'>

@@ -3,6 +3,7 @@ import { ValidateForList } from '@/utils/BackendUtils';
 import mongoose from 'mongoose';
 import Category from './Category';
 import Counter from './Counter';
+import Wishlist from './Wishlist';
 import { IProduct, IProductMethods, IProductModel } from './interfaces';
 
 const ProductSchema = new mongoose.Schema<
@@ -137,11 +138,19 @@ ProductSchema.static(
 	async function (
 		productId: number,
 	): Promise<ReturnType<IProductModel['deleteProduct']>> {
-		const product = await this.findOneAndDelete({ productId });
+		const product = await this.findOneAndDelete(
+			{ productId },
+			{ new: false },
+		);
 		if (!product)
 			throw new Error(
 				ResponseText.NotExists(`Product with ID ${productId}`),
 			);
+
+		await Wishlist.updateMany(
+			{ productIds: product.productId },
+			{ $pull: { productIds: product.productId } },
+		);
 
 		return product;
 	},

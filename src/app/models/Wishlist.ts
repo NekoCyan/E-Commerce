@@ -29,7 +29,7 @@ WishlistSchema.static(
 		if (!isProductExists)
 			throw new Error(ResponseText.NotExists(`Product Id ${productId}`));
 
-		const wishlist = await this.findOne({ userId });
+		const wishlist = await this.findOne({ userId }).lean().exec();
 		if (!wishlist) {
 			await this.create({ userId, productIds: [productId] });
 			return true;
@@ -48,6 +48,25 @@ WishlistSchema.static(
 		await wishlist.save();
 
 		return isAvailableNow;
+	},
+);
+WishlistSchema.static(
+	'removeWishlist',
+	async function (
+		userId: number,
+		productId: number,
+	): Promise<ReturnType<IWishlistModel['removeWishlist']>> {
+		const wishlist = await this.findOne({ userId });
+		if (!wishlist) return false;
+
+		const index = wishlist.productIds.indexOf(productId);
+		if (index === -1) return false;
+
+		wishlist.productIds.splice(index, 1);
+		wishlist.markModified('productIds');
+		await wishlist.save();
+
+		return true;
 	},
 );
 WishlistSchema.static('getWishlist', async function (userId: number): Promise<

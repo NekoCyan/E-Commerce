@@ -2,16 +2,22 @@
 
 import { CategoryData, ProductData } from '@/app/models/interfaces';
 import AddToCartBtn from '@/components/cart/AddToCartBtn';
-import { ROUTES } from '@/utils';
+import { RootDispatch, RootState } from '@/redux/store';
+import { wishlistAction } from '@/redux/wishlistCount/WishlistSlice';
+import { APIResponse } from '@/types';
+import { API, ROUTES } from '@/utils';
 import {
 	FormatCurrency,
 	MultiStyles,
 	RehypeMarkdown,
 } from '@/utils/ComponentUtils';
+import { POST } from '@/utils/Request';
 import { BASE_URL } from '@/utils/getUrl';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import remarkBreaks from 'remark-breaks';
 import RemarkGfm from 'remark-gfm';
 import styles from '../ProductDetails.module.css';
@@ -25,6 +31,13 @@ export default function ProductDetailsData({
 	isPreview?: boolean;
 	categories: CategoryData[];
 }>) {
+	props.productId = parseInt(props.productId.toString());
+
+	const dispatch: RootDispatch = useDispatch();
+	const wishlist = useSelector<RootState, number[]>(
+		(state) => state.wishlist.value,
+	);
+
 	const [quantity, setQuantity] = useState(1);
 
 	const salePrice = FormatCurrency(
@@ -33,6 +46,39 @@ export default function ProductDetailsData({
 	const isSale = !!(props.salePercentage && props.salePercentage > 0);
 	let rating = 5;
 	let review = 0;
+
+	const [isSubmittingWhishlist, setIsSubmittingWhishlist] = useState(false);
+	const isInWishlist = wishlist.includes(props.productId);
+
+	useEffect(() => {
+		if (!isSubmittingWhishlist) return;
+
+		POST(API.Wishlist, {
+			productId: parseInt(props.productId as any),
+		})
+			.then((x) => {
+				const data = x.data as APIResponse<{
+					status: boolean;
+				}>;
+				if (!data.success) throw new Error(data.message);
+
+				if (data.data.status === true) {
+					dispatch(
+						wishlistAction.add(parseInt(props.productId as any)),
+					);
+				} else {
+					dispatch(
+						wishlistAction.remove(parseInt(props.productId as any)),
+					);
+				}
+			})
+			.catch((err: any) => {
+				toast.error(err.msg);
+			})
+			.finally(() => {
+				setIsSubmittingWhishlist(false);
+			});
+	}, [isSubmittingWhishlist]);
 
 	const validateQuantity = (input: number) => {
 		if (input < 1) return 1;
@@ -187,9 +233,23 @@ export default function ProductDetailsData({
 
 				<ul className={styles['product-btns']}>
 					<li>
-						<Link href='#' onClick={(e) => e.preventDefault()}>
-							<i className='fa fa-heart-o'></i> add to wishlist
-						</Link>
+						<button
+							onClick={() => setIsSubmittingWhishlist(true)}
+							disabled={isSubmittingWhishlist}
+							className='uppercase disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-none'
+						>
+							{isInWishlist ? (
+								<div className='text-2xl'>
+									<i className='text-red-500 fa fa-heart'></i>{' '}
+									Remove from wishlist
+								</div>
+							) : (
+								<div className='text-2xl'>
+									<i className='text-red-500 fa fa-heart-o'></i>{' '}
+									Add to wishlist
+								</div>
+							)}
+						</button>
 					</li>
 				</ul>
 
