@@ -37,7 +37,7 @@ export const ROUTES = {
 	 * @param withBreakcrumb Default is true
 	 * @returns
 	 */
-	ProductDetails: (id: string, withBreakcrumb: boolean = true) =>
+	ProductDetails: (id: string | number, withBreakcrumb: boolean = true) =>
 		`/product-details/${id}` + (withBreakcrumb ? `#breadcrumb` : ''),
 	// Admin.
 	Admin: '/admin',
@@ -45,22 +45,23 @@ export const ROUTES = {
 	AdminCategories: '/admin/categories',
 	AdminProducts: '/admin/products',
 	AdminProductsNew: '/admin/products/new',
-	AdminProductsEdit: (id: string) => `/admin/products/${id}/edit`,
-	AdminProductsPreview: (id: string) => `/admin/products/${id}/preview`,
+	AdminProductsEdit: (id: string | number) => `/admin/products/${id}/edit`,
+	AdminProductsPreview: (id: string | number) =>
+		`/admin/products/${id}/preview`,
 };
 
 export const API = {
 	// Categories.
 	CategoriesList: '/api/categories',
 	CategoriesNew: '/api/categories',
-	CategoriesEdit: (id: string) => `/api/categories/${id}`,
-	CategoriesDelete: (id: string) => `/api/categories/${id}`,
+	CategoriesEdit: (id: string | number) => `/api/categories/${id}`,
+	CategoriesDelete: (id: string | number) => `/api/categories/${id}`,
 	// Products.
 	ProductsList: '/api/products',
 	ProductsNew: '/api/products',
-	ProductsGet: (id: string) => `/api/products/${id}`,
-	ProductsEdit: (id: string) => `/api/products/${id}`,
-	ProductsDelete: (id: string) => `/api/products/${id}`,
+	ProductsGet: (id: string | number) => `/api/products/${id}`,
+	ProductsEdit: (id: string | number) => `/api/products/${id}`,
+	ProductsDelete: (id: string | number) => `/api/products/${id}`,
 	// Carts.
 	CartList: '/api/cart',
 	CartInsert: '/api/cart',

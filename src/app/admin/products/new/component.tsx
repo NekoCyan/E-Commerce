@@ -4,7 +4,7 @@ import { CategoryData, ProductData } from '@/app/models/interfaces';
 import { DocumentList } from '@/app/models/interfaces/ExternalDocument';
 import { DragDrop, TextInput } from '@/components/boostrap';
 import Modal from '@/components/modal/Modal';
-import { APIResponse } from '@/types';
+import { APIResponse, PageProps } from '@/types';
 import {
 	API,
 	IsDecimal,
@@ -21,11 +21,22 @@ import { Container } from 'react-bootstrap';
 
 let availableCategories: { id: string; name: string }[] = [];
 
+export interface AdminProductsInsertProps {
+	productData?: ProductData;
+	props: PageProps<
+		{
+			id?: string;
+		},
+		{
+			callbackUrl?: string;
+		}
+	>;
+}
+
 export default function Component({
 	productData,
-}: Readonly<{
-	productData?: ProductData;
-}>) {
+	props,
+}: Readonly<AdminProductsInsertProps>) {
 	const router = useRouter();
 
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -143,7 +154,13 @@ export default function Component({
 					if (!data.success) throw new Error(data.message);
 
 					setIsBlockButton(true);
-					router.push(ROUTES.AdminProducts);
+					const cb = props.searchParams.callbackUrl;
+					if (cb) {
+						if (cb.startsWith('http')) window.location.href = cb;
+						else router.push(cb);
+					} else {
+						router.push(ROUTES.AdminProducts);
+					}
 					router.refresh();
 				})
 				.catch((err) => {
@@ -759,7 +776,14 @@ export default function Component({
 							if (!isConfirmCancel) {
 								setIsConfirmCancel(true);
 							} else {
-								router.back();
+								const cb = props.searchParams.callbackUrl;
+								if (cb) {
+									if (cb.startsWith('http'))
+										window.location.href = cb;
+									else router.push(cb);
+								} else {
+									router.back();
+								}
 							}
 						}}
 					>

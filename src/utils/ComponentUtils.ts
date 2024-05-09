@@ -19,6 +19,10 @@ export function Sleep(ms: number) {
 	return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
 
+export function isAdmin(session?: Session | null): boolean {
+	return session?.user?.role === 'ADMIN';
+}
+
 export function TransformClientPath(path: string, lastSlash: boolean = false) {
 	if (['', '/', '/client'].some((x) => x === path)) return '/client';
 	if (path.startsWith('#')) return '#';

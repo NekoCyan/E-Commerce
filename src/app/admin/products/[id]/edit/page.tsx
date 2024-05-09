@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation';
 import Component from '../../new/component';
 
 export default async function Page(
-	props: Readonly<PageProps<{ id: string }, {}>>,
+	props: Readonly<PageProps<{ id: string }, { callbackUrl: string }>>,
 ) {
 	const Cookies = cookies();
 	const fetchedProduct = await fetch(
@@ -22,7 +22,7 @@ export default async function Page(
 	const { data } = await fetchedProduct.json();
 	if (Object.keys(data).includes('name')) {
 		data['productId'] = props.params.id;
-		return <Component productData={data} />;
+		return <Component productData={data} props={props} />;
 	} else {
 		return notFound();
 	}

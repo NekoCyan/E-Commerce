@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { Container, Row } from 'react-bootstrap';
 import styles from './BreadCrumb.module.css';
 
-type BreadCrumbProps = {
+export interface BreadCrumbProps {
 	navigation: { name: string; url: string }[];
-};
+}
 
-export default function BreadCrumb({ navigation }: BreadCrumbProps) {
+export default function BreadCrumb({ navigation }: Readonly<BreadCrumbProps>) {
 	if (navigation.length === 0) throw new Error(`Invalid breadcrumb length.`);
 	if (navigation.some((x) => !x.url || !x.name))
 		throw new Error(`Invalid breadcrumb item.`);

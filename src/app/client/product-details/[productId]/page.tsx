@@ -1,10 +1,8 @@
-import BreadCrumb from '@/components/breadcrumb/BreadCrumb';
-import ProductDetails from '@/components/product/productDetails/ProductDetails';
 import { PageProps } from '@/types';
 import { API, REVALIDATE, ROUTES, Truncate, WEBSITE } from '@/utils';
 import getUrl from '@/utils/getUrl';
 import { notFound } from 'next/navigation';
-import { Fragment } from 'react';
+import Component from './component';
 
 export async function generateMetadata(
 	props: Readonly<PageProps<{ productId: string }>>,
@@ -65,13 +63,11 @@ export default async function Page(
 		];
 
 		return (
-			<Fragment>
-				<BreadCrumb navigation={breadcrumbNav} />
-				<ProductDetails
-					productData={product}
-					categoriesList={categories.list}
-				/>
-			</Fragment>
+			<Component
+				breadcrumbNavigation={breadcrumbNav}
+				categories={categories.list}
+				product={product}
+			/>
 		);
 	} else {
 		return notFound();
