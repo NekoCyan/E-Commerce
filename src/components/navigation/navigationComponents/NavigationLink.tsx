@@ -2,7 +2,7 @@
 
 import {
 	TransformAdminPath,
-	TransformClientPath,
+	TransformClientPath
 } from '@/utils/ComponentUtils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
