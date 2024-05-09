@@ -97,9 +97,10 @@ OrderSchema.statics = {
 		});
 	},
 	async getOrder(
+		userId: number,
 		orderId: string,
 	): Promise<ReturnType<IOrderModel['getOrder']>> {
-		return this.findOne({ orderId });
+		return this.findOne({ userId, orderId });
 	},
 	async getOrdersFromUser(
 		userId: number,
@@ -118,21 +119,69 @@ OrderSchema.statics = {
 		let listOrders: OrderData[] = [];
 
 		if (totalPage === -1 || page <= totalPage) {
-			const _getProductList = this.aggregate().project({ _id: 0 });
+			const _getOrderList = this.aggregate().project({ _id: 0 });
 
 			// #region Populate Products.
-			if (Object.keys(matcher).length > 0) _getProductList.match(matcher);
+			if (Object.keys(matcher).length > 0) _getOrderList.match(matcher);
 
 			if (limit !== -1) {
 				// Skip and Limit will works like the following:
 				// Get array from {skipFromPage} to {limitNext}.
 				const limitNext = page * limit;
 				const skipFromPage = limitNext - limit;
-				_getProductList.limit(limitNext).skip(skipFromPage);
+				_getOrderList.limit(limitNext).skip(skipFromPage);
 			}
 			// #endregion
 
-			const getProductList = await _getProductList.exec();
+			const getProductList = await _getOrderList.exec();
+			listOrders = getProductList;
+		}
+
+		return {
+			list: listOrders,
+			currentPage: page,
+			totalPage,
+		};
+	},
+	async getOrdersIdFromUser(
+		userId: number,
+		_limit?: string | number,
+		_page?: string | number,
+	): Promise<ReturnType<IOrderModel['getOrdersFromUser']>> {
+		const { limit, page } = ValidateForList(_limit, _page, false);
+
+		const matcher = {
+			userId: parseInt(userId.toString()),
+		};
+
+		const totalDocument = await this.countDocuments(matcher);
+		const totalPage =
+			limit === -1 ? limit : Math.ceil(totalDocument / limit);
+		let listOrders: OrderData[] = [];
+
+		if (totalPage === -1 || page <= totalPage) {
+			const _getOrderList = this.aggregate().project({
+				_id: 0,
+				orderId: 1,
+				createdAt: 1,
+				status: 1,
+				cancel: 1,
+				paymentMethod: 1,
+			});
+
+			// #region Populate Products.
+			if (Object.keys(matcher).length > 0) _getOrderList.match(matcher);
+
+			if (limit !== -1) {
+				// Skip and Limit will works like the following:
+				// Get array from {skipFromPage} to {limitNext}.
+				const limitNext = page * limit;
+				const skipFromPage = limitNext - limit;
+				_getOrderList.limit(limitNext).skip(skipFromPage);
+			}
+			// #endregion
+
+			const getProductList = await _getOrderList.exec();
 			listOrders = getProductList;
 		}
 
@@ -220,7 +269,7 @@ OrderSchema.pre<IOrder>('save', async function (next) {
 	if (this.shipping.note) this.shipping.note = this.shipping.note.trim();
 
 	if (this.cancel) this.cancel = this.cancel.trim();
-	
+
 	next();
 });
 

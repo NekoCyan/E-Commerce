@@ -43,12 +43,27 @@ export interface IOrderModel extends Model<IOrder, {}, IOrderMethods> {
 			paymentMethod: OrderData['paymentMethod'];
 		},
 	) => Promise<OrderHydratedDocument>;
-	getOrder: (orderId: string) => Promise<OrderHydratedDocument | null>;
+	getOrder: (
+		userId: number,
+		orderId: string,
+	) => Promise<OrderHydratedDocument | null>;
 	getOrdersFromUser: (
 		userId: number,
 		limit?: string | number,
 		page?: string | number,
 	) => Promise<DocumentList<OrderData>>;
+	getOrdersIdFromUser: (
+		userId: number,
+		limit?: string | number,
+		page?: string | number,
+	) => Promise<
+		DocumentList<
+			Pick<
+				OrderData,
+				'orderId' | 'createdAt' | 'status' | 'cancel' | 'paymentMethod'
+			>
+		>
+	>;
 	cancelOrder: (orderId: string, reason: string) => Promise<boolean>;
 	updateOrderStatus: (
 		orderId: string,
