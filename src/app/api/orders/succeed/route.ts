@@ -13,7 +13,6 @@ export async function GET(req: NextRequest) {
 			.sort({ createdAt: -1 })
 			.exec();
 
-		console.log(`Last order`, lastOrder);
 		if (
 			!lastOrder ||
 			lastOrder.createdAt.getTime() < Date.now() - 1000 * 30

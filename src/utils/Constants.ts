@@ -71,7 +71,7 @@ export const API = {
 	// Checkout.
 	Checkout: '/api/checkout',
 	// Order.
-	OrderSucceed: '/api/order/succeed',
+	OrderSucceed: '/api/orders/succeed',
 };
 
 export const TAGS = {
