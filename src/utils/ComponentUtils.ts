@@ -89,3 +89,13 @@ export function RehypeMarkdown(html: string) {
 export function AuthHrefCallback(href: string) {
 	return ROUTES.Auth + `?callbackUrl=${href}&refresh=true`;
 }
+
+export function OrderIdToDate(orderId: string) {
+	// split to cut first 3 characters
+	const timestamp = Number(orderId.slice(3));
+	if (isNaN(timestamp)) throw new Error('Invalid order ID');
+
+	return new Date(timestamp).toLocaleString('vn-VN', {
+		timeZone: 'Asia/Ho_Chi_Minh',
+	});
+}

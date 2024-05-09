@@ -29,7 +29,7 @@ function getNavLink(navFor: 'client' | 'admin') {
 				isAdminRequired: false,
 			},
 			{
-				title: '|',
+				title: '-',
 				path: '#',
 				alt: [],
 				isLoginRequired: true,

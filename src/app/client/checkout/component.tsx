@@ -4,6 +4,8 @@ import Loading from '@/app/loading';
 import { ICartModel } from '@/app/models/interfaces';
 import { TextInput } from '@/components/boostrap';
 import BreadCrumb from '@/components/breadcrumb/BreadCrumb';
+import COD from '@/components/paymentMethod/COD';
+import Paypal from '@/components/paymentMethod/Paypal';
 import { cartCountAction } from '@/redux/cartsCount/CartsCountSlice';
 import { RootDispatch } from '@/redux/store';
 import { APIResponse, NekoResponse } from '@/types';
@@ -462,48 +464,24 @@ export default function Component({ session }: Readonly<CheckoutProps>) {
 								</div>
 							</div>
 							<div className='payment-method'>
-								<div className='input-radio'>
-									<input
-										type='radio'
-										name='payment'
-										id='payment-1'
-										onChange={() => {
-											setFields({
-												...fields,
-												paymentMethod: 'cod',
-											});
-										}}
-									/>
-									<label htmlFor='payment-1'>
-										<span></span>
-										Cash on Delivery (COD)
-									</label>
-									<div className='caption'></div>
-								</div>
-								<div className='input-radio'>
-									<input
-										type='radio'
-										name='payment'
-										id='payment-2'
-										onChange={() => {
-											setFields({
-												...fields,
-												paymentMethod: 'paypal',
-											});
-										}}
-									/>
-									<label htmlFor='payment-2'>
-										<span></span>
-										Paypal
-									</label>
-									<div className='caption'>
-										<p>
-											Pay via PayPal; you can pay with
-											your credit card if you don't have a
-											PayPal account.
-										</p>
-									</div>
-								</div>
+								<COD
+									id='payment-1'
+									onChange={() => {
+										setFields({
+											...fields,
+											paymentMethod: 'cod',
+										});
+									}}
+								/>
+								<Paypal
+									id='payment-2'
+									onChange={() => {
+										setFields({
+											...fields,
+											paymentMethod: 'paypal',
+										});
+									}}
+								/>
 								{error.paymentMethod && (
 									<i className='text-red-500'>
 										{' '}

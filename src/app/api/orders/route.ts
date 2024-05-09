@@ -26,6 +26,11 @@ export async function GET(req: NextRequest) {
 				status: x.status,
 				cancel: x.cancel,
 				paymentMethod: x.paymentMethod,
+				products: x.products.map((y) => ({
+					productId: y.productId,
+					name: y.name,
+					quantity: y.quantity,
+				})),
 			})),
 			currentPage,
 			totalPage,

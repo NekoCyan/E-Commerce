@@ -60,8 +60,19 @@ export interface IOrderModel extends Model<IOrder, {}, IOrderMethods> {
 		DocumentList<
 			Pick<
 				OrderData,
-				'orderId' | 'createdAt' | 'status' | 'cancel' | 'paymentMethod'
-			>
+				| 'orderId'
+				| 'createdAt'
+				| 'status'
+				| 'cancel'
+				| 'paymentMethod'
+				| 'products'
+			> & {
+				products: {
+					productId: string;
+					name: string;
+					quantity: number;
+				}[];
+			}
 		>
 	>;
 	cancelOrder: (orderId: string, reason: string) => Promise<boolean>;

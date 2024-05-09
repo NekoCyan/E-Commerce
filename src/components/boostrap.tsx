@@ -35,6 +35,7 @@ export function TextInput({
 	min,
 	max,
 	required,
+	disabled,
 }: Readonly<{
 	id?: string;
 	name?: string;
@@ -57,6 +58,7 @@ export function TextInput({
 	min?: number | string;
 	max?: number | string;
 	required?: boolean;
+	disabled?: boolean;
 }>) {
 	if (type === 'textarea') {
 		return (
@@ -72,6 +74,7 @@ export function TextInput({
 				onKeyDown={onKeyDown}
 				value={value}
 				required={required}
+				disabled={disabled}
 			/>
 		);
 	} else {
@@ -92,6 +95,7 @@ export function TextInput({
 				min={min}
 				max={max}
 				required={required}
+				disabled={disabled}
 			/>
 		);
 	}
@@ -245,7 +249,10 @@ export function DragDrop<T>({
 	);
 }
 
-
+export interface PageControlProps {}
+export function PageControl({}: Readonly<PageControlProps>) {
+	return <>1 2 3 4</>;
+}
 
 export { Alert, Container, SSRProvider, Spinner } from 'react-bootstrap';
 

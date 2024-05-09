@@ -8,6 +8,7 @@ export const REVALIDATE = {
 	Category: 10,
 	ProductSearch: 10,
 	OrderSucceed: 2,
+	OrderDetails: 2,
 };
 
 export const WEBSITE = {
@@ -21,10 +22,17 @@ export const ROUTES = {
 	Home: '/',
 	Auth: '/auth',
 	Educational: '/educational',
+
+	// #region Profile.
 	// Profile.
 	Profile: '/profile',
+	// Wishlist.
 	Wishlist: '/profile/wishlist',
+	// Orders.
 	Orders: '/profile/orders',
+	OrderDetails: (id: string) => `/profile/orders/details/${id}`,
+	// #endregion
+
 	// Cart.
 	Cart: '/cart',
 	// Checkout.
@@ -71,7 +79,9 @@ export const API = {
 	// Checkout.
 	Checkout: '/api/checkout',
 	// Order.
+	OrdersList: '/api/orders',
 	OrderSucceed: '/api/orders/succeed',
+	OrderDetails: (id: string) => `/api/orders/${id}`,
 };
 
 export const TAGS = {

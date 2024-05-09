@@ -119,7 +119,9 @@ OrderSchema.statics = {
 		let listOrders: OrderData[] = [];
 
 		if (totalPage === -1 || page <= totalPage) {
-			const _getOrderList = this.aggregate().project({ _id: 0 });
+			const _getOrderList = this.aggregate()
+				.project({ _id: 0 })
+				.sort({ createdAt: -1 });
 
 			// #region Populate Products.
 			if (Object.keys(matcher).length > 0) _getOrderList.match(matcher);
@@ -160,17 +162,19 @@ OrderSchema.statics = {
 		let listOrders: OrderData[] = [];
 
 		if (totalPage === -1 || page <= totalPage) {
-			const _getOrderList = this.aggregate().project({
-				_id: 0,
-				orderId: 1,
-				createdAt: 1,
-				status: 1,
-				cancel: 1,
-				paymentMethod: 1,
-			});
+			const _getOrderList = this.aggregate()
+				.project({
+					_id: 0,
+					orderId: 1,
+					createdAt: 1,
+					status: 1,
+					cancel: 1,
+					paymentMethod: 1,
+					products: 1,
+				})
+				.sort({ createdAt: -1 });
 
 			// #region Populate Products.
-			if (Object.keys(matcher).length > 0) _getOrderList.match(matcher);
 
 			if (limit !== -1) {
 				// Skip and Limit will works like the following:
