@@ -23,7 +23,7 @@ let availableCategories: { id: string; name: string }[] = [];
 
 export interface AdminProductsInsertProps {
 	productData?: ProductData;
-	props: PageProps<
+	props?: PageProps<
 		{
 			id?: string;
 		},
@@ -154,7 +154,7 @@ export default function Component({
 					if (!data.success) throw new Error(data.message);
 
 					setIsBlockButton(true);
-					const cb = props.searchParams.callbackUrl;
+					const cb = props?.searchParams.callbackUrl;
 					if (cb) {
 						if (cb.startsWith('http')) window.location.href = cb;
 						else router.push(cb);
@@ -776,7 +776,7 @@ export default function Component({
 							if (!isConfirmCancel) {
 								setIsConfirmCancel(true);
 							} else {
-								const cb = props.searchParams.callbackUrl;
+								const cb = props?.searchParams.callbackUrl;
 								if (cb) {
 									if (cb.startsWith('http'))
 										window.location.href = cb;
