@@ -53,7 +53,7 @@ const nextConfig = {
 
         // Important: return the modified config
         return config
-    }
+    },
 }
 
 module.exports = nextConfig
