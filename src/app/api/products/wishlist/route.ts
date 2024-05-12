@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
 				productId: x.productId,
 				name: x.name,
 				stock: x.stock,
-				images: x.imageUrls,
+				imageUrls: x.imageUrls,
 			};
 		});
 
