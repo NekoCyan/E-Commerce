@@ -2,7 +2,6 @@ import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
 import TopHeader from '@/components/header/TopHeader';
 import Navigation from '@/components/navigation/Navigation';
-import Facebook from '../Facebook';
 
 export default function RootLayout({
 	children,
@@ -16,7 +15,6 @@ export default function RootLayout({
 			<Navigation />
 			{children}
 			<Footer />
-			<Facebook />
 		</div>
 	);
 }

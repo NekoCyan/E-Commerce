@@ -24,7 +24,6 @@ export default function Component({
 	categories,
 }: Readonly<ProductDetailsProps>) {
 	const { data } = useSession();
-	console.log(`isAdmin`, isAdmin(data));
 
 	return (
 		<Fragment>
