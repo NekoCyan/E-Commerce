@@ -1,11 +1,11 @@
-import Script from 'next/script';
+'use client';
+
+import { CustomChat, FacebookProvider } from 'react-facebook';
 
 export default function Facebook() {
 	return (
-		<div>
-			<div id='fb-root'></div>
-			<div id='fb-customer-chat' className='fb-customerchat'></div>
-			<Script strategy='lazyOnload' src='/assets/js/fb-chat.js' />
-		</div>
+		<FacebookProvider appId='1815788815556230' chatSupport>
+			<CustomChat pageId='108989770470910' />
+		</FacebookProvider>
 	);
 }

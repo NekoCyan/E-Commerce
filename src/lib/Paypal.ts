@@ -14,16 +14,19 @@ export async function generateAccessToken() {
 	if (access_token && expires_at > Date.now()) return access_token;
 
 	const basicAuth = Buffer.from(`${clientId}:${secret}`).toString('base64');
-	const { data } = await axios.post(
-		baseUrl + '/v1/oauth2/token',
-		'grant_type=client_credentials',
-		{
+	const { data } = await axios
+		.post(baseUrl + '/v1/oauth2/token', 'grant_type=client_credentials', {
 			headers: {
 				Authorization: `Basic ${basicAuth}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
-		},
-	);
+		})
+		.catch((e) => {
+			console.log(`Failed to obtain access token.`);
+			console.dir(e.response.data, { depth: null, maxArrayLength: null });
+			
+			return e;
+		});
 
 	update_paypal_static({
 		access_token: data.access_token,
