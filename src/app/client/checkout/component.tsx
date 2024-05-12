@@ -9,7 +9,14 @@ import Paypal from '@/components/paymentMethod/Paypal';
 import { cartCountAction } from '@/redux/cartsCount/CartsCountSlice';
 import { RootDispatch } from '@/redux/store';
 import { APIResponse, NekoResponse } from '@/types';
-import { API, FormatCurrency, MultiStyles, ROUTES, SYMBOLS } from '@/utils';
+import {
+	API,
+	FormatCurrency,
+	MultiStyles,
+	OrderEstimateCalculator,
+	ROUTES,
+	SYMBOLS,
+} from '@/utils';
 import { GET, POST } from '@/utils/Request';
 import { Session } from 'next-auth';
 import Link from 'next/link';
@@ -66,6 +73,7 @@ export default function Component({ session }: Readonly<CheckoutProps>) {
 	});
 	const [submitable, setSubmitable] = useState(false);
 	const [isRequesting, setIsRequesting] = useState(false);
+	const [isRequestSucceed, setIsRequestSucceed] = useState(false);
 
 	useEffect(() => {
 		GET(API.CartList)
@@ -77,7 +85,9 @@ export default function Component({ session }: Readonly<CheckoutProps>) {
 				if (!data.success) throw new Error(data.message);
 
 				if (data.data.isUnexpectedChange) {
-					router.push(ROUTES.Cart + '?must_revalidate=true');
+					router.replace(ROUTES.Cart + '?must_revalidate=true');
+				} else if (data.data.data && data.data.data.length > 10) {
+					router.replace(ROUTES.Cart);
 				} else {
 					setProductCarts(data.data.data);
 					setIsLoaded(true);
@@ -135,9 +145,11 @@ export default function Component({ session }: Readonly<CheckoutProps>) {
 
 				dispatch(cartCountAction.set(0));
 				toast.success('Order placed successfully.');
+				setIsRequestSucceed(true);
 
-				if (paymentMethod === 'cod') router.push(ROUTES.ThankYou);
-				// else router.push(ROUTES.Paypal(data.data.orderId));
+				if (paymentMethod === 'paypal')
+					router.push(ROUTES.CheckoutPaypalId(data.data.orderId));
+				else router.push(ROUTES.ThankYou);
 			})
 			.catch((err) => {
 				const msgErr: string = err.message;
@@ -448,15 +460,8 @@ export default function Component({ session }: Readonly<CheckoutProps>) {
 									<div>
 										<strong className='order-total'>
 											{FormatCurrency(
-												productCarts.reduce(
-													(acc, x) =>
-														acc +
-														x.price *
-															((100 -
-																x.salePercentage) /
-																100) *
-															x.quantity,
-													0,
+												OrderEstimateCalculator(
+													productCarts,
 												),
 											)}
 										</strong>
@@ -510,12 +515,19 @@ export default function Component({ session }: Readonly<CheckoutProps>) {
 							<button
 								className={MultiStyles(
 									'primary-btn order-submit w-full',
-									submitable ? '' : 'disabled',
+									(isRequesting ||
+										!submitable ||
+										isRequestSucceed) &&
+										'disabled',
 								)}
 								onClick={(e) => {
 									setIsRequesting(true);
 								}}
-								disabled={!submitable}
+								disabled={
+									isRequesting ||
+									!submitable ||
+									isRequestSucceed
+								}
 							>
 								Place order
 							</button>

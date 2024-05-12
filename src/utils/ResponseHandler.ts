@@ -63,6 +63,9 @@ export function UnauthorizedResponse() {
 export function CategoriesValidationFailedResponse() {
 	return ErrorResponse(new Error(ResponseText.CategoriesValidationFailed));
 }
+export function SomethingWentWrongResponse() {
+	return ErrorResponse(new Error(ResponseText.SomethingWentWrong));
+}
 
 export function Response<T extends { [key: string]: any }>(
 	data: T = {} as T,

@@ -57,9 +57,6 @@ export async function POST(req: NextRequest) {
 		if (!PAYMENT_METHOD.includes(paymentMethod!))
 			return ErrorResponse('Invalid payment method.');
 
-		if (paymentMethod === 'paypal')
-			throw new Error(`Paypal is under development.`);
-
 		const session = (await BEHandler({
 			req,
 			sessionRequired: true,
@@ -70,6 +67,11 @@ export async function POST(req: NextRequest) {
 		if (isUnexpectedChange)
 			return ErrorResponse(
 				'Unexpected change in cart, please back to cart and review cart again.',
+			);
+
+		if (UserCart[0] && UserCart[0]?.length > 10)
+			return ErrorResponse(
+				`Products in cart exceed limit (Limited by 10).`,
 			);
 
 		const result = await Order.createOrder(

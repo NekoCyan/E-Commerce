@@ -20,13 +20,19 @@ export interface OrderData {
 		note: string;
 	};
 	paymentMethod: 'cod' | 'paypal';
-	status: 'pending' | 'processing' | 'shipped' | 'delivered';
+	status: 'pending' | 'processing' | 'shipping' | 'delivered';
 	createdAt: Date;
 	updatedAt: Date;
 	/**
 	 * If string is not empty string, then this cancel is reason.
 	 */
 	cancel: string;
+	// Third party payment data.
+	paypal: {
+		paymentId: string;
+		expireAt: Date;
+		url: string;
+	};
 }
 export interface IOrder
 	extends OrderData,
@@ -46,6 +52,10 @@ export interface IOrderModel extends Model<IOrder, {}, IOrderMethods> {
 	getOrder: (
 		userId: number,
 		orderId: string,
+	) => Promise<OrderHydratedDocument | null>;
+	getOrderFromPaypalPaymentId: (
+		userId: number,
+		paymentId: string,
 	) => Promise<OrderHydratedDocument | null>;
 	getOrdersFromUser: (
 		userId: number,

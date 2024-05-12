@@ -1,7 +1,7 @@
 import { CommaAnd, CreateEnum, Truncate } from './Utilities';
 
 export const PAYMENT_METHOD = ['cod', 'paypal'];
-export const ORDER_STATUS = ['pending', 'processing', 'shipped', 'delivered'];
+export const ORDER_STATUS = ['pending', 'processing', 'shipping', 'delivered'];
 
 export const REVALIDATE = {
 	Product: 10,
@@ -37,6 +37,10 @@ export const ROUTES = {
 	Cart: '/cart',
 	// Checkout.
 	Checkout: '/checkout',
+	CheckoutPaypalId: (id: string) => `/checkout/paypal/${id}`,
+	CheckoutPaypalIdSucceed: (id: string) => `/checkout/paypal/${id}/succeed`,
+	CheckoutPaypalIdCancelled: (id: string) =>
+		`/checkout/paypal/${id}/cancelled`,
 	ThankYou: '/checkout/succeed',
 	// Produts.
 	Products: '/products',
@@ -83,6 +87,8 @@ export const API = {
 	OrdersList: '/api/orders',
 	OrderSucceed: '/api/orders/succeed',
 	OrderDetails: (id: string) => `/api/orders/${id}`,
+	OrderPaypalGenerate: `/api/orders/paypal-generate`,
+	OrderPaypalCapture: `/api/orders/paypal-capture`,
 	// Wishlist.
 	Wishlist: '/api/wishlist',
 };
@@ -224,4 +230,5 @@ export const ResponseText = {
 
 	// Custom
 	CategoriesValidationFailed: `Categories validation failed, please refresh categories for new data.`,
+	SomethingWentWrong: `Something went wrong... Please try again or contact website owner for more informations.`,
 };

@@ -54,6 +54,11 @@ const OrderSchema = new mongoose.Schema<IOrder, IOrderModel, IOrderMethods>({
 	updatedAt: {
 		type: Date,
 	},
+	paypal: {
+		paymentId: String,
+		expireAt: Date,
+		url: String,
+	},
 });
 
 // methods.
@@ -101,6 +106,12 @@ OrderSchema.statics = {
 		orderId: string,
 	): Promise<ReturnType<IOrderModel['getOrder']>> {
 		return this.findOne({ userId, orderId });
+	},
+	async getOrderFromPaypalPaymentId(
+		userId: number,
+		paymentId: string,
+	): Promise<ReturnType<IOrderModel['getOrderFromPaypalPaymentId']>> {
+		return this.findOne({ userId, 'paypal.paymentId': paymentId });
 	},
 	async getOrdersFromUser(
 		userId: number,
@@ -273,6 +284,14 @@ OrderSchema.pre<IOrder>('save', async function (next) {
 	if (this.shipping.note) this.shipping.note = this.shipping.note.trim();
 
 	if (this.cancel) this.cancel = this.cancel.trim();
+
+	if (this.paymentMethod === 'paypal' && typeof this.paypal !== 'object') {
+		this.paypal = {
+			paymentId: '',
+			expireAt: new Date(),
+			url: '',
+		};
+	}
 
 	next();
 });

@@ -54,7 +54,7 @@ export default function Component({
 							<tr>
 								<th className='text-center'>#</th>
 								<th className='text-center'>Order ID</th>
-								<th>Quatity & Products Name</th>
+								<th>Quantity & Products Name</th>
 								<th className='text-center'>Status</th>
 							</tr>
 						</thead>
@@ -102,9 +102,24 @@ export default function Component({
 										</td>
 										<td className='text-center'>
 											{!data.cancel ? (
-												<span className='uppercase'>
-													{data.status}
-												</span>
+												<div className='flex flex-col'>
+													<span className='uppercase'>
+														{data.status}
+													</span>
+													{data.status ===
+														'pending' &&
+														data.paymentMethod ===
+															'paypal' && (
+															<Link
+																href={ROUTES.CheckoutPaypalId(
+																	data.orderId,
+																)}
+																className='text-blue-500 uppercase hover:cursor-pointer underline'
+															>
+																Pay Now
+															</Link>
+														)}
+												</div>
 											) : (
 												<Link
 													href='#'

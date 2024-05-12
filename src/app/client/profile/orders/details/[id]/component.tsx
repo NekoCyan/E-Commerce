@@ -4,7 +4,13 @@ import { OrderData } from '@/app/models/interfaces';
 import { TextInput } from '@/components/boostrap';
 import COD from '@/components/paymentMethod/COD';
 import Paypal from '@/components/paymentMethod/Paypal';
-import { FormatCurrency, MultiStyles, ROUTES, SYMBOLS } from '@/utils';
+import {
+	FormatCurrency,
+	MultiStyles,
+	OrderEstimateCalculator,
+	ROUTES,
+	SYMBOLS,
+} from '@/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -79,7 +85,9 @@ export default function Component({ data }: Readonly<OrderDetailsProps>) {
 						{cancel ? 'Cancelled' : status}.
 					</span>
 				</h3>
-				{cancel && <p className='text-3xl'>Order cancelled due to: {cancel}</p>}
+				{cancel && (
+					<p className='text-3xl'>Order cancelled due to: {cancel}</p>
+				)}
 			</div>
 
 			<Row className='pt-10'>
@@ -353,15 +361,7 @@ export default function Component({ data }: Readonly<OrderDetailsProps>) {
 							<div>
 								<strong className='order-total'>
 									{FormatCurrency(
-										products.reduce(
-											(acc, x) =>
-												acc +
-												x.price *
-													((100 - x.salePercentage) /
-														100) *
-													x.quantity,
-											0,
-										),
+										OrderEstimateCalculator(products),
 									)}
 								</strong>
 							</div>
@@ -377,6 +377,11 @@ export default function Component({ data }: Readonly<OrderDetailsProps>) {
 										id={id}
 										checked={true}
 										disabled={true}
+										orderIdPaynow={
+											status === 'pending'
+												? orderId
+												: undefined
+										}
 									/>
 								);
 							else

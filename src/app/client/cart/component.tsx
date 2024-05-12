@@ -6,7 +6,7 @@ import { ICartModel } from '@/app/models/interfaces';
 import { TextInput } from '@/components/boostrap';
 import BreadCrumb from '@/components/breadcrumb/BreadCrumb';
 import { cartCountAction } from '@/redux/cartsCount/CartsCountSlice';
-import { RootDispatch } from '@/redux/store';
+import { RootDispatch, RootState } from '@/redux/store';
 import { NekoResponse, PageProps } from '@/types';
 import {
 	API,
@@ -14,6 +14,7 @@ import {
 	FormatCurrency,
 	IsNullOrUndefined,
 	LIMITER,
+	OrderEstimateCalculator,
 	ROUTES,
 	Truncate,
 } from '@/utils';
@@ -25,7 +26,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
 import { Container, Table } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const breadcrumbNav = [{ name: 'Cart', url: '#' }];
@@ -45,6 +46,9 @@ export default function Component({
 		Awaited<ReturnType<ICartModel['getCart']>>[0]
 	>([]);
 	const dispatch: RootDispatch = useDispatch();
+	const cartCount = useSelector<RootState, number>(
+		(state) => state.cartCount.value,
+	);
 	const [isLoaded, setIsLoaded] = useState(false);
 
 	useEffect(() => {
@@ -69,7 +73,13 @@ export default function Component({
 								autoClose: 7000,
 							},
 						);
-					}
+					} else if (cartCount > 10)
+						toast.warning(
+							'You have already more 10 goods and only possible to checkout 10 goods at once, please remove some before checkout.',
+							{
+								autoClose: 7000,
+							},
+						);
 					setProductCarts(data.data.data);
 					dispatch(cartCountAction.set(data.data.data?.length ?? 0));
 				})
@@ -387,15 +397,7 @@ export default function Component({
 							Estimate products cost:{' '}
 							<span className='text-red-500'>
 								{FormatCurrency(
-									productCarts.reduce(
-										(acc, x) =>
-											acc +
-											x.price *
-												((100 - x.salePercentage) /
-													100) *
-												x.quantity,
-										0,
-									),
+									OrderEstimateCalculator(productCarts),
 								)}
 							</span>
 						</h4>

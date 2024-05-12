@@ -1,8 +1,15 @@
+import { ROUTES } from '@/utils';
+import Link from 'next/link';
+
 export interface Payment_PaypalProps {
 	id: string;
 	onChange?: () => void;
 	checked?: boolean;
 	disabled?: boolean;
+	/**
+	 * Put orderId for pay Now button.
+	 */
+	orderIdPaynow?: string;
 }
 
 export default function Paypal({
@@ -10,6 +17,7 @@ export default function Paypal({
 	onChange,
 	checked,
 	disabled,
+	orderIdPaynow,
 }: Readonly<Payment_PaypalProps>) {
 	return (
 		<div className='input-radio'>
@@ -23,7 +31,15 @@ export default function Paypal({
 			/>
 			<label htmlFor={id}>
 				<span></span>
-				Paypal (PP)
+				Paypal (PP){' '}
+				{orderIdPaynow && (
+					<Link
+						href={ROUTES.CheckoutPaypalId(orderIdPaynow)}
+						className='text-blue-500 uppercase hover:cursor-pointer underline font-bold'
+					>
+						Pay Now
+					</Link>
+				)}
 			</label>
 			<div className='caption'>
 				<p>

@@ -99,3 +99,19 @@ export function OrderIdToDate(orderId: string) {
 		timeZone: 'Asia/Ho_Chi_Minh',
 	});
 }
+
+export function OrderEstimateCalculator(
+	products: {
+		quantity: number;
+		salePercentage?: number;
+		price: number;
+	}[],
+) {
+	return products.reduce((acc, cur) => {
+		const price = Number(
+			(cur.price * ((100 - (cur?.salePercentage ?? 0)) / 100)).toFixed(2),
+		);
+
+		return acc + price * cur.quantity;
+	}, 0);
+}

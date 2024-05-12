@@ -2,14 +2,14 @@
 
 import { ProductData } from '@/app/models/interfaces';
 import { cartCountAction } from '@/redux/cartsCount/CartsCountSlice';
-import { RootDispatch } from '@/redux/store';
+import { RootDispatch, RootState } from '@/redux/store';
 import { NekoResponse } from '@/types';
 import { API, LIMITER, MultiStyles, Truncate } from '@/utils';
 import { POST } from '@/utils/Request';
 import CartStorage from '@/utils/localStorage/CartStorage';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 interface AddToCartProps {
@@ -29,6 +29,9 @@ export default function AddToCart({
 	const [isRequesting, setIsRequesting] = useState(false);
 
 	const dispatch: RootDispatch = useDispatch();
+	const cartCount = useSelector<RootState, number>(
+		(state) => state.cartCount.value,
+	);
 
 	const handleAdd = () => {
 		if (isRequesting) return;
@@ -107,6 +110,9 @@ export default function AddToCart({
 			);
 			setIsRequesting(false);
 		}
+
+		if (cartCount > 9)
+			toast.warning('You can only checkout 10 goods at once.');
 	};
 
 	return (
