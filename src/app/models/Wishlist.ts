@@ -29,7 +29,7 @@ WishlistSchema.static(
 		if (!isProductExists)
 			throw new Error(ResponseText.NotExists(`Product Id ${productId}`));
 
-		const wishlist = await this.findOne({ userId }).lean().exec();
+		const wishlist = await this.findOne({ userId });
 		if (!wishlist) {
 			await this.create({ userId, productIds: [productId] });
 			return true;
