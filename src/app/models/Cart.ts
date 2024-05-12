@@ -65,7 +65,10 @@ CartSchema.static(
 			}
 
 			const currentProduct = products[productIndex];
-			if (data.quantity > currentProduct.stock) {
+			if (currentProduct.stock === 0) {
+				isChanged = true;
+				continue;
+			} else if (data.quantity > currentProduct.stock) {
 				data.quantity = currentProduct.stock;
 				isChanged = true;
 			}
