@@ -16,7 +16,6 @@ import { Bounce, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
-import Facebook from './Facebook';
 import LinkClickPreventer from './LinkClickPreventer';
 import './globals.css';
 import styles from './layout.module.css';
@@ -85,7 +84,6 @@ export default async function RootLayout({
 					/>
 				</ReduxProvider>
 				<LinkClickPreventer />
-				<Facebook />
 			</body>
 		</html>
 	);
