@@ -48,6 +48,8 @@ export default function Component({
 	const [isLoaded, setIsLoaded] = useState(false);
 
 	useEffect(() => {
+		if (status === 'loading') return;
+
 		if (status === 'authenticated') {
 			GET(API.CartList)
 				.then((x) => {
@@ -118,7 +120,7 @@ export default function Component({
 					setIsLoaded(true);
 				});
 		}
-	}, []);
+	}, [status]);
 
 	// Return number after validate.
 	const validateQuantity = (productId: number, input: number) => {
